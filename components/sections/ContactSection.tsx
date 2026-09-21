@@ -55,7 +55,7 @@ export default function ContactSection(): React.JSX.Element {
             ))}
           </ul>
           <p className="footer__legal mono">
-            © {new Date().getFullYear()} {BRAND.fullName} · {BRAND.name} · All rights reserved
+            © {new Date().getFullYear()} {BRAND.name} · All rights reserved
           </p>
           <p className="footer__tc mono">TC OUT 00:04:12:00 · END OF SEQUENCE</p>
         </footer>

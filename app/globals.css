@@ -1,5 +1,5 @@
 /* ============================================================
-   ALDA — cinematic editing portfolio
+   Aleš Javorský — cinematic editing portfolio
    Palette: OLED black + deep teal + electric orange
    ============================================================ */
 
@@ -203,6 +203,7 @@ button {
   font-weight: 900;
   font-size: 1.05rem;
   letter-spacing: -0.04em;
+  white-space: nowrap;
 }
 
 .site-header__name {
@@ -602,14 +603,23 @@ button {
 .hero__title {
   position: relative;
   display: flex;
+  flex-direction: column;
   /* Contains the one-shot light sweep; without it the parked sweep widens the document. */
   overflow: hidden;
-  margin: 0.6rem 0 0;
-  font-size: clamp(4.5rem, min(23vw, 33vh), 20rem);
+  /* The padding gives háček and čárka room; the margin cancels it back out so the
+     title still sits where it did before. Without it `overflow` shears the caron. */
+  padding-top: 0.18em;
+  margin: calc(1.5rem - 0.18em) 0 0;
+  /* Sized so the longest word still clears the shell padding on a phone. */
+  font-size: clamp(2.6rem, min(11.5vw, 15vh), 11rem);
   font-weight: 900;
-  line-height: 0.8;
+  line-height: 0.82;
   letter-spacing: -0.07em;
   text-transform: uppercase;
+}
+
+.hero__line {
+  display: flex;
 }
 
 .hero__letter {
@@ -922,30 +932,45 @@ button {
     linear-gradient(180deg, #05070a, #0b0f16);
 }
 
-.clip__bars {
+/* Four frames off a strip — the same film language as the hero scene. */
+.clip__frames {
   position: absolute;
-  inset: 18% 8% 22%;
+  inset: 26% 7%;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 2px;
+  align-items: stretch;
+  gap: 5px;
 }
 
-.clip__bars i {
+.clip__frames i {
   flex: 1;
-  height: 26%;
-  background: linear-gradient(180deg, var(--teal), rgba(18, 227, 196, 0.15));
-  animation: vu 1.8s var(--ease-cut) infinite alternate;
-  transform-origin: bottom center;
+  border: 1px solid rgba(18, 227, 196, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 227, 196, 0.32) 0%,
+    rgba(18, 227, 196, 0.07) 56%,
+    rgba(255, 255, 255, 0.3) 61%,
+    rgba(18, 227, 196, 0.05) 66%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  animation: gate 2.6s var(--ease-cut) infinite;
 }
 
-.clip--orange .clip__bars i {
-  background: linear-gradient(180deg, var(--orange), rgba(255, 90, 31, 0.15));
+.clip--orange .clip__frames i {
+  border-color: rgba(255, 90, 31, 0.32);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 90, 31, 0.34) 0%,
+    rgba(255, 90, 31, 0.08) 56%,
+    rgba(255, 255, 255, 0.3) 61%,
+    rgba(255, 90, 31, 0.05) 66%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
 }
 
-@keyframes vu {
-  from { transform: scaleY(0.2); opacity: 0.4; }
-  to { transform: scaleY(1.9); opacity: 1; }
+/* Each frame lights as it passes the gate. */
+@keyframes gate {
+  0%, 100% { opacity: 0.4; }
+  45% { opacity: 1; }
 }
 
 .clip__preview-id {
@@ -960,13 +985,27 @@ button {
 
 .clip__sprockets {
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 10px;
+  left: 0;
+  right: 0;
+  height: 14px;
   background-image: repeating-linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.1) 0 6px,
-    transparent 6px 16px
+    transparent 0 6px,
+    rgba(255, 255, 255, 0.16) 6px 13px,
+    transparent 13px 19px
   );
+  background-size: 100% 6px;
+  background-repeat: repeat-x;
+}
+
+.clip__sprockets--top {
+  top: 0;
+  background-position: 0 4px;
+}
+
+.clip__sprockets--bottom {
+  bottom: 0;
+  background-position: 0 4px;
 }
 
 .clip__body {
@@ -1303,7 +1342,8 @@ button {
     display: none;
   }
 
-  .site-header__nav {
+  .site-header__nav,
+  .site-header__name {
     display: none;
   }
 

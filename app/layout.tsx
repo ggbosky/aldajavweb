@@ -22,12 +22,12 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${BRAND.name} — ${BRAND.fullName} · Video Editor & Motion Designer`,
+  title: `${BRAND.name} — Video Editor & Motion Designer`,
   description:
-    'Freelance střihač, videomaker a motion designer. Sport, gaming, komerční kampaně a podcasty. Klienti: FAČR, Hitrádio, Inside Media, YouTube tvůrci.',
-  keywords: ['video editor', 'střihač', 'motion design', 'After Effects', 'Premiere Pro', 'podcast produkce'],
+    'Freelance střihač, videomaker a motion designer. Krátké formáty pro sociální sítě, brand video, dlouhé formáty a motion grafika.',
+  keywords: ['video editor', 'střihač', 'videomaker', 'motion design', 'After Effects', 'Premiere Pro'],
   openGraph: {
-    title: `${BRAND.name} — ${BRAND.fullName}`,
+    title: `${BRAND.name} — Video Editor & Motion Designer`,
     description: 'Střih, motion grafika a produkce videa. Prvních pět vteřin rozhoduje o všem ostatním.',
     type: 'website',
     locale: 'cs_CZ',

@@ -1,12 +1,12 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { CASE_STUDIES } from '@/lib/site';
+import { WORK } from '@/lib/site';
 import { playhead, startPlayhead } from '@/lib/playhead';
 
 /**
- * Bottom transport: a scrub bar with a marker per case study.
- * Markers are real navigation — they scroll the document to that clip.
+ * Bottom transport: a scrub bar with a marker per work block.
+ * Markers are real navigation — they scroll the document to that block.
  */
 export default function TransportBar(): React.JSX.Element {
   const headRef = useRef<HTMLDivElement>(null);
@@ -45,15 +45,15 @@ export default function TransportBar(): React.JSX.Element {
       <div className="transport__track">
         <div className="transport__fill" ref={fillRef} />
         <div className="transport__head" ref={headRef} />
-        {CASE_STUDIES.map((study) => (
+        {WORK.map((block) => (
           <button
-            key={study.id}
+            key={block.id}
             type="button"
-            className={`transport__marker transport__marker--${study.accent}`}
-            style={{ left: `${study.mark * 100}%` }}
-            onClick={() => jumpTo(study.id)}
+            className={`transport__marker transport__marker--${block.accent}`}
+            style={{ left: `${block.mark * 100}%` }}
+            onClick={() => jumpTo(block.id)}
           >
-            <span className="transport__marker-label">{study.client}</span>
+            <span className="transport__marker-label">{block.title}</span>
           </button>
         ))}
       </div>

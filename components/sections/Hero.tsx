@@ -4,7 +4,11 @@ import { motion } from 'framer-motion';
 import { BRAND } from '@/lib/site';
 import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
-const LETTERS = BRAND.name.split('');
+/** Each word gets its own line; the cut delay keeps running across the break. */
+const LINES = BRAND.nameLines.map((word, index, all) => ({
+  word,
+  offset: all.slice(0, index).reduce((total, previous) => total + previous.length, 0),
+}));
 
 /** Each letter lands as its own jump cut, 55 ms apart. */
 const letterVariants = {
@@ -33,19 +37,22 @@ export default function Hero(): React.JSX.Element {
         </motion.p>
 
         <h1 className="hero__title" aria-label={BRAND.name}>
-          {LETTERS.map((letter, index) => (
-            <motion.span
-              key={`${letter}-${index}`}
-              className="hero__letter"
-              data-char={letter}
-              custom={index}
-              variants={letterVariants}
-              initial="hidden"
-              animate="visible"
-              aria-hidden="true"
-            >
-              {letter}
-            </motion.span>
+          {LINES.map(({ word, offset }) => (
+            <span className="hero__line" key={word} aria-hidden="true">
+              {word.split('').map((letter, index) => (
+                <motion.span
+                  key={`${letter}-${index}`}
+                  className="hero__letter"
+                  data-char={letter}
+                  custom={offset + index}
+                  variants={letterVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </span>
           ))}
           <span className="hero__sweep" aria-hidden="true" />
         </h1>
@@ -92,8 +99,8 @@ export default function Hero(): React.JSX.Element {
           transition={{ duration: 0.4, delay: 0.85 }}
         >
           <div>
-            <dt>Klienti</dt>
-            <dd>FAČR · Hitrádio · Inside Media</dd>
+            <dt>Zaměření</dt>
+            <dd>{BRAND.focus}</dd>
           </div>
           <div>
             <dt>Stack</dt>

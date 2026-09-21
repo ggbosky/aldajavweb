@@ -4,17 +4,22 @@
  */
 
 export const BRAND = {
-  name: 'ALDA',
-  fullName: 'Aleš Javorský',
+  name: 'Aleš Javorský',
+  /** The hero sets each word on its own line. */
+  nameLines: ['Aleš', 'Javorský'] as const,
   role: 'Video Editor · Videomaker · Motion Designer',
+  /** Short form for the header, where the full role line does not fit. */
+  roleShort: 'Video Editor · Motion Design',
   tagline: 'Prvních pět vteřin rozhoduje o všem ostatním.',
   intro:
-    'Freelance střihač a videomaker. Přes pět let stříhám desítky videí měsíčně — od sportu a gamingu po komerční kampaně pro sociální sítě. Nejde o techniku, jde o emoci a o to udržet pozornost.',
+    'Freelance střihač a videomaker. Krátké formáty pro sociální sítě, dlouhá videa i komerční kampaně. Nejde o techniku, jde o emoci a o to udržet pozornost.', // TODO: přepsat vlastními slovy
   email: 'ales.javorsky@example.com', // TODO: nahradit reálným kontaktem
   phone: '+420 000 000 000', // TODO
   location: 'Česká republika · remote',
+  focus: 'Krátké formáty · brand video · motion',
 } as const;
 
+// TODO: doplnit odkazy na reálné profily — teď míří jen na holé domény.
 export const SOCIALS: ReadonlyArray<{ label: string; href: string }> = [
   { label: 'Instagram', href: 'https://instagram.com/' },
   { label: 'YouTube', href: 'https://youtube.com/' },
@@ -22,87 +27,92 @@ export const SOCIALS: ReadonlyArray<{ label: string; href: string }> = [
   { label: 'Vimeo', href: 'https://vimeo.com/' },
 ];
 
+// TODO: ověřit čísla, než to půjde live — jsou to zatím odhady, ne měřená data.
 export const STATS: ReadonlyArray<{ value: string; label: string; note: string }> = [
-  { value: '5+', label: 'let praxe', note: 'freelance / on-set / post' },
-  { value: '10s', label: 'videí měsíčně', note: 'sport · social · podcast' },
+  { value: '5+', label: 'let praxe', note: 'freelance · on set · post' },
   { value: '4K', label: 'delivery', note: '9:16 · 1:1 · 16:9' },
-  { value: '24h', label: 'rychlý turnaround', note: 'u matchday obsahu' },
+  { value: '24h', label: 'rychlý turnaround', note: 'u krátkých formátů' },
+  { value: '1', label: 'člověk na projekt', note: 'natočím · sestříhám · dodám' },
 ];
 
-export type CaseStudy = {
+export type WorkBlock = {
   readonly id: string;
-  readonly client: string;
-  readonly sector: string;
-  readonly year: string;
+  readonly title: string;
+  readonly kind: string;
+  readonly format: string;
   readonly headline: string;
   readonly body: string;
   readonly role: ReadonlyArray<string>;
   readonly deliverables: ReadonlyArray<string>;
   readonly timecodeIn: string;
   readonly duration: string;
-  /** 0–1 position of this clip on the master timeline. */
+  /** 0–1 position of this block on the master timeline. */
   readonly mark: number;
   readonly accent: 'orange' | 'teal';
 };
 
-export const CASE_STUDIES: ReadonlyArray<CaseStudy> = [
+/**
+ * Typy práce, ne reference. Až budou k dispozici reálné projekty, stačí
+ * `title` přepsat na jméno klienta a `body` na to, co se pro něj dělalo.
+ */
+export const WORK: ReadonlyArray<WorkBlock> = [
   {
-    id: 'facr',
-    client: 'FAČR',
-    sector: 'Sport / Fotbalová asociace ČR',
-    year: '2022 — nyní',
-    headline: 'Matchday obsah, který drží tempo zápasu',
+    id: 'kratke-formaty',
+    title: 'Krátké formáty',
+    kind: 'Reels · Shorts · TikTok',
+    format: '9:16 · 1:1',
+    headline: 'Hook v první vteřině, pointa dřív než palec',
     body:
-      'Sestřihy, highlighty a matchday balíčky pro sociální sítě. Krátké formáty stavěné na jediný cíl: dostat divákovi adrenalin ze stadionu do telefonu dřív, než stihne palcem odjet dál.',
-    role: ['Střih', 'Motion grafika', 'Sound design'],
-    deliverables: ['Highlight reels', 'Matchday 9:16', 'Sponzorské bumpery'],
+      'Vertikální video stavěné na jediný cíl: udržet divákovi palec nad displejem. Rychlý střih, čitelné titulky, rytmus navázaný na hudbu. Verze pro každou platformu zvlášť.',
+    role: ['Střih', 'Titulky', 'Grafika'],
+    deliverables: ['Reels / Shorts', 'Sestřihy z delšího videa', 'Verze pro platformy'],
     timecodeIn: '00:00:24:12',
     duration: '00:01:06',
     mark: 0.18,
     accent: 'orange',
   },
   {
-    id: 'hitradio',
-    client: 'Hitrádio',
-    sector: 'Rádio / Broadcast',
-    year: '2021 — nyní',
-    headline: 'Z rozhlasového studia rovnou do feedu',
+    id: 'brand-video',
+    title: 'Brand & komerce',
+    kind: 'Kampaně · produkt · promo',
+    format: '16:9 · 9:16',
+    headline: 'Sdělení, které přežije i ztlumený zvuk',
     body:
-      'Kompletní produkce podcastů a video obsahu pro rádio — od nastavení multicam scény a lavalier zvuku po střih, grafiku a nasekání klipů pro Reels a Shorts.',
-    role: ['Produkce podcastu', 'Multicam střih', 'Grafický balíček'],
-    deliverables: ['Podcast epizody', 'Shorts / Reels', 'Studiová grafika'],
+      'Komerční video od konceptu po export. Kinetická typografie, tempo podle sdělení a grafika, která nese značku i ve chvíli, kdy divák kouká bez zvuku.',
+    role: ['Koncept', 'Střih', 'After Effects'],
+    deliverables: ['Performance ads', 'Brand filmy', 'Produktová videa'],
     timecodeIn: '00:01:38:04',
     duration: '00:02:14',
     mark: 0.42,
     accent: 'teal',
   },
   {
-    id: 'inside-media',
-    client: 'Inside Media',
-    sector: 'Komerce / Social campaigns',
-    year: '2020 — nyní',
-    headline: 'Kampaně stavěné na hook v první vteřině',
+    id: 'dlouhe-formaty',
+    title: 'Dlouhé formáty',
+    kind: 'YouTube · rozhovory · multicam',
+    format: '16:9',
+    headline: 'Retence jako řemeslo, ne náhoda',
     body:
-      'Komerční kampaně pro sociální sítě: rychlý střih, kinetická typografie a rytmus navázaný na hudbu. Verze pro každý formát a každou platformu, bez ztráty čitelnosti sdělení.',
-    role: ['Koncept', 'Střih', 'After Effects'],
-    deliverables: ['Performance ads', 'Brand filmy', 'Kinetic typografie'],
+      'Dlouhá videa, rozhovory a multicam scény. Práce s křivkou pozornosti — hook, tempo, pauza, pointa. Střih, který se pozná podle toho, že si ho divák nevšimne.',
+    role: ['Střih', 'Multicam', 'Retention pass'],
+    deliverables: ['Long-form videa', 'Rozhovory', 'Sériová intra'],
     timecodeIn: '00:02:51:19',
-    duration: '00:01:42',
+    duration: '00:03:28',
     mark: 0.64,
     accent: 'orange',
   },
   {
-    id: 'creators',
-    client: 'YouTube tvůrci',
-    sector: 'Creator economy / Gaming',
-    year: '2019 — nyní',
-    headline: 'Retence jako řemeslo, ne náhoda',
+    id: 'motion',
+    title: 'Motion design',
+    kind: 'Grafika · typografie · packaging',
+    format: 'Všechny poměry',
+    headline: 'Vrstva, po které video vypadá dodělaně',
     body:
-      'Dlouhé formáty pro tvůrce a gaming obsah. Práce s křivkou pozornosti — hook, tempo, pauza, pointa. Střih, který se pozná podle toho, že si ho divák nevšimne.',
-    role: ['Střih', 'Retention pass', 'Thumbnail input'],
-    deliverables: ['Long-form videa', 'Gaming sestřihy', 'Serialové intra'],
+      'Animovaná typografie, přechody, lower thirds a grafický balíček, který drží pohromadě celou sérii. Od jednoho titulku po kompletní vizuální styl formátu.',
+    role: ['Motion design', 'Typografie', 'Color'],
+    deliverables: ['Kinetic typografie', 'Grafické balíčky', 'Titulkové sady'],
     timecodeIn: '00:03:47:02',
-    duration: '00:03:28',
+    duration: '00:01:42',
     mark: 0.86,
     accent: 'teal',
   },
@@ -112,20 +122,20 @@ export type ArsenalItem = {
   readonly id: string;
   readonly label: string;
   readonly spec: string;
-  readonly group: 'POST' | 'ON SET' | 'AUDIO' | 'CONCEPT';
+  readonly group: 'POST' | 'ON SET' | 'CONCEPT';
 };
 
 export const ARSENAL: ReadonlyArray<ArsenalItem> = [
   { id: 'ppro', label: 'Premiere Pro', spec: 'Primární NLE · multicam · proxy workflow', group: 'POST' },
   { id: 'ae', label: 'After Effects', spec: 'Motion grafika · kinetická typografie · cleanup', group: 'POST' },
   { id: 'grade', label: 'Color grading', spec: 'Cinematic look · match mezi kamerami', group: 'POST' },
+  { id: 'sound', label: 'Sound design', spec: 'Rytmus střihu · SFX · mix pod hudbu', group: 'POST' },
+  { id: 'titulky', label: 'Titulky & captions', spec: 'Sazba do safe zones · verze pro ztlumený zvuk', group: 'POST' },
   { id: 'gimbal', label: 'Gimbal', spec: 'Plynulé jízdy · reveal shoty · follow', group: 'ON SET' },
   { id: 'mobile', label: 'Mobilní natáčení', spec: 'Rychlé nasazení · social-first framing', group: 'ON SET' },
-  { id: 'multicam', label: 'Multicam setup', spec: 'Podcast scéna · sync · záložní stopy', group: 'ON SET' },
-  { id: 'lav', label: 'Lavalier audio', spec: 'Čistá stopa · denoise · levelling', group: 'AUDIO' },
-  { id: 'sound', label: 'Sound design', spec: 'Rytmus střihu · SFX · mix pod hudbu', group: 'AUDIO' },
-  { id: 'podcast', label: 'Podcast produkce', spec: 'Od setupu studia po publikaci', group: 'AUDIO' },
+  { id: 'multicam', label: 'Multicam setup', spec: 'Rozhovory · sync · záložní stopy', group: 'ON SET' },
   { id: 'idea', label: 'Ideace & scénář', spec: 'Koncept · storyboard · hook first', group: 'CONCEPT' },
+  { id: 'rytmus', label: 'Rytmus & tempo', spec: 'Stavba scény · pauza · pointa', group: 'CONCEPT' },
   { id: 'vertical', label: 'Vertikální formáty', spec: '9:16 · 1:1 · safe zones · titulky', group: 'CONCEPT' },
   { id: 'delivery', label: 'Delivery', spec: 'Master · verze pro platformy · archiv', group: 'CONCEPT' },
 ];
@@ -145,7 +155,7 @@ export const PROCESS: ReadonlyArray<ProcessStep> = [
   {
     index: '02',
     title: 'Natáčení',
-    body: 'Gimbal, mobil, lavalier. Lehký setup, který se dostane všude — na stadion, do studia i do kanceláře.',
+    body: 'Gimbal, mobil, lehký setup. Výbava, která se dostane všude — do studia, do kanceláře i do terénu.',
   },
   {
     index: '03',

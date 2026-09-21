@@ -21,7 +21,7 @@ export default function SiteHeader(): React.JSX.Element {
     >
       <a className="site-header__brand" href="#top">
         <span className="site-header__mark">{BRAND.name}</span>
-        <span className="site-header__name">{BRAND.fullName}</span>
+        <span className="site-header__name">{BRAND.roleShort}</span>
       </a>
 
       <nav className="site-header__nav" aria-label="Hlavní navigace">

@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 /**
  * Three.js is ~0.5 MB of JS that the hero does not need in order to paint.
  * Load it only in the browser, and only once the first frame is on screen —
- * the kinetic type must land instantly, the waveform can arrive a beat later.
+ * the kinetic type must land instantly, the film strip can arrive a beat later.
  */
 const SceneCanvas = dynamic(() => import('@/components/canvas/SceneCanvas'), {
   ssr: false,

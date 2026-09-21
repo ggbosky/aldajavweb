@@ -4,13 +4,13 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { AdaptiveDpr, Preload } from '@react-three/drei';
 import * as THREE from 'three';
-import DynamicWaveform from '@/components/canvas/DynamicWaveform';
+import Filmstrip from '@/components/canvas/Filmstrip';
 import { fitDistance } from '@/lib/framing';
 import { playhead, startPlayhead } from '@/lib/playhead';
 
 /**
- * Frames the whole waveform regardless of viewport aspect, then adds a slow
- * parallax dolly: the camera pulls back as the sequence plays out.
+ * Frames the strip regardless of viewport aspect, then adds a slow parallax
+ * dolly: the camera pulls back as the sequence plays out.
  */
 function CameraRig(): null {
   useFrame((state, delta) => {
@@ -28,8 +28,8 @@ function CameraRig(): null {
     camera.position.y = THREE.MathUtils.damp(camera.position.y, targetY, 3, delta);
     camera.position.z = THREE.MathUtils.damp(camera.position.z, targetZ, 2.5, delta);
 
-    // Aim so the waveform baseline always lands ~85% down the viewport, whatever
-    // the aspect ratio: the copy gets the top, the scene gets the floor.
+    // Aim so the strip always lands in the lower third, whatever the aspect
+    // ratio: the copy gets the top, the scene gets the floor.
     const visibleHeight = 2 * camera.position.z * Math.tan(halfFov);
     camera.lookAt(0, visibleHeight * 0.35, 0);
     camera.updateProjectionMatrix();
@@ -106,7 +106,7 @@ export default function SceneCanvas(): React.JSX.Element | null {
         <fog attach="fog" args={['#000000', 14, 44]} />
         <CameraRig />
         <Dust />
-        <DynamicWaveform position={[0, 0, 0]} />
+        <Filmstrip position={[0, 0, 0]} />
         <AdaptiveDpr pixelated={false} />
         <Preload all />
       </Canvas>

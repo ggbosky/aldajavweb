@@ -1,21 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import HardCutTransition from '@/components/motion/HardCutTransition';
+import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
 import { ARSENAL } from '@/lib/site';
 
 /**
- * The roster. One row per discipline: index, title, group — and a description
- * that only resolves when the row is intentionally engaged, so the list reads
- * as a clean index until someone reaches for it.
- *
- * The reveal animates `grid-template-rows` from `0fr` to `1fr` rather than a
- * height, which is the only way to transition to an auto-sized box.
+ * A spec sheet, not an inventory: three phases of the job, each with the things
+ * that happen in it. Grouping does the work an index column used to do, so no
+ * row has to carry its own number or repeat its own category.
  */
 export default function ArsenalSection(): React.JSX.Element {
-  const [active, setActive] = useState<string | null>(null);
-
   return (
     <section className="arsenal" id="arsenal">
       <div className="arsenal__head">
@@ -23,6 +17,11 @@ export default function ArsenalSection(): React.JSX.Element {
           <p className="section-label mono">Arsenal</p>
         </HardCutTransition>
         <HardCutTransition delay={0.06}>
+          <h2 className="section-title">
+            Kompletní <em>pipeline</em> — od nápadu po export.
+          </h2>
+        </HardCutTransition>
+        <HardCutTransition delay={0.12}>
           <p className="section-lead">
             Nepředávám si projekt s pěti lidmi. Natočím, sestříhám, ozvučím a dodám ve formátech,
             které platforma chce. Jeden člověk, jedna odpovědnost, jeden rytmus.
@@ -30,35 +29,30 @@ export default function ArsenalSection(): React.JSX.Element {
         </HardCutTransition>
       </div>
 
-      <div className="roster">
-        {ARSENAL.map((item, index) => (
-          <motion.div
-            key={item.id}
-            className={`roster__row${active === item.id ? ' is-active' : ''}`}
-            onHoverStart={() => setActive(item.id)}
-            onHoverEnd={() => setActive((current) => (current === item.id ? null : current))}
-            onFocus={() => setActive(item.id)}
-            onBlur={() => setActive((current) => (current === item.id ? null : current))}
-            tabIndex={0}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
+      <div className="phases">
+        {ARSENAL.map((group) => (
+          <motion.section
+            key={group.id}
+            className="phase"
+            variants={cutParent}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.4, delay: Math.min(index, 6) * 0.04 }}
           >
-            <span className="roster__glow" aria-hidden="true" />
+            <motion.h3 className="phase__label mono" variants={cutChild}>
+              {group.label}
+            </motion.h3>
 
-            <div className="roster__lead">
-              <span className="roster__index mono">{String(index + 1).padStart(2, '0')}</span>
-              <h3 className="roster__title">{item.label}</h3>
-            </div>
-
-            <div className="roster__meta">
-              <span className="roster__group mono">{item.group}</span>
-              <div className="roster__reveal">
-                <p className="roster__spec">{item.spec}</p>
-              </div>
-            </div>
-          </motion.div>
+            <ul className="phase__items">
+              {group.items.map((item) => (
+                <motion.li key={item.label} className="kit" variants={cutChild}>
+                  <span className="kit__bar" aria-hidden="true" />
+                  <h4 className="kit__label">{item.label}</h4>
+                  <p className="kit__spec">{item.spec}</p>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.section>
         ))}
       </div>
     </section>

@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, JetBrains_Mono, Playfair_Display } from 'next/font/google';
+import { Archivo, JetBrains_Mono } from 'next/font/google';
 import SiteHeader from '@/components/layout/SiteHeader';
 import { BRAND } from '@/lib/site';
 import './globals.css';
 
 const archivo = Archivo({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '600', '700', '800', '900'],
   variable: '--font-archivo',
   display: 'swap',
 });
@@ -15,15 +15,6 @@ const jetbrains = JetBrains_Mono({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500'],
   variable: '--font-mono-jb',
-  display: 'swap',
-});
-
-/** Editorial display face — carries the hero and every section title. */
-const playfair = Playfair_Display({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '700', '900'],
-  style: ['normal', 'italic'],
-  variable: '--font-playfair',
   display: 'swap',
 });
 
@@ -51,7 +42,7 @@ export default function RootLayout({
   return (
     <html
       lang="cs"
-      className={`${archivo.variable} ${jetbrains.variable} ${playfair.variable}`}
+      className={`${archivo.variable} ${jetbrains.variable}`}
     >
       <body>
         <SiteHeader />

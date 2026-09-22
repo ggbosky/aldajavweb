@@ -113,25 +113,48 @@ export const WORK: ReadonlyArray<WorkBlock> = [
 ];
 
 export type ArsenalItem = {
-  readonly id: string;
   readonly label: string;
   readonly spec: string;
-  readonly group: 'POST' | 'ON SET' | 'CONCEPT';
 };
 
-export const ARSENAL: ReadonlyArray<ArsenalItem> = [
-  { id: 'ppro', label: 'Premiere Pro', spec: 'Primární NLE · multicam · proxy workflow', group: 'POST' },
-  { id: 'ae', label: 'After Effects', spec: 'Motion grafika · kinetická typografie · cleanup', group: 'POST' },
-  { id: 'grade', label: 'Color grading', spec: 'Cinematic look · match mezi kamerami', group: 'POST' },
-  { id: 'sound', label: 'Sound design', spec: 'Rytmus střihu · SFX · mix pod hudbu', group: 'POST' },
-  { id: 'titulky', label: 'Titulky & captions', spec: 'Sazba do safe zones · verze pro ztlumený zvuk', group: 'POST' },
-  { id: 'gimbal', label: 'Gimbal', spec: 'Plynulé jízdy · reveal shoty · follow', group: 'ON SET' },
-  { id: 'mobile', label: 'Mobilní natáčení', spec: 'Rychlé nasazení · social-first framing', group: 'ON SET' },
-  { id: 'multicam', label: 'Multicam setup', spec: 'Rozhovory · sync · záložní stopy', group: 'ON SET' },
-  { id: 'idea', label: 'Ideace & scénář', spec: 'Koncept · storyboard · hook first', group: 'CONCEPT' },
-  { id: 'rytmus', label: 'Rytmus & tempo', spec: 'Stavba scény · pauza · pointa', group: 'CONCEPT' },
-  { id: 'vertical', label: 'Vertikální formáty', spec: '9:16 · 1:1 · safe zones · titulky', group: 'CONCEPT' },
-  { id: 'delivery', label: 'Delivery', spec: 'Master · verze pro platformy · archiv', group: 'CONCEPT' },
+export type ArsenalGroup = {
+  readonly id: string;
+  readonly label: string;
+  readonly items: ReadonlyArray<ArsenalItem>;
+};
+
+/** Grouped by where in the job each thing happens, in the order it happens. */
+export const ARSENAL: ReadonlyArray<ArsenalGroup> = [
+  {
+    id: 'koncept',
+    label: 'Koncept',
+    items: [
+      { label: 'Ideace & scénář', spec: 'Nejdřív co má video způsobit. Jak vypadá, řešíme až potom.' },
+      { label: 'Rytmus & tempo', spec: 'Kde se nadechnout a kde střihnout dřív, než to divák čeká.' },
+      { label: 'Vertikální formáty', spec: '9:16 a 1:1 se safe zones — ne oříznutá šestnáctka.' },
+    ],
+  },
+  {
+    id: 'nataceni',
+    label: 'Natáčení',
+    items: [
+      { label: 'Gimbal', spec: 'Plynulé jízdy, reveal shoty, follow.' },
+      { label: 'Mobilní natáčení', spec: 'Lehký setup, který se dostane všude.' },
+      { label: 'Multicam setup', spec: 'Rozhovory. Sync a záložní stopa pro jistotu.' },
+    ],
+  },
+  {
+    id: 'postprodukce',
+    label: 'Postprodukce',
+    items: [
+      { label: 'Premiere Pro', spec: 'Primární NLE — multicam a proxy workflow.' },
+      { label: 'After Effects', spec: 'Motion grafika, kinetická typografie, cleanup.' },
+      { label: 'Color grading', spec: 'Cinematic look a match mezi kamerami.' },
+      { label: 'Sound design', spec: 'Rytmus střihu, SFX, mix pod hudbu.' },
+      { label: 'Titulky & captions', spec: 'Sazba do safe zones a verze pro ztlumený zvuk.' },
+      { label: 'Delivery', spec: 'Master, verze pro každou platformu, archiv.' },
+    ],
+  },
 ];
 
 export type ProcessStep = {

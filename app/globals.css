@@ -27,7 +27,6 @@
   --ease-cut: cubic-bezier(0.25, 1, 0.5, 1);
 
   --font-display: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
-  --font-serif: var(--font-playfair), 'Iowan Old Style', Georgia, serif;
   --font-mono: var(--font-mono-jb), ui-monospace, 'SF Mono', Menlo, monospace;
 }
 
@@ -261,16 +260,16 @@ button {
 
 .section-title {
   margin-top: 1.2rem;
-  max-width: 18ch;
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: clamp(2.2rem, 5.2vw, 4.4rem);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  max-width: 17ch;
+  font-weight: 900;
+  font-size: clamp(2.1rem, 5vw, 4.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
 }
 
 .section-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--teal);
 }
 
@@ -286,104 +285,105 @@ button {
 .hero {
   position: relative;
   display: flex;
-  align-items: stretch;
-  justify-content: center;
+  align-items: center;
   min-height: 100dvh;
-  padding: clamp(6rem, 14vh, 9rem) var(--shell) clamp(3rem, 7vh, 5rem);
+  padding: clamp(7rem, 14vh, 9rem) var(--shell) clamp(3rem, 7vh, 5rem);
   overflow: hidden;
 }
 
+/*
+ * The source frame is a square photo on a lit blue backdrop. The radial mask
+ * throws that hard edge away and keeps only the lit core, so what survives reads
+ * as a key light in a dark room rather than a photo pasted onto the page.
+ */
 .hero__portrait {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  right: -4vw;
+  translate: 0 -50%;
   z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  perspective: 1000px;
-  transform-style: preserve-3d;
+  width: min(62vw, 40rem);
+  aspect-ratio: 1;
 }
 
-/*
- * The source frame is a lit blue backdrop, square and hard-edged. The radial
- * mask throws that edge away and keeps only the lit core, so what is left reads
- * as a key light in a dark room rather than a photo pasted on the page.
- */
 .hero__portrait-image {
-  width: min(78vw, 42rem);
-  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
   background-image: url('/images/ales-blue-portrait.png');
   background-size: cover;
-  background-position: 50% 32%;
-  -webkit-mask-image: radial-gradient(circle at 50% 44%, #000 26%, transparent 68%);
-  mask-image: radial-gradient(circle at 50% 44%, #000 26%, transparent 68%);
+  background-position: 50% 30%;
+  /*
+   * `closest-side` pins the gradient's 100% to the nearest box edge, so the disc
+   * is exactly inscribed in the square and the photo's own straight edges reach
+   * zero alpha. An off-centre or farthest-corner circle leaves one of them
+   * visible as a hard cut against the page.
+   */
+  -webkit-mask-image: radial-gradient(
+    closest-side circle at 50% 50%,
+    #000 38%,
+    rgba(0, 0, 0, 0.5) 74%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    closest-side circle at 50% 50%,
+    #000 38%,
+    rgba(0, 0, 0, 0.5) 74%,
+    transparent 100%
+  );
   opacity: 0.95;
   filter: saturate(1.2) contrast(1.05);
 }
 
-/*
- * The name sits across the top of the frame and the call to action at the foot,
- * which leaves the middle — the eyes and the lit glasses — completely clear.
- */
 .hero__copy {
   position: relative;
   z-index: 1;
   width: 100%;
   max-width: var(--maxw);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-}
-
-.hero__foot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-inline: auto;
 }
 
 .hero__title {
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: 900;
   /* Sized against the longest word so "JAVORSKÝ" never needs a second line. */
-  font-size: clamp(2.4rem, 8.4vw, 8rem);
-  line-height: 0.96;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.7rem, 10vw, 9.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.06em;
   text-transform: uppercase;
 }
 
-.hero__title-line {
-  display: block;
-  /* Lets the blue key light through the letterforms instead of covering it. */
-  mix-blend-mode: overlay;
-  color: #fff;
+.hero__line {
+  display: flex;
 }
 
-/* `overlay` goes invisible against mid-blue; where it cannot be trusted the
-   letters simply stay solid white. */
-@supports not (mix-blend-mode: overlay) {
-  .hero__title-line {
-    mix-blend-mode: normal;
-  }
+.hero__letter {
+  display: inline-block;
+  will-change: transform, filter;
 }
 
 .hero__tagline {
-  max-width: 22ch;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1.1rem, 2.1vw, 1.7rem);
-  line-height: 1.25;
-  color: rgba(244, 244, 242, 0.82);
+  margin-top: clamp(1.4rem, 3vh, 2.2rem);
+  max-width: 17ch;
+  font-size: clamp(1.15rem, 2.3vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -0.02em;
+}
+
+.hero__intro {
+  margin-top: 1.1rem;
+  max-width: 42ch;
+  color: var(--fg-dim);
+  font-size: clamp(0.92rem, 1.2vw, 1rem);
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 0.8rem;
-  margin-top: clamp(1.4rem, 3vh, 2.2rem);
+  margin-top: clamp(1.6rem, 3.5vh, 2.6rem);
 }
 
 /* ---------- Stats ---------- */
@@ -409,10 +409,9 @@ button {
 }
 
 .stats__value {
-  font-family: var(--font-serif);
   font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-weight: 900;
+  letter-spacing: -0.05em;
   line-height: 1;
   color: var(--fg);
 }
@@ -601,11 +600,10 @@ button {
 }
 
 .clip__client {
-  font-family: var(--font-serif);
   font-size: clamp(1.7rem, 3.4vw, 2.9rem);
-  font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.045em;
   text-transform: uppercase;
 }
 
@@ -685,123 +683,75 @@ button {
   max-width: 60ch;
 }
 
-.roster {
+.phases {
   margin-top: clamp(3rem, 6vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Phase name on the left, the things that happen in it on the right. */
+.phase {
+  display: grid;
+  grid-template-columns: minmax(7rem, 14%) 1fr;
+  gap: 1rem clamp(1.5rem, 4vw, 3.5rem);
+  padding-top: 1.6rem;
   border-top: 1px solid var(--line);
 }
 
-/* Centred, not baseline-aligned: the revealed description then grows inside the
-   height the title already occupies, so hovering never nudges the rows below. */
-.roster__row {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.6rem 2rem;
-  padding: clamp(1.4rem, 2.6vw, 2.2rem) 0;
-  border-bottom: 1px solid var(--line);
-  cursor: default;
-  outline: none;
-}
-
-/* Cinematic wash from the leading edge, only while the row is engaged. */
-.roster__glow {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  background: linear-gradient(90deg, rgba(18, 227, 196, 0.13), rgba(255, 90, 31, 0.05) 45%, transparent 75%);
-  transition: opacity 0.4s var(--ease-cut);
-}
-
-.roster__row.is-active .roster__glow {
-  opacity: 1;
-}
-
-.roster__row:focus-visible {
-  box-shadow: inset 2px 0 0 var(--teal);
-}
-
-.roster__lead {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  gap: clamp(1.2rem, 3vw, 3rem);
-  min-width: 0;
-}
-
-.roster__index {
+.phase__label {
   font-size: 0.62rem;
-  color: var(--fg-faint);
-  transition: color 0.3s var(--ease-cut);
-}
-
-.roster__row.is-active .roster__index {
-  color: var(--teal);
-}
-
-.roster__title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(1.7rem, 4vw, 3.4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: rgba(244, 244, 242, 0.72);
-  transition: color 0.3s var(--ease-cut);
-}
-
-.roster__row.is-active .roster__title {
-  color: var(--fg);
-}
-
-.roster__meta {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  min-height: clamp(2.6rem, 4.6vw, 3.9rem);
-  text-align: right;
-  min-width: 0;
-}
-
-.roster__group {
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.26em;
   color: var(--orange);
 }
 
-/*
- * `grid-template-rows: 0fr -> 1fr` is the one way to transition into a box
- * whose height is content-driven; animating `height: auto` would just snap.
- */
-.roster__reveal {
+.phase__items {
   display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.5s var(--ease-cut), opacity 0.4s var(--ease-cut);
-  opacity: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 1px;
+  background: var(--line);
 }
 
-.roster__row.is-active .roster__reveal {
-  grid-template-rows: 1fr;
-  opacity: 1;
+.kit {
+  position: relative;
+  padding: 1.1rem 1.2rem 1.3rem;
+  background: var(--ink);
+  transition: background 0.3s var(--ease-cut);
 }
 
-.roster__spec {
-  overflow: hidden;
-  min-height: 0;
-  padding-top: 0.45rem;
-  font-size: 0.85rem;
+.kit:hover {
+  background: var(--ink-2);
+}
+
+/* Accent creeps in from the leading edge instead of lighting the whole row. */
+.kit__bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--teal), var(--orange));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.35s var(--ease-cut);
+}
+
+.kit:hover .kit__bar {
+  transform: scaleY(1);
+}
+
+.kit__label {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.kit__spec {
+  margin-top: 0.4rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
   color: var(--fg-dim);
-}
-
-/* No hover on touch: the descriptions are simply always there. */
-@media (hover: none) {
-  .roster__reveal {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
 }
 
 /* ---------- Process ---------- */
@@ -861,10 +811,10 @@ button {
 }
 
 .step__title {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
 .step__text {
@@ -882,16 +832,15 @@ button {
 
 .contact__title {
   margin-top: 1.2rem;
-  font-family: var(--font-serif);
-  font-size: clamp(2.6rem, 8vw, 6.5rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.025em;
+  font-size: clamp(2.6rem, 9vw, 7.5rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
   text-transform: uppercase;
 }
 
 .contact__title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--orange);
 }
 
@@ -958,20 +907,30 @@ button {
   }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .site-header__nav {
     gap: 1rem;
   }
 
-  .roster__row {
-    flex-direction: column;
-    align-items: flex-start;
+  /* The portrait stops being a column of its own and moves behind the copy. */
+  .hero__portrait {
+    right: 50%;
+    top: 32%;
+    translate: 50% -50%;
+    width: min(96vw, 32rem);
   }
 
-  .roster__meta {
-    align-items: flex-start;
-    text-align: left;
-    padding-left: calc(0.62rem + 1.2rem);
+  .hero__portrait-image {
+    opacity: 0.6;
+  }
+
+  .hero__intro {
+    max-width: 34ch;
+  }
+
+  .phase {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
   }
 }
 

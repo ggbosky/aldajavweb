@@ -36,37 +36,29 @@ public/images/        ales-blue-portrait.png — the hero portrait
 
 ### Type
 
-Three faces, one job each. **Playfair Display** carries every display line — the hero name,
-section titles, work titles, the roster. **Archivo** takes body copy and UI. **JetBrains Mono**
-takes metadata only: section labels, group tags, timecodes. Nothing asks for a weight that is
-not loaded (Archivo ships 400/600/700), so no face is ever synthesised.
+Two faces. **Archivo** carries everything the reader looks at — the hero name and every
+section title at 900, body copy at 400. **JetBrains Mono** takes metadata only: section
+labels, phase labels, timecodes, the nav.
 
 ### The hero
 
 The source frame is a square photo on a lit blue backdrop. A radial `mask-image` throws that
 hard edge away and keeps only the lit core, so what survives reads as a key light in a dark
-room rather than a photo pasted onto the page.
+room rather than a photo pasted onto the page. The gradient is sized `closest-side`, which pins
+its 100% to the nearest box edge: the disc is then exactly inscribed in the square and the
+photo's own straight edges reach zero alpha. A farthest-corner or off-centre circle leaves one
+of them showing as a hard cut.
 
-Layout puts the name across the top of the frame and the call to action at the foot, which
-leaves the middle — the eyes and the lit glasses — completely clear. The name is set in
-`mix-blend-mode: overlay` so the blue light comes through the letterforms; there is an
-`@supports` fallback to solid white for engines that cannot be trusted with it.
+Layout is asymmetric — the name runs down the left in heavy caps, the portrait sits off to the
+right and bleeds past the viewport edge. Nothing in it tracks the cursor; the frame holds
+still. Below 900 px the portrait moves behind the copy and drops to 60% opacity.
 
-A spring-damped pointer rig tilts the portrait (±5°) and drifts the copy the other way, which
-is what sells the depth. The rig is skipped entirely on a coarse pointer and under
-`prefers-reduced-motion`, so neither case pays for a listener it cannot use.
+### The arsenal
 
-### The roster
-
-`ArsenalSection` is an index until you reach for it: index, title and group are always visible,
-the description only resolves on hover or keyboard focus. The reveal animates
-`grid-template-rows` from `0fr` to `1fr`, which is the only way to transition into a box whose
-height is content-driven — animating `height: auto` would simply snap.
-
-Rows are centre-aligned rather than baseline-aligned, so the description grows *inside* the
-height the title already occupies. Hovering therefore never nudges the rows below it, which
-would otherwise move the target out from under the cursor. On touch (`hover: none`) the
-descriptions are simply always visible.
+A spec sheet, not an inventory. Three phases of the job — Koncept, Natáčení, Postprodukce — in
+the order they happen, each with the things that happen in it. The grouping does the work an
+index column used to do, so no row carries its own number or repeats its own category. Hovering
+an item runs an accent bar down its leading edge rather than lighting the whole row.
 
 ### Motion
 

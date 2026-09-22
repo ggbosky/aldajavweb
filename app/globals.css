@@ -296,42 +296,57 @@ button {
  * throws that hard edge away and keeps only the lit core, so what survives reads
  * as a key light in a dark room rather than a photo pasted onto the page.
  */
+/*
+ * A straight-edged panel, not a cut-out. Its top, bottom and right edges land on
+ * the viewport edges, so the only edge that needs handling is the left one —
+ * where it dissolves into the page under the copy.
+ */
 .hero__portrait {
   position: absolute;
-  top: 50%;
-  right: -4vw;
-  translate: 0 -50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
   z-index: 0;
-  width: min(62vw, 40rem);
-  aspect-ratio: 1;
+  width: min(58vw, 54rem);
 }
 
 .hero__portrait-image {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   background-image: url('/images/ales-blue-portrait.png');
   background-size: cover;
-  background-position: 50% 30%;
+  background-position: 60% 26%;
   /*
-   * `closest-side` pins the gradient's 100% to the nearest box edge, so the disc
-   * is exactly inscribed in the square and the photo's own straight edges reach
-   * zero alpha. An off-centre or farthest-corner circle leaves one of them
-   * visible as a hard cut against the page.
+   * The filter has to sit on the photo alone. Applied to the element that also
+   * paints the fade, `contrast` drags the #050505 overlay down to pure black and
+   * the panel's covered half stops matching the page — a seam down the middle.
    */
-  -webkit-mask-image: radial-gradient(
-    closest-side circle at 50% 50%,
-    #000 38%,
-    rgba(0, 0, 0, 0.5) 74%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    closest-side circle at 50% 50%,
-    #000 38%,
-    rgba(0, 0, 0, 0.5) 74%,
-    transparent 100%
-  );
-  opacity: 0.95;
-  filter: saturate(1.2) contrast(1.05);
+  filter: saturate(1.2) contrast(1.05) brightness(0.86);
+}
+
+/*
+ * The fade is painted *over* the photo in the page colour rather than masked out
+ * of it. The page is a flat #050505, so the result is identical — and unlike a
+ * mask it stacks: one gradient pulls the left edge back under the copy, one
+ * settles the bottom into the section below, one puts a dark strip under the
+ * header so `mix-blend-difference` still has something to invert against.
+ */
+.hero__portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      #050505 0%,
+      #050505 12%,
+      rgba(5, 5, 5, 0.74) 28%,
+      rgba(5, 5, 5, 0.26) 46%,
+      rgba(5, 5, 5, 0.08) 62%,
+      rgba(5, 5, 5, 0.08) 100%
+    ),
+    linear-gradient(to top, #050505 0%, transparent 18%),
+    linear-gradient(to bottom, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.24) 11%, transparent 20%);
 }
 
 .hero__copy {
@@ -912,16 +927,30 @@ button {
     gap: 1rem;
   }
 
-  /* The portrait stops being a column of its own and moves behind the copy. */
+  /*
+   * A full-height panel this narrow crops a square photo to a vertical sliver —
+   * no horizontal offset gets the whole face in. So on a phone the panel becomes
+   * a banner across the top instead, sized so `cover` barely crops at all, and
+   * the copy moves underneath it.
+   */
+  .hero {
+    align-items: flex-end;
+  }
+
   .hero__portrait {
-    right: 50%;
-    top: 32%;
-    translate: 50% -50%;
-    width: min(96vw, 32rem);
+    width: 100%;
+    bottom: auto;
+    height: 52%;
   }
 
   .hero__portrait-image {
-    opacity: 0.6;
+    background-position: 54% 30%;
+  }
+
+  .hero__portrait::after {
+    background-image:
+      linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.45) 30%, transparent 74%),
+      linear-gradient(to bottom, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.45) 9%, transparent 22%);
   }
 
   .hero__intro {

@@ -1,85 +1,84 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { BRAND } from '@/lib/site';
 import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
-/** Each word gets its own line; the cut delay keeps running across the break. */
-const LINES = BRAND.nameLines.map((word, index, all) => ({
-  word,
-  offset: all.slice(0, index).reduce((total, previous) => total + previous.length, 0),
-}));
-
-/** Each letter lands as its own jump cut, 55 ms apart. */
-const letterVariants = {
-  hidden: { opacity: 0, y: '38%', skewY: 7, filter: 'blur(14px)' },
-  visible: (index: number) => ({
-    opacity: 1,
-    y: '0%',
-    skewY: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 0.26, delay: 0.12 + index * 0.055, ease: HARD_CUT_EASE },
-  }),
-} as const;
-
+/**
+ * The portrait is the hero. A radial mask feathers its square edges into the
+ * page, so the blue key light reads as the only thing lit in a dark room, and a
+ * spring-damped tilt gives it depth as the cursor moves.
+ */
 export default function Hero(): React.JSX.Element {
+  const pointerX = useMotionValue(0);
+  const pointerY = useMotionValue(0);
+
+  const smoothX = useSpring(pointerX, { damping: 50, stiffness: 400 });
+  const smoothY = useSpring(pointerY, { damping: 50, stiffness: 400 });
+
+  const rotateY = useTransform(smoothX, [-1, 1], [-5, 5]);
+  const rotateX = useTransform(smoothY, [-1, 1], [5, -5]);
+  // The copy drifts against the portrait, which is what sells the depth.
+  const copyX = useTransform(smoothX, [-1, 1], [14, -14]);
+  const copyY = useTransform(smoothY, [-1, 1], [8, -8]);
+
+  useEffect(() => {
+    // A coarse pointer has no hover position to track, and reduced motion asks
+    // us not to move anything — in both cases the rig simply stays centred.
+    const fine = window.matchMedia('(pointer: fine)');
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!fine.matches || calm.matches) return;
+
+    const handleMove = (event: PointerEvent): void => {
+      pointerX.set((event.clientX / window.innerWidth) * 2 - 1);
+      pointerY.set((event.clientY / window.innerHeight) * 2 - 1);
+    };
+
+    window.addEventListener('pointermove', handleMove, { passive: true });
+    return () => window.removeEventListener('pointermove', handleMove);
+  }, [pointerX, pointerY]);
+
   return (
     <section className="hero" id="top">
-      <div className="hero__inner">
-        <motion.p
-          className="hero__eyebrow mono"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.2, delay: 0.05 }}
-        >
-          <span className="hero__slate">A001 / TAKE 01</span>
-          {BRAND.role}
-        </motion.p>
+      <motion.div
+        className="hero__portrait"
+        style={{ rotateX, rotateY }}
+        initial={{ opacity: 0, scale: 1.04 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.4, ease: HARD_CUT_EASE }}
+        aria-hidden="true"
+      >
+        <div className="hero__portrait-image" />
+      </motion.div>
 
-        <h1 className="hero__title" aria-label={BRAND.name}>
-          {LINES.map(({ word, offset }) => (
-            <span className="hero__line" key={word} aria-hidden="true">
-              {word.split('').map((letter, index) => (
-                <motion.span
-                  key={`${letter}-${index}`}
-                  className="hero__letter"
-                  data-char={letter}
-                  custom={offset + index}
-                  variants={letterVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </span>
-          ))}
-          <span className="hero__sweep" aria-hidden="true" />
+      <motion.div className="hero__copy" style={{ x: copyX, y: copyY }}>
+        <h1 className="hero__title">
+          <motion.span
+            className="hero__title-line"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5, ease: HARD_CUT_EASE }}
+          >
+            {BRAND.name}
+          </motion.span>
         </h1>
 
+        <div className="hero__foot">
         <motion.p
           className="hero__tagline"
-          initial={{ opacity: 0, y: 16, filter: 'blur(8px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-          transition={{ duration: 0.34, delay: 0.46, ease: HARD_CUT_EASE }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7, ease: HARD_CUT_EASE }}
         >
           {BRAND.tagline}
-        </motion.p>
-
-        <motion.p
-          className="hero__intro"
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.34, delay: 0.58, ease: HARD_CUT_EASE }}
-        >
-          {BRAND.intro}
         </motion.p>
 
         <motion.div
           className="hero__actions"
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.34, delay: 0.7, ease: HARD_CUT_EASE }}
+          transition={{ duration: 0.6, delay: 0.9, ease: HARD_CUT_EASE }}
         >
           <a className="btn btn--primary" href="#prace">
             Přehrát práci
@@ -91,36 +90,7 @@ export default function Hero(): React.JSX.Element {
             Poptat střih
           </a>
         </motion.div>
-
-        <motion.dl
-          className="hero__meta mono"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.85 }}
-        >
-          <div>
-            <dt>Zaměření</dt>
-            <dd>{BRAND.focus}</dd>
-          </div>
-          <div>
-            <dt>Stack</dt>
-            <dd>Premiere Pro · After Effects</dd>
-          </div>
-          <div>
-            <dt>Základna</dt>
-            <dd>{BRAND.location}</dd>
-          </div>
-        </motion.dl>
-      </div>
-
-      <motion.div
-        className="hero__scrub mono"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, delay: 1 }}
-      >
-        <span>SCRUB</span>
-        <i className="hero__scrub-line" />
+        </div>
       </motion.div>
     </section>
   );

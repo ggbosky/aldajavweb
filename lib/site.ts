@@ -46,8 +46,6 @@ export type WorkBlock = {
   readonly deliverables: ReadonlyArray<string>;
   readonly timecodeIn: string;
   readonly duration: string;
-  /** 0–1 position of this block on the master timeline. */
-  readonly mark: number;
   readonly accent: 'orange' | 'teal';
 };
 
@@ -68,7 +66,6 @@ export const WORK: ReadonlyArray<WorkBlock> = [
     deliverables: ['Reels / Shorts', 'Sestřihy z delšího videa', 'Verze pro platformy'],
     timecodeIn: '00:00:24:12',
     duration: '00:01:06',
-    mark: 0.18,
     accent: 'orange',
   },
   {
@@ -83,7 +80,6 @@ export const WORK: ReadonlyArray<WorkBlock> = [
     deliverables: ['Performance ads', 'Brand filmy', 'Produktová videa'],
     timecodeIn: '00:01:38:04',
     duration: '00:02:14',
-    mark: 0.42,
     accent: 'teal',
   },
   {
@@ -98,7 +94,6 @@ export const WORK: ReadonlyArray<WorkBlock> = [
     deliverables: ['Long-form videa', 'Rozhovory', 'Sériová intra'],
     timecodeIn: '00:02:51:19',
     duration: '00:03:28',
-    mark: 0.64,
     accent: 'orange',
   },
   {
@@ -113,7 +108,6 @@ export const WORK: ReadonlyArray<WorkBlock> = [
     deliverables: ['Kinetic typografie', 'Grafické balíčky', 'Titulkové sady'],
     timecodeIn: '00:03:47:02',
     duration: '00:01:42',
-    mark: 0.86,
     accent: 'teal',
   },
 ];

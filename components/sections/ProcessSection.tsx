@@ -9,11 +9,7 @@ export default function ProcessSection(): React.JSX.Element {
     <section className="process" id="proces">
       <div className="process__head">
         <HardCutTransition>
-          <p className="section-label mono">
-            <span>SEQ 03</span>
-            <i />
-            Workflow
-          </p>
+          <p className="section-label mono">Proces</p>
         </HardCutTransition>
         <HardCutTransition delay={0.06}>
           <h2 className="section-title">

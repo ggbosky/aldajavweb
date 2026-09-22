@@ -1,15 +1,12 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, JetBrains_Mono } from 'next/font/google';
-import SceneMount from '@/components/canvas/SceneMount';
+import { Archivo, JetBrains_Mono, Playfair_Display } from 'next/font/google';
 import SiteHeader from '@/components/layout/SiteHeader';
-import TimecodeHUD from '@/components/hud/TimecodeHUD';
-import TransportBar from '@/components/hud/TransportBar';
 import { BRAND } from '@/lib/site';
 import './globals.css';
 
 const archivo = Archivo({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '600', '700', '800', '900'],
+  weight: ['400', '600', '700'],
   variable: '--font-archivo',
   display: 'swap',
 });
@@ -18,6 +15,15 @@ const jetbrains = JetBrains_Mono({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500'],
   variable: '--font-mono-jb',
+  display: 'swap',
+});
+
+/** Editorial display face — carries the hero and every section title. */
+const playfair = Playfair_Display({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '700', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
   display: 'swap',
 });
 
@@ -35,7 +41,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: '#050505',
   colorScheme: 'dark',
 };
 
@@ -43,15 +49,15 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>): React.JSX.Element {
   return (
-    <html lang="cs" className={`${archivo.variable} ${jetbrains.variable}`}>
+    <html
+      lang="cs"
+      className={`${archivo.variable} ${jetbrains.variable} ${playfair.variable}`}
+    >
       <body>
-        <SceneMount />
         <SiteHeader />
-        <TimecodeHUD />
         {children}
-        <TransportBar />
-        <div className="overlay" aria-hidden="true" />
-        <div className="overlay overlay--lines" aria-hidden="true" />
+        {/* The only thing left over the content: a touch of cinematic grain. */}
+        <div className="grain" aria-hidden="true" />
       </body>
     </html>
   );

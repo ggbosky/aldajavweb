@@ -7,11 +7,7 @@ export default function ContactSection(): React.JSX.Element {
   return (
     <section className="contact" id="kontakt">
       <HardCutTransition>
-        <p className="section-label mono">
-          <span>SEQ 04</span>
-          <i />
-          Konec sekvence
-        </p>
+        <p className="section-label mono">Kontakt</p>
       </HardCutTransition>
 
       <HardCutTransition delay={0.06}>
@@ -57,7 +53,6 @@ export default function ContactSection(): React.JSX.Element {
           <p className="footer__legal mono">
             © {new Date().getFullYear()} {BRAND.name} · All rights reserved
           </p>
-          <p className="footer__tc mono">TC OUT 00:04:12:00 · END OF SEQUENCE</p>
         </footer>
       </HardCutTransition>
     </section>

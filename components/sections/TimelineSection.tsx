@@ -1,52 +1,23 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
 import { WORK } from '@/lib/site';
 
-const TICKS = Array.from({ length: 41 }, (_, i) => i);
 const FRAMES = [0, 1, 2, 3];
 
 export default function TimelineSection(): React.JSX.Element {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // Local scrub progress for this sequence only — drives the sticky ruler.
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end end'],
-  });
-  const smooth = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
-  const headLeft = useTransform(smooth, (v) => `${v * 100}%`);
-  const fillWidth = useTransform(smooth, (v) => `${v * 100}%`);
-
   return (
-    <section className="sequence" id="prace" ref={sectionRef}>
+    <section className="sequence" id="prace">
       <div className="sequence__head">
         <HardCutTransition>
-          <p className="section-label mono">
-            <span>SEQ 01</span>
-            <i />
-            Co dělám
-          </p>
+          <p className="section-label mono">Práce</p>
         </HardCutTransition>
         <HardCutTransition delay={0.06}>
           <h2 className="section-title">
-            Scrubni <em>timeline</em> a podívej se, co z toho vzniká.
+            Čtyři věci, které <em>umím</em> dodat.
           </h2>
         </HardCutTransition>
-      </div>
-
-      <div className="ruler" aria-hidden="true">
-        <div className="ruler__ticks">
-          {TICKS.map((tick) => (
-            <i key={tick} className={tick % 5 === 0 ? 'ruler__tick ruler__tick--major' : 'ruler__tick'} />
-          ))}
-        </div>
-        <motion.div className="ruler__fill" style={{ width: fillWidth }} />
-        <motion.div className="ruler__head" style={{ left: headLeft }}>
-          <span className="ruler__head-flag" />
-        </motion.div>
       </div>
 
       <motion.ol

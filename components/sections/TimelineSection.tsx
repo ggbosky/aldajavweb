@@ -31,7 +31,7 @@ export default function TimelineSection(): React.JSX.Element {
         whileInView="visible"
         viewport={{ once: true, margin: '-120px' }}
       >
-        {WORK.map((block, index) => (
+        {WORK.map((block) => (
           <motion.li
             key={block.id}
             id={block.id}
@@ -58,7 +58,6 @@ export default function TimelineSection(): React.JSX.Element {
 
             <div className="clip__body">
               <header className="clip__header">
-                <span className="clip__index mono">{String(index + 1).padStart(2, '0')}</span>
                 <h3 className="clip__client">{block.title}</h3>
                 <p className="clip__sector mono">{block.kind}</p>
               </header>

@@ -214,11 +214,6 @@ button {
     box-shadow 0.25s var(--ease-cut);
 }
 
-.btn--lg {
-  padding: 1.05rem 2rem;
-  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
-}
-
 /* The wipe sits behind the label and grows from the leading edge. */
 .btn::before {
   content: '';
@@ -622,17 +617,7 @@ button {
 .clip__header {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-}
-
-.clip__index {
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  color: var(--orange);
-}
-
-.clip--teal .clip__index {
-  color: var(--teal);
+  gap: 0.45rem;
 }
 
 .clip__client {
@@ -735,11 +720,6 @@ button {
   background: var(--line);
 }
 
-.phase__count {
-  font-size: 0.6rem;
-  color: var(--fg-faint);
-}
-
 .phase__items {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -823,15 +803,8 @@ button {
   scale: 1.4;
 }
 
-.step__index {
-  display: block;
-  font-size: 0.6rem;
-  letter-spacing: 0.28em;
-  color: var(--fg-faint);
-}
-
 .step__title {
-  margin-top: 0.55rem;
+  margin-top: 0;
   font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: -0.025em;
@@ -874,11 +847,46 @@ button {
   color: var(--fg-dim);
 }
 
-.contact__actions {
+/*
+ * The address and the number are the answer, not a control — so they are set as
+ * type and underlined on approach, the way a link behaves, rather than dressed
+ * up as two buttons competing for a press.
+ */
+.contact__details {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 2.4rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: clamp(2.2rem, 4vw, 3rem);
+}
+
+.contact__link {
+  font-size: clamp(1.25rem, 2.6vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  /* A background stripe, so the rule can grow from nothing on hover. */
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 0.35s var(--ease-cut), color 0.25s var(--ease-cut);
+}
+
+.contact__link:hover,
+.contact__link:focus-visible {
+  color: var(--orange);
+  background-size: 100% 1px;
+}
+
+.contact__link--quiet {
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  font-weight: 600;
+  color: var(--fg-dim);
+}
+
+.contact__link--quiet:hover,
+.contact__link--quiet:focus-visible {
+  color: var(--fg);
 }
 
 .footer {

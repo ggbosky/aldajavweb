@@ -26,8 +26,7 @@ export default function ProcessSection(): React.JSX.Element {
         viewport={{ once: true, margin: '-100px' }}
       >
         {PROCESS.map((step) => (
-          <motion.li key={step.index} className="step" variants={cutChild}>
-            <span className="step__index mono">{step.index}</span>
+          <motion.li key={step.title} className="step" variants={cutChild}>
             <h3 className="step__title">{step.title}</h3>
             <p className="step__text">{step.body}</p>
           </motion.li>

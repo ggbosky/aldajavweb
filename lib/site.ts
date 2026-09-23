@@ -158,34 +158,28 @@ export const ARSENAL: ReadonlyArray<ArsenalGroup> = [
 ];
 
 export type ProcessStep = {
-  readonly index: string;
   readonly title: string;
   readonly body: string;
 };
 
 export const PROCESS: ReadonlyArray<ProcessStep> = [
   {
-    index: '01',
     title: 'Ideace',
     body: 'Zjistíme, co má video způsobit. Až potom řešíme, jak vypadá. Hook je součást zadání, ne dodatek.',
   },
   {
-    index: '02',
     title: 'Natáčení',
     body: 'Gimbal, mobil, lehký setup. Výbava, která se dostane všude — do studia, do kanceláře i do terénu.',
   },
   {
-    index: '03',
     title: 'Střih',
     body: 'Rytmus, tempo, pauzy. Sestavím kostru, která funguje i bez grafiky a bez hudby.',
   },
   {
-    index: '04',
     title: 'Motion & grade',
     body: 'Typografie, přechody, barva. Vrstva, která z funkčního videa dělá video, co si pamatujete.',
   },
   {
-    index: '05',
     title: 'Delivery',
     body: 'Verze pro každý formát a platformu. Exporty, titulky, archiv. Připravené k publikaci.',
   },

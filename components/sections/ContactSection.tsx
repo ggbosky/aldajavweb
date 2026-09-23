@@ -26,14 +26,11 @@ export default function ContactSection(): React.JSX.Element {
       </HardCutTransition>
 
       <HardCutTransition delay={0.18}>
-        <div className="contact__actions">
-          <a className="btn btn--primary btn--lg" href={`mailto:${BRAND.email}`}>
+        <div className="contact__details">
+          <a className="contact__link" href={`mailto:${BRAND.email}`}>
             {BRAND.email}
-            <span className="btn__glyph" aria-hidden="true">
-              ↗
-            </span>
           </a>
-          <a className="btn btn--ghost btn--lg" href={`tel:${BRAND.phone.replace(/\s/g, '')}`}>
+          <a className="contact__link contact__link--quiet" href={`tel:${BRAND.phone.replace(/\s/g, '')}`}>
             {BRAND.phone}
           </a>
         </div>

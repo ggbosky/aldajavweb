@@ -190,34 +190,51 @@ button {
 
 /* ---------- Buttons ---------- */
 
+/*
+ * Pills. Everything else on the page is a hard right angle — hairlines, frames,
+ * section rules — so the two things you can actually click are the one place a
+ * radius earns its keep, and they stop reading as another panel.
+ */
 .btn {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 1.3rem;
-  font-size: 0.86rem;
+  gap: 0.55rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
   font-weight: 600;
-  letter-spacing: 0.01em;
-  border: 1px solid var(--line-strong);
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  isolation: isolate;
   overflow: hidden;
-  transition: color 0.2s var(--ease-cut), border-color 0.2s var(--ease-cut), transform 0.2s var(--ease-cut);
+  transition: color 0.25s var(--ease-cut), border-color 0.25s var(--ease-cut),
+    background 0.25s var(--ease-cut), transform 0.25s var(--ease-cut),
+    box-shadow 0.25s var(--ease-cut);
 }
 
 .btn--lg {
-  padding: 1rem 1.6rem;
-  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+  padding: 1.05rem 2rem;
+  font-size: clamp(0.9rem, 1.6vw, 1.05rem);
 }
 
+/* The wipe sits behind the label and grows from the leading edge. */
 .btn::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--orange);
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--fg);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.26s var(--ease-cut);
-  z-index: -1;
+  transition: transform 0.32s var(--ease-cut);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
 }
 
 .btn--primary {
@@ -226,28 +243,45 @@ button {
   border-color: var(--orange);
 }
 
-.btn--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(255, 90, 31, 0.28);
+.btn--primary::before {
+  background: var(--orange-soft);
+}
+
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  box-shadow: 0 12px 34px rgba(255, 90, 31, 0.3);
+}
+
+.btn--primary:hover::before,
+.btn--primary:focus-visible::before {
+  transform: scaleX(1);
 }
 
 .btn--ghost {
   color: var(--fg);
-  isolation: isolate;
+  border-color: var(--line-strong);
 }
 
-.btn--ghost:hover {
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
   color: #000;
-  border-color: var(--orange);
+  border-color: var(--fg);
 }
 
-.btn--ghost:hover::before {
+.btn--ghost:hover::before,
+.btn--ghost:focus-visible::before {
   transform: scaleX(1);
 }
 
+/* The glyph leans into the direction the button sends you. */
 .btn__glyph {
-  font-size: 0.75em;
-  transform: translateY(1px);
+  font-size: 0.72em;
+  transition: transform 0.25s var(--ease-cut);
+}
+
+.btn:hover .btn__glyph,
+.btn:focus-visible .btn__glyph {
+  transform: translateX(3px);
 }
 
 /* ---------- Section furniture ---------- */
@@ -451,129 +485,92 @@ button {
 
 .clips {
   display: grid;
-  gap: clamp(1rem, 2vw, 1.6rem);
-  margin-top: clamp(2.5rem, 5vw, 4.5rem);
+  gap: clamp(3rem, 7vw, 6rem);
+  margin-top: clamp(3rem, 6vw, 5rem);
 }
 
+/*
+ * No card, no panel, no backdrop blur — a hairline and a wide gutter carry the
+ * separation instead, and the frame swaps sides every entry so four of these in
+ * a row read as a spread rather than four copies of the same box.
+ */
 .clip {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 20rem) minmax(0, 1fr);
-  gap: clamp(1rem, 2.5vw, 2.6rem);
-  padding: clamp(1.2rem, 2.4vw, 2rem);
-  border: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(9, 12, 18, 0.72), rgba(0, 0, 0, 0.6));
-  backdrop-filter: blur(6px);
-  transition: border-color 0.25s var(--ease-cut), transform 0.25s var(--ease-cut),
-    background 0.25s var(--ease-cut);
+  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  padding-top: clamp(1.6rem, 3vw, 2.6rem);
+  border-top: 1px solid var(--line);
 }
 
-.clip:hover {
-  transform: translateY(-3px);
-  border-color: var(--line-strong);
-  background: linear-gradient(180deg, rgba(12, 16, 24, 0.85), rgba(0, 0, 0, 0.7));
+.clip:nth-child(even) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
 }
 
-.clip--orange:hover {
-  border-color: rgba(255, 90, 31, 0.55);
+.clip:nth-child(even) .clip__figure {
+  grid-column: 2;
+  grid-row: 1;
 }
 
-.clip--teal:hover {
-  border-color: rgba(18, 227, 196, 0.5);
+.clip:nth-child(even) .clip__body {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-.clip__rail {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  color: var(--fg-faint);
-  border-left: 2px solid var(--orange);
-  padding-left: 0.85rem;
-}
-
-.clip--teal .clip__rail {
-  border-left-color: var(--teal);
-}
-
-.clip__index {
-  font-size: 1.7rem;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: var(--fg);
-  font-family: var(--font-display);
-}
-
-.clip__tc {
-  color: var(--fg-dim);
-  font-variant-numeric: tabular-nums;
+.clip__figure {
+  margin: 0;
 }
 
 .clip__preview {
   position: relative;
   aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 1rem;
   overflow: hidden;
-  background: radial-gradient(120% 120% at 50% 100%, rgba(18, 227, 196, 0.12), transparent 60%),
-    linear-gradient(180deg, #05070a, #0b0f16);
+  background: linear-gradient(180deg, #0b0f15, #06080c);
   border: 1px solid var(--line);
+  transition: border-color 0.3s var(--ease-cut);
 }
 
-.clip--orange .clip__preview {
-  background: radial-gradient(120% 120% at 50% 100%, rgba(255, 90, 31, 0.16), transparent 60%),
-    linear-gradient(180deg, #05070a, #0b0f16);
+.clip:hover .clip__preview {
+  border-color: var(--line-strong);
 }
 
-/* Four frames off a strip — the same film language as the hero scene. */
+/* Four frames off a strip. Near-neutral: the accent is a hairline, not a wash —
+   tinting the whole frame at low alpha over black just turns it to mud. */
 .clip__frames {
   position: absolute;
-  inset: 26% 7%;
+  inset: 22% 6%;
   display: flex;
   align-items: stretch;
-  gap: 5px;
+  gap: 6px;
 }
 
 .clip__frames i {
+  position: relative;
   flex: 1;
-  border: 1px solid rgba(18, 227, 196, 0.3);
-  background: linear-gradient(
-    180deg,
-    rgba(18, 227, 196, 0.32) 0%,
-    rgba(18, 227, 196, 0.07) 56%,
-    rgba(255, 255, 255, 0.3) 61%,
-    rgba(18, 227, 196, 0.05) 66%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
-  animation: gate 2.6s var(--ease-cut) infinite;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.015) 62%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 2px solid rgba(18, 227, 196, 0.7);
+  animation: gate 3.2s var(--ease-cut) infinite;
+}
+
+/* The horizon line that makes a flat rectangle read as an exposed frame. */
+.clip__frames i::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 58%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.34);
 }
 
 .clip--orange .clip__frames i {
-  border-color: rgba(255, 90, 31, 0.32);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 90, 31, 0.34) 0%,
-    rgba(255, 90, 31, 0.08) 56%,
-    rgba(255, 255, 255, 0.3) 61%,
-    rgba(255, 90, 31, 0.05) 66%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
+  border-top-color: rgba(255, 90, 31, 0.78);
 }
 
-/* Each frame lights as it passes the gate. */
 @keyframes gate {
-  0%, 100% { opacity: 0.4; }
+  0%, 100% { opacity: 0.5; }
   45% { opacity: 1; }
-}
-
-.clip__preview-id {
-  position: relative;
-  z-index: 1;
-  font-size: 0.6rem;
-  color: var(--fg);
-  background: rgba(0, 0, 0, 0.6);
-  padding: 0.2rem 0.5rem;
-  border: 1px solid var(--line);
 }
 
 .clip__sprockets {
@@ -584,7 +581,7 @@ button {
   background-image: repeating-linear-gradient(
     90deg,
     transparent 0 6px,
-    rgba(255, 255, 255, 0.16) 6px 13px,
+    rgba(255, 255, 255, 0.14) 6px 13px,
     transparent 13px 19px
   );
   background-size: 100% 6px;
@@ -601,21 +598,45 @@ button {
   background-position: 0 4px;
 }
 
+/* The read-out moves out of the frame and under it, where it stops competing. */
+.clip__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+  margin-top: 0.7rem;
+  font-size: 0.58rem;
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.clip__format {
+  color: var(--fg-dim);
+}
+
 .clip__body {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 .clip__header {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 1rem;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.clip__index {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--orange);
+}
+
+.clip--teal .clip__index {
+  color: var(--teal);
 }
 
 .clip__client {
-  font-size: clamp(1.7rem, 3.4vw, 2.9rem);
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
   font-weight: 900;
   line-height: 1;
   letter-spacing: -0.045em;
@@ -626,10 +647,6 @@ button {
   color: var(--fg-faint);
 }
 
-.clip__sector span {
-  color: var(--orange);
-}
-
 .clip__headline {
   font-size: clamp(1.05rem, 1.7vw, 1.3rem);
   font-weight: 600;
@@ -638,52 +655,42 @@ button {
 }
 
 .clip__text {
-  max-width: 62ch;
+  max-width: 58ch;
   color: var(--fg-dim);
   font-size: 0.97rem;
 }
 
+/* Role and deliverables share one quiet line instead of two loud ones. */
 .clip__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.4rem 1.2rem;
 }
 
 .tag {
-  padding: 0.28rem 0.6rem;
   font-family: var(--font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--fg-dim);
-  border: 1px solid var(--line);
-  background: var(--panel);
+  color: var(--fg);
 }
 
 .clip--orange .tag {
-  border-color: rgba(255, 90, 31, 0.3);
   color: var(--orange-soft);
 }
 
 .clip--teal .tag {
-  border-color: rgba(18, 227, 196, 0.28);
   color: var(--teal);
 }
 
 .clip__deliverables {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 1.4rem;
-  margin-top: 0.2rem;
-  padding-top: 0.8rem;
+  gap: 0.3rem 1.3rem;
+  padding-top: 0.9rem;
   border-top: 1px solid var(--line);
   color: var(--fg-faint);
   font-size: 0.58rem;
-}
-
-.clip__deliverables li::before {
-  content: '▸ ';
-  color: var(--orange);
 }
 
 /* ---------- Arsenal ---------- */
@@ -702,70 +709,75 @@ button {
   margin-top: clamp(3rem, 6vw, 5rem);
   display: flex;
   flex-direction: column;
-  gap: clamp(2.5rem, 5vw, 4rem);
+  gap: clamp(2.8rem, 5vw, 4.5rem);
 }
 
-/* Phase name on the left, the things that happen in it on the right. */
-.phase {
-  display: grid;
-  grid-template-columns: minmax(7rem, 14%) 1fr;
-  gap: 1rem clamp(1.5rem, 4vw, 3.5rem);
-  padding-top: 1.6rem;
-  border-top: 1px solid var(--line);
+/*
+ * The phase name used to sit in a fixed left column, which left a wide empty
+ * band down the page. It runs across the top instead, with the rule reaching to
+ * the item count — so the header measures the section rather than floating in it.
+ */
+.phase__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .phase__label {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   letter-spacing: 0.26em;
   color: var(--orange);
 }
 
-.phase__items {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-  gap: 1px;
+.phase__rule {
+  flex: 1;
+  height: 1px;
   background: var(--line);
 }
 
+.phase__count {
+  font-size: 0.6rem;
+  color: var(--fg-faint);
+}
+
+.phase__items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.6rem, 3vw, 2.8rem);
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+/* A hairline down the leading edge, not a filled cell. */
 .kit {
   position: relative;
-  padding: 1.1rem 1.2rem 1.3rem;
-  background: var(--ink);
-  transition: background 0.3s var(--ease-cut);
+  padding-left: 1.1rem;
 }
 
-.kit:hover {
-  background: var(--ink-2);
-}
-
-/* Accent creeps in from the leading edge instead of lighting the whole row. */
 .kit__bar {
   position: absolute;
   left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg, var(--teal), var(--orange));
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.35s var(--ease-cut);
+  top: 0.3rem;
+  bottom: 0.15rem;
+  width: 1px;
+  background: var(--line);
+  transition: background 0.35s var(--ease-cut);
 }
 
 .kit:hover .kit__bar {
-  transform: scaleY(1);
+  background: linear-gradient(180deg, var(--teal), var(--orange));
 }
 
 .kit__label {
   margin: 0;
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
 .kit__spec {
-  margin-top: 0.4rem;
-  font-size: 0.84rem;
-  line-height: 1.45;
+  margin-top: 0.45rem;
+  font-size: 0.86rem;
+  line-height: 1.5;
   color: var(--fg-dim);
 }
 
@@ -777,63 +789,59 @@ button {
   padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
 }
 
+/*
+ * One rule runs the width of the row and every step hangs a marker on it, so
+ * the five read as a sequence. Boxing each one made five cramped cards instead.
+ */
 .process__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
-  gap: 0.7rem;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: clamp(1.8rem, 3.5vw, 3rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
 }
 
 .step {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 1.6rem 1.3rem 1.8rem;
-  border: 1px solid var(--line);
-  background: rgba(0, 0, 0, 0.72);
-  backdrop-filter: blur(4px);
-  transition: background 0.25s var(--ease-cut), border-color 0.25s var(--ease-cut),
-    transform 0.25s var(--ease-cut);
+  padding-top: 1.7rem;
+  border-top: 1px solid var(--line);
 }
 
-.step:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255, 90, 31, 0.45);
-  background: rgba(12, 16, 24, 0.92);
-}
-
-.step::after {
+.step::before {
   content: '';
   position: absolute;
-  left: 1.3rem;
-  right: 1.3rem;
-  bottom: 0.9rem;
-  height: 1px;
-  background: linear-gradient(90deg, var(--orange), transparent);
-  transform: scaleX(0.18);
-  transform-origin: left center;
-  transition: transform 0.3s var(--ease-cut);
+  top: -4px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  rotate: 45deg;
+  background: var(--orange);
+  transition: background 0.3s var(--ease-cut), scale 0.3s var(--ease-cut);
 }
 
-.step:hover::after {
-  transform: scaleX(1);
+.step:hover::before {
+  background: var(--teal);
+  scale: 1.4;
 }
 
 .step__index {
-  font-size: 0.62rem;
-  color: var(--orange);
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  color: var(--fg-faint);
 }
 
 .step__title {
-  font-size: 1.25rem;
+  margin-top: 0.55rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
 }
 
 .step__text {
-  font-size: 0.9rem;
+  margin-top: 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
   color: var(--fg-dim);
 }
 
@@ -907,13 +915,20 @@ button {
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1100px) {
-  .clip {
-    grid-template-columns: 5.5rem 1fr;
+  .clip,
+  .clip:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
   }
 
-  .clip__preview {
-    grid-column: 1 / -1;
-    order: 3;
+  /* Stacked, the frame always leads — the alternating sides only work side by side. */
+  .clip:nth-child(even) .clip__figure,
+  .clip:nth-child(even) .clip__body {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .clip__figure {
     max-width: 26rem;
   }
 
@@ -957,23 +972,16 @@ button {
     max-width: 34ch;
   }
 
-  .phase {
-    grid-template-columns: 1fr;
-    gap: 0.9rem;
+  .process__list {
+    gap: 1.6rem 2rem;
+  }
+
+  .phase__items {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   }
 }
 
 @media (max-width: 640px) {
-  .clip {
-    grid-template-columns: 1fr;
-  }
-
-  .clip__rail {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 0.9rem;
-  }
-
   .stats {
     grid-template-columns: 1fr;
   }

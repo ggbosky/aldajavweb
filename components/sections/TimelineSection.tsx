@@ -6,6 +6,10 @@ import { WORK } from '@/lib/site';
 
 const FRAMES = [0, 1, 2, 3];
 
+/**
+ * Four entries, read as a spread rather than a stack of cards: a hairline, the
+ * frame on one side, the copy on the other, and the side swaps every entry.
+ */
 export default function TimelineSection(): React.JSX.Element {
   return (
     <section className="sequence" id="prace">
@@ -34,29 +38,31 @@ export default function TimelineSection(): React.JSX.Element {
             className={`clip clip--${block.accent}`}
             variants={cutChild}
           >
-            <div className="clip__rail mono">
-              <span className="clip__index">{String(index + 1).padStart(2, '0')}</span>
-              <span className="clip__tc">{block.timecodeIn}</span>
-              <span className="clip__dur">DUR {block.duration}</span>
-            </div>
-
-            {/* Four frames off a strip — the same film language as the hero scene. */}
-            <div className="clip__preview" aria-hidden="true">
-              <span className="clip__sprockets clip__sprockets--top" />
-              <div className="clip__frames">
-                {FRAMES.map((frame) => (
-                  <i key={frame} style={{ animationDelay: `${frame * 0.22}s` }} />
-                ))}
+            <figure className="clip__figure">
+              {/* Frames off a strip — a placeholder until real stills exist. */}
+              <div className="clip__preview" aria-hidden="true">
+                <span className="clip__sprockets clip__sprockets--top" />
+                <div className="clip__frames">
+                  {FRAMES.map((frame) => (
+                    <i key={frame} style={{ animationDelay: `${frame * 0.22}s` }} />
+                  ))}
+                </div>
+                <span className="clip__sprockets clip__sprockets--bottom" />
               </div>
-              <span className="clip__preview-id mono">{block.format}</span>
-              <span className="clip__sprockets clip__sprockets--bottom" />
-            </div>
+              <figcaption className="clip__meta mono">
+                <span>{block.timecodeIn}</span>
+                <span>DUR {block.duration}</span>
+                <span className="clip__format">{block.format}</span>
+              </figcaption>
+            </figure>
 
             <div className="clip__body">
               <header className="clip__header">
+                <span className="clip__index mono">{String(index + 1).padStart(2, '0')}</span>
                 <h3 className="clip__client">{block.title}</h3>
                 <p className="clip__sector mono">{block.kind}</p>
               </header>
+
               <p className="clip__headline">{block.headline}</p>
               <p className="clip__text">{block.body}</p>
 

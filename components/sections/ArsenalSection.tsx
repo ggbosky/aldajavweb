@@ -39,9 +39,13 @@ export default function ArsenalSection(): React.JSX.Element {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
           >
-            <motion.h3 className="phase__label mono" variants={cutChild}>
-              {group.label}
-            </motion.h3>
+            <motion.header className="phase__head" variants={cutChild}>
+              <h3 className="phase__label mono">{group.label}</h3>
+              <span className="phase__rule" aria-hidden="true" />
+              <span className="phase__count mono">
+                {String(group.items.length).padStart(2, '0')}
+              </span>
+            </motion.header>
 
             <ul className="phase__items">
               {group.items.map((item) => (

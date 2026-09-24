@@ -70,7 +70,6 @@ at once. `prefers-reduced-motion` is honoured throughout.
 - **The portrait is 400 × 400.** The hero renders it up to ~670 px wide, so it is already
   upscaled ~1.7× — and about 3.4× on a 2× display. Drop in a version at 1600 px or larger
   (same framing) at `public/images/ales-blue-portrait.png`; nothing else has to change.
-- `lib/site.ts` — the `SOCIALS` hrefs still point at bare domains rather than real profiles.
 - `WORK` describes **types of work, not references** — no client is named anywhere on the site.
   Swapping in real projects means rewriting `title` and `body`; nothing else has to change.
 - The `STATS` numbers are estimates, not measured data. Confirm them before publishing.

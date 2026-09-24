@@ -18,12 +18,14 @@ export const BRAND = {
   focus: 'Krátké formáty · brand video · motion',
 } as const;
 
-// TODO: doplnit odkazy na reálné profily — teď míří jen na holé domény.
 export const SOCIALS: ReadonlyArray<{ label: string; href: string }> = [
-  { label: 'Instagram', href: 'https://instagram.com/' },
-  { label: 'YouTube', href: 'https://youtube.com/' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/' },
-  { label: 'Vimeo', href: 'https://vimeo.com/' },
+  { label: 'Instagram', href: 'https://instagram.com/ja.alesh' },
+  { label: 'Facebook', href: 'https://www.facebook.com/ja.alesh' },
+  {
+    label: 'LinkedIn',
+    // Percent-encoded: the profile slug carries the diacritics of the name.
+    href: 'https://www.linkedin.com/in/ale%C5%A1-javorsk%C3%BD-123978258/',
+  },
 ];
 
 // TODO: ověřit čísla, než to půjde live — jsou to zatím odhady, ne měřená data.

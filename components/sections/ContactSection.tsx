@@ -30,9 +30,6 @@ export default function ContactSection(): React.JSX.Element {
           <a className="contact__link" href={`mailto:${BRAND.email}`}>
             {BRAND.email}
           </a>
-          <a className="contact__link contact__link--quiet" href={`tel:${BRAND.phone.replace(/\s/g, '')}`}>
-            {BRAND.phone}
-          </a>
         </div>
       </HardCutTransition>
 
@@ -47,9 +44,6 @@ export default function ContactSection(): React.JSX.Element {
               </li>
             ))}
           </ul>
-          <p className="footer__legal mono">
-            © {new Date().getFullYear()} {BRAND.name} · All rights reserved
-          </p>
         </footer>
       </HardCutTransition>
     </section>

@@ -13,8 +13,7 @@ export const BRAND = {
   tagline: 'Prvních pět vteřin rozhoduje o všem ostatním.',
   intro:
     'Freelance střihač a videomaker. Krátké formáty pro sociální sítě, dlouhá videa i komerční kampaně. Nejde o techniku, jde o emoci a o to udržet pozornost.', // TODO: přepsat vlastními slovy
-  email: 'ales.javorsky@example.com', // TODO: nahradit reálným kontaktem
-  phone: '+420 000 000 000', // TODO
+  email: 'alda.jav@seznam.cz',
   location: 'Česká republika · remote',
   focus: 'Krátké formáty · brand video · motion',
 } as const;

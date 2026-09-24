@@ -878,17 +878,6 @@ button {
   background-size: 100% 1px;
 }
 
-.contact__link--quiet {
-  font-size: clamp(1rem, 1.8vw, 1.4rem);
-  font-weight: 600;
-  color: var(--fg-dim);
-}
-
-.contact__link--quiet:hover,
-.contact__link--quiet:focus-visible {
-  color: var(--fg);
-}
-
 .footer {
   display: flex;
   flex-wrap: wrap;
@@ -913,11 +902,6 @@ button {
 
 .footer__socials a:hover {
   color: var(--orange);
-}
-
-.footer__legal,
-.footer__tc {
-  font-size: 0.55rem;
 }
 
 /* ---------- Responsive ---------- */

@@ -19,13 +19,13 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${BRAND.name} — Video Editor & Motion Designer`,
+  title: `${BRAND.name} — ${BRAND.fullName} · Video Editor`,
   description:
-    'Freelance střihač, videomaker a motion designer. Krátké formáty pro sociální sítě, brand video, dlouhé formáty a motion grafika.',
-  keywords: ['video editor', 'střihač', 'videomaker', 'motion design', 'After Effects', 'Premiere Pro'],
+    'Freelance střihač a videomaker. Reels pro sociální sítě, dlouhá videa na YouTube a záznamy podcastů.',
+  keywords: ['ALDA', 'video editor', 'střihač', 'videomaker', 'reels', 'YouTube', 'podcast'],
   openGraph: {
-    title: `${BRAND.name} — Video Editor & Motion Designer`,
-    description: 'Střih, motion grafika a produkce videa. Prvních pět vteřin rozhoduje o všem ostatním.',
+    title: `${BRAND.name} — ${BRAND.fullName}`,
+    description: 'Střih a produkce videa. Prvních pár vteřin rozhoduje o všem ostatním.',
     type: 'website',
     locale: 'cs_CZ',
   },

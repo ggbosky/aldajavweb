@@ -2,13 +2,14 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { BRAND } from '@/lib/site';
+import { BRAND, REVIEWS } from '@/lib/site';
 import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
 const NAV: ReadonlyArray<{ href: string; label: string }> = [
   { href: '#o-mne', label: 'O mně' },
   { href: '#prace', label: 'Práce' },
-  { href: '#recenze', label: 'Recenze' },
+  // Hidden with its section until there is a review to show.
+  ...(REVIEWS.length > 0 ? [{ href: '#recenze', label: 'Recenze' }] : []),
   { href: '#kontakt', label: 'Kontakt' },
 ];
 

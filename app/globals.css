@@ -699,6 +699,10 @@ button {
   color: var(--cyan);
 }
 
+.clip__cta {
+  margin-top: 0.4rem;
+}
+
 .clip__deliverables {
   display: flex;
   flex-wrap: wrap;
@@ -772,28 +776,6 @@ button {
 
 .reel__role {
   color: var(--cyan);
-}
-
-/* Placeholder line for sections still waiting on content. */
-.empty {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem 1.4rem;
-  margin-top: clamp(2.4rem, 5vw, 3.6rem);
-  padding-top: 1.4rem;
-  border-top: 1px solid var(--line);
-  color: var(--fg-faint);
-  font-size: 0.62rem;
-}
-
-.empty a {
-  color: var(--cyan);
-  transition: opacity 0.2s var(--ease-cut);
-}
-
-.empty a:hover,
-.empty a:focus-visible {
-  opacity: 0.75;
 }
 
 /* ---------- Clients ---------- */

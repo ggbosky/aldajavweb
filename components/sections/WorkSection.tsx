@@ -102,10 +102,27 @@ export default function WorkSection(): React.JSX.Element {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
+
+                {/* Until the videos are picked, the spread points at where his work already is. */}
+                {active.videos.length === 0 && INSTAGRAM && (
+                  <div className="clip__cta">
+                    <a
+                      className="btn btn--ghost"
+                      href={INSTAGRAM.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      Ukázky na Instagramu
+                      <span className="btn__glyph" aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  </div>
+                )}
               </div>
             </article>
 
-            {active.videos.length > 0 ? (
+            {active.videos.length > 0 && (
               <motion.ul className="reel" variants={cutParent} initial="hidden" animate="visible">
                 {active.videos.map((video) => (
                   <motion.li key={video.href} variants={cutChild}>
@@ -136,15 +153,6 @@ export default function WorkSection(): React.JSX.Element {
                   </motion.li>
                 ))}
               </motion.ul>
-            ) : (
-              <p className="empty mono">
-                Výběr videí připravujeme.
-                {INSTAGRAM && (
-                  <a href={INSTAGRAM.href} target="_blank" rel="noreferrer noopener">
-                    Mezitím na Instagramu ↗
-                  </a>
-                )}
-              </p>
             )}
           </motion.div>
         )}

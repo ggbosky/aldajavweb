@@ -43,25 +43,23 @@ export default function ContactSection(): React.JSX.Element {
   return (
     <section className="contact" id="kontakt">
       <HardCutTransition>
-        <h2 className="contact__title">
-          Pojďme se <em>spojit</em>
-        </h2>
+        <p className="section-label mono">Kontakt</p>
       </HardCutTransition>
 
       <HardCutTransition delay={0.06}>
+        <h2 className="contact__title">
+          Pojďme se <em>spojit</em>.
+        </h2>
+      </HardCutTransition>
+
+      <HardCutTransition delay={0.12}>
         <p className="contact__lead">
           Napiš, co potřebuješ dodat a do kdy. Ozvu se s termínem, cenou a návrhem, jak to
           natočit tak, aby se to dalo dobře sestříhat.
         </p>
-        <p className="contact__direct">
-          Nebo rovnou na{' '}
-          <a className="contact__mail" href={`mailto:${BRAND.email}`}>
-            {BRAND.email}
-          </a>
-        </p>
       </HardCutTransition>
 
-      <HardCutTransition delay={0.12}>
+      <HardCutTransition delay={0.18}>
         <form className="form" onSubmit={handleSubmit}>
           <div className="form__row">
             <label className="field">
@@ -101,16 +99,21 @@ export default function ContactSection(): React.JSX.Element {
         </form>
       </HardCutTransition>
 
-      <HardCutTransition delay={0.18}>
-        <ul className="contact__socials mono">
-          {SOCIALS.map((social) => (
-            <li key={social.label}>
-              <a href={social.href} target="_blank" rel="noreferrer noopener">
-                {social.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+      <HardCutTransition delay={0.24}>
+        <footer className="footer">
+          <a className="contact__link" href={`mailto:${BRAND.email}`}>
+            {BRAND.email}
+          </a>
+          <ul className="footer__socials mono">
+            {SOCIALS.map((social) => (
+              <li key={social.label}>
+                <a href={social.href} target="_blank" rel="noreferrer noopener">
+                  {social.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </footer>
       </HardCutTransition>
     </section>
   );

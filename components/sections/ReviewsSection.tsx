@@ -37,7 +37,7 @@ export default function ReviewsSection(): React.JSX.Element {
           ))}
         </motion.ul>
       ) : (
-        <p className="reviews__empty mono">Recenze připravujeme.</p>
+        <p className="empty mono">Recenze připravujeme.</p>
       )}
     </section>
   );

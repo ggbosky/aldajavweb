@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
-import { ABOUT, BRAND, EXPERTISE, type ExpertiseIcon } from '@/lib/site';
+import { ABOUT, EXPERTISE, type ExpertiseIcon } from '@/lib/site';
 
 /** Line-art marks, drawn inline so they inherit the accent and need no asset. */
 function Icon({ name }: { name: ExpertiseIcon }): React.JSX.Element {
@@ -47,43 +47,23 @@ function Icon({ name }: { name: ExpertiseIcon }): React.JSX.Element {
 export default function AboutSection(): React.JSX.Element {
   return (
     <section className="about" id="o-mne">
-      <div className="about__split">
-        <div className="about__copy">
-          <HardCutTransition>
-            <p className="section-label mono">{ABOUT.heading}</p>
-          </HardCutTransition>
-          <HardCutTransition delay={0.06}>
-            <h2 className="section-title">
-              Aleš <em>Javorský</em>
-            </h2>
-            <p className="about__role mono">{BRAND.role}</p>
-          </HardCutTransition>
-          <HardCutTransition delay={0.1}>
-            <p className="about__text">{ABOUT.body}</p>
-          </HardCutTransition>
-          <HardCutTransition delay={0.14}>
-            <dl className="facts">
-              {ABOUT.facts.map((fact) => (
-                <div key={fact.label} className="facts__row">
-                  <dt className="facts__label mono">{fact.label}</dt>
-                  <dd className="facts__value">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </HardCutTransition>
-        </div>
+      {/* Same panel the old hero portrait used: it bleeds off the right edge and
+          dissolves leftwards under the text. */}
+      <div className="about__portrait" aria-hidden="true">
+        <Image src={ABOUT.portrait} alt="" fill sizes="(max-width: 900px) 100vw, 50vw" />
+      </div>
 
-        <HardCutTransition delay={0.12} className="about__figure">
-          {/* The same shadow falloff as the old hero: the frame dissolves into the page. */}
-          <div className="about__portrait">
-            <Image
-              src={ABOUT.portrait}
-              alt=""
-              width={747}
-              height={1024}
-              sizes="(max-width: 900px) 90vw, 40vw"
-            />
-          </div>
+      <div className="about__copy">
+        <HardCutTransition>
+          <p className="section-label mono">{ABOUT.heading}</p>
+        </HardCutTransition>
+        <HardCutTransition delay={0.06}>
+          <h2 className="section-title">
+            Za střihem je <em>Aleš</em>.
+          </h2>
+        </HardCutTransition>
+        <HardCutTransition delay={0.12}>
+          <p className="about__text">{ABOUT.body}</p>
         </HardCutTransition>
       </div>
 
@@ -101,11 +81,6 @@ export default function AboutSection(): React.JSX.Element {
             </span>
             <h3 className="expertise__label">{item.label}</h3>
             <p className="expertise__note">{item.note}</p>
-            <ul className="expertise__includes">
-              {item.includes.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
           </motion.li>
         ))}
       </motion.ul>

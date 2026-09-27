@@ -6,34 +6,28 @@ import { BRAND } from '@/lib/site';
 import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
 /**
- * Nothing but the wordmark, one line and two buttons. The mark is the whole
- * composition, so it gets a third to a half of the frame and everything else
- * hangs under it.
+ * The mark sits where the name used to run down the left — a third to a half of
+ * the frame — with the tagline in italics under it and the two buttons below.
+ * Nothing else: the portrait lives in "O mně" now.
  */
 export default function Hero(): React.JSX.Element {
   return (
     <section className="hero" id="top">
-      <div className="hero__inner">
-        <motion.div
+      <div className="hero__copy">
+        <motion.h1
           className="hero__mark"
-          initial={{ opacity: 0, scale: 0.94, filter: 'blur(14px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 0.9, ease: HARD_CUT_EASE }}
+          initial={{ opacity: 0, y: '6%', filter: 'blur(14px)' }}
+          animate={{ opacity: 1, y: '0%', filter: 'blur(0px)' }}
+          transition={{ duration: 0.6, delay: 0.1, ease: HARD_CUT_EASE }}
         >
-          <Image
-            src="/images/alda-napis.png"
-            alt={BRAND.name}
-            width={1960}
-            height={365}
-            priority
-          />
-        </motion.div>
+          <Image src="/images/alda-napis.png" alt={BRAND.name} width={1960} height={365} priority />
+        </motion.h1>
 
         <motion.p
           className="hero__tagline"
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.45, ease: HARD_CUT_EASE }}
+          transition={{ duration: 0.4, delay: 0.5, ease: HARD_CUT_EASE }}
         >
           {BRAND.tagline}
         </motion.p>
@@ -42,7 +36,7 @@ export default function Hero(): React.JSX.Element {
           className="hero__actions"
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.62, ease: HARD_CUT_EASE }}
+          transition={{ duration: 0.4, delay: 0.64, ease: HARD_CUT_EASE }}
         >
           <a className="btn btn--primary" href="#prace">
             Ukázka práce

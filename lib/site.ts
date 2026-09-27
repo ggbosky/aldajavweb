@@ -36,45 +36,15 @@ export const ABOUT = {
   body:
     'Jsem Aleš a střih videí mě baví více jak 6 let. Vystudoval jsem marketingovou komunikaci a mám zkušenosti z tvorby obchodních promo videí, marketingových kampaní nebo klasických reels ať už pro Hitrádio nebo FAČR. Baví mě ze surového materiálu vytvořit takové video, které zaujme na první pohled. Ke každému projektu přistupuji s citem jak pro obraz, tak pro to, komu je určen.',
   portrait: '/images/ales-portret.jpg',
-  /** Krátké fakty pod textem — co, pro koho a odkud. */
-  facts: [
-    { label: 'Studium', value: 'Marketingová komunikace' },
-    { label: 'Klienti', value: 'Hitrádio · FAČR · Inside Games' },
-    { label: 'Působím', value: 'Česká republika · remote' },
-  ],
 } as const;
 
 /** The icon is drawn inline in the component; this picks which one. */
 export type ExpertiseIcon = 'reels' | 'youtube' | 'podcast';
 
-export type Expertise = {
-  readonly icon: ExpertiseIcon;
-  readonly label: string;
-  readonly note: string;
-  /** Co v té službě konkrétně dostaneš — krátké body, žádné věty. */
-  readonly includes: ReadonlyArray<string>;
-};
-
-// TODO: Aleš ať projde body v `includes` — ať sedí na to, co opravdu dodává.
-export const EXPERTISE: ReadonlyArray<Expertise> = [
-  {
-    icon: 'reels',
-    label: 'Reels',
-    note: 'Vertikální formáty pro sociální sítě',
-    includes: ['Hook na první vteřiny', 'Titulky a motion grafika', 'Color grading', 'Export 9:16'],
-  },
-  {
-    icon: 'youtube',
-    label: 'YouTube',
-    note: 'Dlouhá videa a sestřihy',
-    includes: ['Střih a dramaturgie', 'Sestřihy a highlighty', 'Grafika a titulky', 'Zvuk a barvy'],
-  },
-  {
-    icon: 'podcast',
-    label: 'Podcasty',
-    note: 'Multicam záznam a střih',
-    includes: ['Multicam střih', 'Čištění a mix zvuku', 'Krátké klipy na sítě', 'Titulky'],
-  },
+export const EXPERTISE: ReadonlyArray<{ icon: ExpertiseIcon; label: string; note: string }> = [
+  { icon: 'reels', label: 'Reels', note: 'Vertikální formáty pro sociální sítě' },
+  { icon: 'youtube', label: 'YouTube', note: 'Dlouhá videa a sestřihy' },
+  { icon: 'podcast', label: 'Podcasty', note: 'Multicam záznam a střih' },
 ];
 
 export type WorkVideo = {
@@ -91,7 +61,18 @@ export type WorkVideo = {
 
 export type WorkCategory = {
   readonly id: string;
+  /** Text na přepínači. */
   readonly label: string;
+  /** Detail kategorie — co a jak se v ní dělá. */
+  readonly kind: string;
+  readonly format: string;
+  readonly headline: string;
+  readonly body: string;
+  readonly role: ReadonlyArray<string>;
+  readonly deliverables: ReadonlyArray<string>;
+  /** Jen dekorace pod filmovým pásem. */
+  readonly timecodeIn: string;
+  readonly duration: string;
   readonly videos: ReadonlyArray<WorkVideo>;
 };
 
@@ -107,8 +88,34 @@ export type WorkCategory = {
  * Dokud je pole prázdné, sekce vykreslí stav „připravujeme“ — nic se nerozbije.
  */
 export const WORK: ReadonlyArray<WorkCategory> = [
-  { id: 'reels', label: 'Reels', videos: [] },
-  { id: 'youtube', label: 'YouTube', videos: [] },
+  {
+    id: 'reels',
+    label: 'Reels',
+    kind: 'Instagram · TikTok · Shorts',
+    format: '9:16 · 1:1',
+    headline: 'Hook v první vteřině, pointa dřív než palec',
+    body:
+      'Vertikální video stavěné na jediný cíl: udržet divákovi palec nad displejem. Rychlý střih, čitelné titulky, rytmus navázaný na hudbu. Verze pro každou platformu zvlášť.',
+    role: ['Střih', 'Titulky', 'Motion grafika'],
+    deliverables: ['Reels / Shorts', 'Sestřihy z delšího videa', 'Verze pro platformy'],
+    timecodeIn: '00:00:24:12',
+    duration: '00:01:06',
+    videos: [],
+  },
+  {
+    id: 'youtube',
+    label: 'YouTube',
+    kind: 'Dlouhá videa · rozhovory · multicam',
+    format: '16:9',
+    headline: 'Retence jako řemeslo, ne náhoda',
+    body:
+      'Dlouhá videa, rozhovory a multicam scény. Práce s křivkou pozornosti — hook, tempo, pauza, pointa. Střih, který se pozná podle toho, že si ho divák nevšimne.',
+    role: ['Střih', 'Multicam', 'Color'],
+    deliverables: ['Long-form videa', 'Rozhovory a podcasty', 'Sestřihy a highlighty'],
+    timecodeIn: '00:02:51:19',
+    duration: '00:03:28',
+    videos: [],
+  },
 ];
 
 export type Client = {

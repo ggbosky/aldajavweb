@@ -1,6 +1,6 @@
 /* ============================================================
-   Aleš Javorský — cinematic editing portfolio
-   Palette: OLED black + one cyan accent (#00ffff)
+   ALDA — cinematic editing portfolio
+   Palette: OLED black + one accent, cyan #00ffff
    ============================================================ */
 
 :root {
@@ -16,11 +16,9 @@
   --fg-dim: #9aa0aa;
   --fg-faint: #5c626d;
 
-  /* The one brand colour. The mark is pure white, so a second accent would
-     only compete with it — teal and orange are gone. */
   --cyan: #00ffff;
+  --cyan-soft: #8affff;
   --cyan-dim: rgba(0, 255, 255, 0.55);
-  --cyan-wash: rgba(0, 255, 255, 0.12);
 
   --shell: clamp(1.25rem, 5vw, 5.5rem);
   --maxw: 1440px;
@@ -142,14 +140,14 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.1rem, 2.4vw, 1.6rem) var(--shell);
+  padding: clamp(1.5rem, 3vw, 2rem) var(--shell);
+  /* Legible over the lit portrait and over black, with no backdrop of its own. */
   mix-blend-mode: difference;
 }
 
 .site-header__brand {
   display: block;
-  flex: none;
-  width: clamp(2.2rem, 3.4vw, 3rem);
+  width: clamp(2.2rem, 3.2vw, 2.8rem);
 }
 
 .site-header__brand img {
@@ -160,7 +158,7 @@ button {
 
 .site-header__nav {
   display: flex;
-  gap: clamp(1.1rem, 2.4vw, 2.1rem);
+  gap: clamp(1.2rem, 2.5vw, 2rem);
 }
 
 .site-header__link {
@@ -168,23 +166,22 @@ button {
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.16em;
-  color: #fff;
-  transition: opacity 0.3s var(--ease-cut);
-  opacity: 0.78;
+  color: rgba(255, 255, 255, 0.82);
+  transition: color 0.3s var(--ease-cut);
 }
 
 .site-header__link:hover,
 .site-header__link:focus-visible {
-  opacity: 1;
+  color: #fff;
 }
 
 .site-header__link::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: -0.45rem;
+  bottom: -0.5rem;
   width: 0;
-  height: 2px;
+  height: 1px;
   background: #fff;
   transition: width 0.3s var(--ease-cut);
 }
@@ -245,12 +242,12 @@ button {
 }
 
 .btn--primary::before {
-  background: var(--cyan);
+  background: var(--cyan-soft);
 }
 
 .btn--primary:hover,
 .btn--primary:focus-visible {
-  box-shadow: 0 12px 34px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 12px 34px rgba(0, 255, 255, 0.25);
 }
 
 .btn--primary:hover::before,
@@ -260,7 +257,8 @@ button {
 
 .btn--ghost {
   color: var(--fg);
-  border-color: var(--line-strong);
+  background: var(--black);
+  border-color: var(--fg);
 }
 
 .btn--ghost:hover,
@@ -321,23 +319,23 @@ button {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
   min-height: 100dvh;
-  padding: clamp(7rem, 14vh, 9rem) var(--shell) clamp(3rem, 8vh, 6rem);
-  text-align: center;
+  padding: clamp(7rem, 14vh, 9rem) var(--shell) clamp(3rem, 7vh, 5rem);
+  overflow: hidden;
 }
 
-.hero__inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.hero__copy {
+  position: relative;
+  z-index: 1;
   width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
 }
 
-/* A third to a half of the frame, whichever the viewport can carry. */
+/* The mark takes a third to a half of the frame, on the left where the name ran. */
 .hero__mark {
-  width: min(46vw, 34rem);
-  max-width: 100%;
+  width: clamp(16rem, 46vw, 44rem);
+  margin: 0;
 }
 
 .hero__mark img {
@@ -347,19 +345,18 @@ button {
 }
 
 .hero__tagline {
-  margin-top: clamp(1.8rem, 4vh, 3rem);
-  max-width: 26ch;
+  margin-top: clamp(1.6rem, 3.5vh, 2.6rem);
+  max-width: 22ch;
+  font-size: clamp(1.15rem, 2.3vw, 1.9rem);
   font-style: italic;
-  font-size: clamp(1.05rem, 2vw, 1.6rem);
-  font-weight: 400;
-  line-height: 1.35;
-  color: rgba(244, 244, 242, 0.88);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 0.8rem;
   margin-top: clamp(1.8rem, 4vh, 2.8rem);
 }
@@ -407,81 +404,31 @@ button {
 /* ---------- About ---------- */
 
 .about {
+  position: relative;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
-}
-
-.about__split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.78fr);
-  gap: clamp(2rem, 6vw, 5rem);
-  align-items: center;
-}
-
-.about__role {
-  margin-top: 1rem;
-  font-size: 0.62rem;
-  letter-spacing: 0.2em;
-  color: var(--fg-dim);
-}
-
-.about__text {
-  margin-top: 1.6rem;
-  max-width: 54ch;
-  font-size: clamp(1.02rem, 1.5vw, 1.22rem);
-  line-height: 1.66;
-  color: rgba(244, 244, 242, 0.86);
-}
-
-/* Three quick facts under the bio: label in mono, value in body type. */
-.facts {
-  margin-top: 2rem;
-  max-width: 54ch;
-  border-top: 1px solid var(--line);
-}
-
-.facts__row {
-  display: grid;
-  grid-template-columns: 8rem minmax(0, 1fr);
-  gap: 1rem;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.facts__label {
-  font-size: 0.6rem;
-  letter-spacing: 0.24em;
-  color: var(--fg-faint);
-  align-self: center;
-}
-
-.facts__value {
-  font-size: 0.95rem;
-  color: var(--fg);
-}
-
-.about__figure {
-  justify-self: end;
-  width: 100%;
-  max-width: 26rem;
+  padding: clamp(6rem, 12vw, 11rem) var(--shell) 3rem;
 }
 
 /*
- * The same falloff the hero used to have: the photo's own rectangle is painted
- * out in the page colour so it dissolves instead of sitting in a frame. The
- * page is a flat #050505, so an overlay reads identically to a mask — and it
- * stacks, which a single mask would not.
+ * The panel the hero portrait used to be: straight edges, top and right on the
+ * section edges, and the left side dissolving under the copy. The fade is
+ * painted over the photo in the page colour so the gradients stack.
  */
 .about__portrait {
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: min(50%, 44rem);
+  height: min(100%, 52rem);
   overflow: hidden;
 }
 
 .about__portrait img {
-  display: block;
-  width: 100%;
-  height: auto;
+  object-fit: cover;
+  object-position: 50% 22%;
+  filter: saturate(1.15) contrast(1.04) brightness(0.9);
 }
 
 .about__portrait::after {
@@ -489,21 +436,47 @@ button {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, #050505 0%, rgba(5, 5, 5, 0.45) 20%, transparent 48%),
-    linear-gradient(to left, #050505 0%, rgba(5, 5, 5, 0.3) 8%, transparent 26%),
-    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.32) 16%, transparent 40%),
-    linear-gradient(to bottom, #050505 0%, rgba(5, 5, 5, 0.34) 12%, transparent 30%);
+    linear-gradient(
+      to right,
+      #050505 0%,
+      rgba(5, 5, 5, 0.72) 22%,
+      rgba(5, 5, 5, 0.22) 46%,
+      rgba(5, 5, 5, 0.06) 70%
+    ),
+    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.4) 22%, transparent 46%),
+    linear-gradient(to bottom, #050505 0%, transparent 16%),
+    linear-gradient(to left, rgba(5, 5, 5, 0.5) 0%, transparent 12%);
 }
 
+.about__copy {
+  position: relative;
+  z-index: 1;
+  max-width: min(56ch, 52%);
+  min-height: clamp(24rem, 40vw, 36rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about__text {
+  margin-top: 1.6rem;
+  font-size: clamp(1.02rem, 1.45vw, 1.18rem);
+  line-height: 1.66;
+  color: rgba(244, 244, 242, 0.86);
+}
+
+/* Three marks on one rule, like steps hung on a line. Icon cyan, text white. */
 .expertise {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.4rem, 3vw, 2.6rem);
-  margin-top: clamp(3rem, 7vw, 5rem);
+  gap: clamp(1.8rem, 3.5vw, 3rem);
+  margin-top: clamp(3rem, 6vw, 5rem);
 }
 
 .expertise__item {
-  padding-top: 1.5rem;
+  padding-top: 1.7rem;
   border-top: 1px solid var(--line);
 }
 
@@ -513,56 +486,31 @@ button {
 }
 
 .expertise__label {
-  margin-top: 0.9rem;
+  margin-top: 1rem;
   font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: -0.025em;
   text-transform: uppercase;
+  color: var(--fg);
 }
 
 .expertise__note {
-  margin-top: 0.35rem;
+  margin-top: 0.5rem;
   font-size: 0.88rem;
-  color: var(--fg-dim);
+  line-height: 1.55;
+  color: var(--fg);
+  opacity: 0.72;
 }
 
-.expertise__includes {
-  margin-top: 1.1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  font-size: 0.85rem;
-  color: rgba(244, 244, 242, 0.78);
-}
+/* ---------- Sequence / clips ---------- */
 
-.expertise__includes li {
-  display: flex;
-  gap: 0.6rem;
-  align-items: baseline;
-}
-
-/* A short cyan tick instead of a bullet — the same accent as the icons. */
-.expertise__includes li::before {
-  content: '';
-  flex: none;
-  width: 0.7rem;
-  height: 1px;
-  background: var(--cyan);
-  transform: translateY(-0.28em);
-}
-
-/* ---------- Work ---------- */
-
-.work {
+.sequence {
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
+  padding: clamp(6rem, 12vw, 11rem) var(--shell) 4rem;
 }
 
-.work__head {
-  max-width: 60ch;
-}
-
+/* The switch: the pressed category fills with the cyan. */
 .switch {
   display: flex;
   flex-wrap: wrap;
@@ -571,34 +519,202 @@ button {
 }
 
 .switch__btn {
-  padding: 0.7rem 1.5rem;
+  padding: 0.8rem 1.7rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
   color: var(--fg);
   transition: color 0.25s var(--ease-cut), background 0.25s var(--ease-cut),
-    border-color 0.25s var(--ease-cut);
+    border-color 0.25s var(--ease-cut), box-shadow 0.25s var(--ease-cut);
 }
 
 .switch__btn:hover {
   border-color: var(--cyan-dim);
 }
 
-/* The fill is what says "this set". `aria-pressed` says it too, for anyone
-   who cannot see the colour. */
 .switch__btn.is-active {
   color: #000;
   background: var(--cyan);
   border-color: var(--cyan);
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.22);
 }
 
+/*
+ * No card, no panel, no backdrop blur — a hairline and a wide gutter carry the
+ * separation instead, and the frame swaps sides every entry so four of these in
+ * a row read as a spread rather than four copies of the same box.
+ */
+.clip {
+  display: grid;
+  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: start;
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+  padding-top: clamp(1.6rem, 3vw, 2.6rem);
+  border-top: 1px solid var(--line);
+}
+
+.clip__figure {
+  margin: 0;
+}
+
+.clip__preview {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0b0f15, #06080c);
+  border: 1px solid var(--line);
+  transition: border-color 0.3s var(--ease-cut);
+}
+
+.clip:hover .clip__preview {
+  border-color: var(--line-strong);
+}
+
+/* Four frames off a strip. Near-neutral: the accent is a hairline, not a wash —
+   tinting the whole frame at low alpha over black just turns it to mud. */
+.clip__frames {
+  position: absolute;
+  inset: 22% 6%;
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.clip__frames i {
+  position: relative;
+  flex: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.015) 62%, transparent);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 2px solid rgba(0, 255, 255, 0.7);
+  animation: gate 3.2s var(--ease-cut) infinite;
+}
+
+/* The horizon line that makes a flat rectangle read as an exposed frame. */
+.clip__frames i::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 58%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+@keyframes gate {
+  0%, 100% { opacity: 0.5; }
+  45% { opacity: 1; }
+}
+
+.clip__sprockets {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent 0 6px,
+    rgba(255, 255, 255, 0.14) 6px 13px,
+    transparent 13px 19px
+  );
+  background-size: 100% 6px;
+  background-repeat: repeat-x;
+}
+
+.clip__sprockets--top {
+  top: 0;
+  background-position: 0 4px;
+}
+
+.clip__sprockets--bottom {
+  bottom: 0;
+  background-position: 0 4px;
+}
+
+/* The read-out moves out of the frame and under it, where it stops competing. */
+.clip__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+  margin-top: 0.7rem;
+  font-size: 0.58rem;
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.clip__format {
+  color: var(--fg-dim);
+}
+
+.clip__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.clip__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.clip__client {
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.clip__sector {
+  color: var(--fg-faint);
+}
+
+.clip__headline {
+  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+}
+
+.clip__text {
+  max-width: 58ch;
+  color: var(--fg-dim);
+  font-size: 0.97rem;
+}
+
+/* Role and deliverables share one quiet line instead of two loud ones. */
+.clip__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.clip__deliverables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.3rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line);
+  color: var(--fg-faint);
+  font-size: 0.58rem;
+}
+
+/* Videos under the category, once Aleš picks them. */
 .reel {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
   gap: clamp(1.4rem, 3vw, 2.2rem);
-  margin-top: clamp(2rem, 4vw, 3rem);
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
 }
 
 .reel__frame {
@@ -607,24 +723,17 @@ button {
   align-items: center;
   justify-content: center;
   aspect-ratio: 16 / 9;
+  overflow: hidden;
   background: linear-gradient(180deg, #0b0f15, #06080c);
   border: 1px solid var(--line);
+  border-top: 2px solid rgba(0, 255, 255, 0.7);
   transition: border-color 0.3s var(--ease-cut);
-}
-
-.reel__frame {
-  overflow: hidden;
 }
 
 .reel__thumb {
   object-fit: cover;
   opacity: 0.72;
   transition: opacity 0.3s var(--ease-cut), scale 0.4s var(--ease-cut);
-}
-
-.reel__link:hover .reel__thumb {
-  opacity: 1;
-  scale: 1.03;
 }
 
 .reel__play {
@@ -638,48 +747,53 @@ button {
   border-color: var(--cyan-dim);
 }
 
+.reel__link:hover .reel__thumb {
+  opacity: 1;
+  scale: 1.03;
+}
+
 .reel__link:hover .reel__play {
   scale: 1.25;
 }
 
 .reel__title {
-  margin-top: 0.9rem;
+  margin: 0.9rem 0 0;
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-.reel__note {
-  margin-top: 0.3rem;
-  font-size: 0.6rem;
+.reel__note,
+.reel__role {
+  margin-top: 0.35rem;
+  font-size: 0.58rem;
   color: var(--fg-faint);
 }
 
 .reel__role {
-  margin-top: 0.45rem;
-  font-size: 0.82rem;
-  color: var(--fg-dim);
+  color: var(--cyan);
 }
 
-.work__empty a {
-  margin-left: 0.6rem;
+/* Placeholder line for sections still waiting on content. */
+.empty {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  color: var(--fg-faint);
+  font-size: 0.62rem;
+}
+
+.empty a {
   color: var(--cyan);
   transition: opacity 0.2s var(--ease-cut);
 }
 
-.work__empty a:hover,
-.work__empty a:focus-visible {
+.empty a:hover,
+.empty a:focus-visible {
   opacity: 0.75;
-}
-
-.work__empty,
-.reviews__empty {
-  margin-top: clamp(2rem, 4vw, 3rem);
-  padding: clamp(2rem, 5vw, 3.5rem) 0;
-  border-top: 1px solid var(--line);
-  color: var(--fg-faint);
-  font-size: 0.68rem;
-  letter-spacing: 0.24em;
 }
 
 /* ---------- Clients ---------- */
@@ -687,53 +801,50 @@ button {
 .clients {
   max-width: var(--maxw);
   margin-inline: auto;
-  padding: clamp(4rem, 9vw, 7rem) var(--shell);
+  padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
 }
 
+/*
+ * Client marks come in their own brand colours; knocked to one white so the
+ * row reads as a band, and lit up on hover.
+ */
 .clients__row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: clamp(2rem, 6vw, 5rem);
-  margin-top: clamp(1.8rem, 4vw, 2.8rem);
-  padding-top: clamp(1.8rem, 4vw, 2.8rem);
+  gap: clamp(2.4rem, 7vw, 6rem);
+  margin-top: clamp(2.6rem, 5vw, 4rem);
+  padding-top: clamp(1.8rem, 3vw, 2.6rem);
   border-top: 1px solid var(--line);
 }
 
 .clients__item {
   display: flex;
   align-items: center;
+  height: clamp(2.8rem, 5vw, 4rem);
 }
 
-/*
- * Knocked to flat white. The marks arrive in navy and red; left alone on black
- * one of them disappears and the other fights the accent.
- */
 .clients__logo {
   width: auto;
-  height: clamp(2.4rem, 4.4vw, 3.6rem);
+  height: 100%;
   max-width: 12rem;
   object-fit: contain;
   filter: brightness(0) invert(1);
-  opacity: 0.6;
+  opacity: 0.7;
   transition: opacity 0.3s var(--ease-cut);
 }
 
-.clients__item:hover .clients__logo {
-  opacity: 1;
-}
-
-/* Stand-in for a mark that has not been supplied. */
 .clients__wordmark {
-  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
   font-weight: 900;
-  letter-spacing: -0.02em;
-  color: rgba(244, 244, 242, 0.6);
-  transition: color 0.3s var(--ease-cut);
+  letter-spacing: -0.04em;
+  opacity: 0.7;
+  transition: opacity 0.3s var(--ease-cut), color 0.3s var(--ease-cut);
 }
 
+.clients__item:hover .clients__logo,
 .clients__item:hover .clients__wordmark {
-  color: var(--fg);
+  opacity: 1;
 }
 
 /* ---------- Reviews ---------- */
@@ -744,61 +855,69 @@ button {
   padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
 }
 
-.reviews__head {
-  max-width: 60ch;
-}
-
 .reviews__list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: clamp(1.6rem, 3vw, 2.6rem);
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  gap: clamp(1.8rem, 3.5vw, 3rem);
+  margin-top: clamp(3rem, 6vw, 4.5rem);
 }
 
+/* Hung on a rule with a cyan marker, the same as the old process steps. */
 .review {
-  padding-top: 1.6rem;
+  position: relative;
+  padding-top: 1.7rem;
   border-top: 1px solid var(--line);
+}
+
+.review::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  rotate: 45deg;
+  background: var(--cyan);
 }
 
 .review__quote {
   margin: 0;
-  font-size: 1.02rem;
-  line-height: 1.6;
-  color: rgba(244, 244, 242, 0.88);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  color: var(--fg);
 }
 
 .review__by {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
-  margin-top: 1.1rem;
+  gap: 0.25rem;
+  margin-top: 1.2rem;
 }
 
 .review__author {
   font-weight: 700;
-  letter-spacing: -0.015em;
 }
 
 .review__role {
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: var(--cyan);
 }
 
 /* ---------- Contact ---------- */
 
-/* The closing section is centred — the form is the one thing on it. */
 .contact {
-  max-width: 54rem;
+  max-width: var(--maxw);
   margin-inline: auto;
-  padding: clamp(6rem, 13vw, 11rem) var(--shell) clamp(4rem, 9vw, 7rem);
+  padding: clamp(6rem, 13vw, 11rem) var(--shell) 5rem;
   text-align: center;
 }
 
 .contact__title {
-  font-size: clamp(2.4rem, 7vw, 5.5rem);
+  margin-top: 1.2rem;
+  font-size: clamp(2.6rem, 9vw, 7.5rem);
   font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.05em;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
   text-transform: uppercase;
 }
 
@@ -810,35 +929,65 @@ button {
 .contact__lead {
   margin: 1.6rem auto 0;
   max-width: 48ch;
-  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
   color: var(--fg-dim);
 }
 
-.contact__direct {
-  margin-top: 0.9rem;
-  font-size: 0.95rem;
+.contact__link {
+  color: var(--fg);
+  font-size: clamp(1.25rem, 2.6vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  /* A background stripe, so the rule can grow from nothing on hover. */
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition: background-size 0.35s var(--ease-cut), color 0.25s var(--ease-cut);
+}
+
+.contact__link:hover,
+.contact__link:focus-visible {
+  color: var(--cyan);
+  background-size: 100% 1px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: clamp(4rem, 8vw, 7rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
   color: var(--fg-faint);
 }
 
-.contact__mail {
-  color: var(--fg);
-  border-bottom: 1px solid var(--cyan-dim);
-  transition: color 0.2s var(--ease-cut), border-color 0.2s var(--ease-cut);
+.footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.2rem, 3vw, 2.2rem);
 }
 
-.contact__mail:hover,
-.contact__mail:focus-visible {
+.footer__socials a {
+  transition: color 0.18s var(--ease-cut);
+}
+
+.footer__socials a:hover,
+.footer__socials a:focus-visible {
   color: var(--cyan);
-  border-color: var(--cyan);
 }
 
 /* ---------- Form ---------- */
 
+/* The form sits in the middle of the page, capped to a comfortable width. */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  max-width: 46rem;
+  margin: clamp(2.6rem, 5vw, 3.8rem) auto 0;
   text-align: left;
 }
 
@@ -851,7 +1000,7 @@ button {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.5rem;
 }
 
 .field__label {
@@ -862,18 +1011,14 @@ button {
 
 .field__input {
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1rem;
   font: inherit;
   font-size: 0.95rem;
   color: var(--fg);
-  background: rgba(255, 255, 255, 0.035);
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 0;
   transition: border-color 0.25s var(--ease-cut), background 0.25s var(--ease-cut);
-}
-
-.field__input::placeholder {
-  color: var(--fg-faint);
 }
 
 .field__input:hover {
@@ -888,7 +1033,7 @@ button {
 
 .field__input--area {
   resize: vertical;
-  min-height: 8rem;
+  min-height: 9rem;
   line-height: 1.55;
 }
 
@@ -898,7 +1043,7 @@ button {
   align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 
 .btn[disabled] {
@@ -912,29 +1057,18 @@ button {
   color: var(--cyan);
 }
 
-.contact__socials {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(1.2rem, 3vw, 2.2rem);
-  margin-top: clamp(3rem, 6vw, 4.5rem);
-  padding-top: 1.6rem;
-  border-top: 1px solid var(--line);
-  color: var(--fg-faint);
-}
-
-.contact__socials a {
-  transition: color 0.2s var(--ease-cut);
-}
-
-.contact__socials a:hover,
-.contact__socials a:focus-visible {
-  color: var(--cyan);
-}
-
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1100px) {
+  .clip {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+
+  .clip__figure {
+    max-width: 26rem;
+  }
+
   .stats {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -945,25 +1079,36 @@ button {
     gap: 1rem;
   }
 
-  /* Photo above the copy rather than beside it. */
-  .about__split {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+  /*
+   * Side by side, a panel this narrow crops the photo to a sliver. On a phone
+   * it becomes a banner above the text, fading into the page at the bottom.
+   */
+  .about__portrait {
+    position: relative;
+    width: calc(100% + 2 * var(--shell));
+    height: auto;
+    aspect-ratio: 4 / 4.2;
+    margin: 0 calc(-1 * var(--shell)) -4rem;
   }
 
-  .about__figure {
-    order: -1;
-    justify-self: start;
-    max-width: 22rem;
+  .about__portrait::after {
+    background-image:
+      linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.45) 26%, transparent 60%),
+      linear-gradient(to bottom, #050505 0%, transparent 14%);
+  }
+
+  .about {
+    padding-top: 4rem;
+  }
+
+  .about__copy {
+    max-width: none;
+    min-height: 0;
   }
 
   .expertise {
     grid-template-columns: 1fr;
-    gap: 1.2rem;
-  }
-
-  .hero__mark {
-    width: min(78vw, 26rem);
+    gap: 1.6rem;
   }
 }
 
@@ -976,22 +1121,18 @@ button {
     padding-top: 7rem;
   }
 
+  .site-header__nav {
+    gap: 0.9rem;
+  }
+
   .site-header__link {
-    font-size: 0.62rem;
+    font-size: 0.66rem;
     letter-spacing: 0.08em;
   }
 
   /* Two fields side by side is too tight to type in on a phone. */
   .form__row {
     grid-template-columns: 1fr;
-  }
-
-  .facts__row {
-    grid-template-columns: 6.5rem minmax(0, 1fr);
-  }
-
-  .clients__row {
-    gap: 1.8rem;
   }
 }
 

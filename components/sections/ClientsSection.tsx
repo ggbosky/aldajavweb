@@ -16,6 +16,11 @@ export default function ClientsSection(): React.JSX.Element {
       <HardCutTransition>
         <p className="section-label mono">Spolupráce s klienty</p>
       </HardCutTransition>
+      <HardCutTransition delay={0.06}>
+        <h2 className="section-title">
+          Pro koho <em>stříhám</em>.
+        </h2>
+      </HardCutTransition>
 
       <motion.ul
         className="clients__row"

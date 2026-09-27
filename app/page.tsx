@@ -5,7 +5,6 @@ import WorkSection from '@/components/sections/WorkSection';
 import ClientsSection from '@/components/sections/ClientsSection';
 import ReviewsSection from '@/components/sections/ReviewsSection';
 import ContactSection from '@/components/sections/ContactSection';
-import SiteFooter from '@/components/layout/SiteFooter';
 
 export default function Page(): React.JSX.Element {
   return (
@@ -17,7 +16,6 @@ export default function Page(): React.JSX.Element {
       <ClientsSection />
       <ReviewsSection />
       <ContactSection />
-      <SiteFooter />
     </main>
   );
 }

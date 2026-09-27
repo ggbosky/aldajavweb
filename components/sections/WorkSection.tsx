@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
-import { WORK } from '@/lib/site';
+import { SOCIALS, WORK } from '@/lib/site';
+
+const INSTAGRAM = SOCIALS.find((social) => social.label === 'Instagram');
 
 /**
  * Two categories behind one switch. The active button fills with the accent —
@@ -60,16 +63,38 @@ export default function WorkSection(): React.JSX.Element {
                 rel="noreferrer noopener"
               >
                 <span className="reel__frame" aria-hidden="true">
+                  {video.thumb && (
+                    <Image
+                      className="reel__thumb"
+                      src={video.thumb}
+                      alt=""
+                      fill
+                      sizes="(max-width: 640px) 90vw, 30vw"
+                    />
+                  )}
                   <span className="reel__play">▶</span>
                 </span>
                 <h3 className="reel__title">{video.title}</h3>
                 <p className="reel__note mono">{video.note}</p>
+                {video.role && video.role.length > 0 && (
+                  <p className="reel__role">{video.role.join(' · ')}</p>
+                )}
               </a>
             </motion.li>
           ))}
         </motion.ul>
       ) : (
-        <p className="work__empty mono">Výběr videí připravujeme.</p>
+        <p className="work__empty mono">
+          Výběr videí připravujeme.
+          {INSTAGRAM && (
+            <>
+              {' '}
+              <a href={INSTAGRAM.href} target="_blank" rel="noreferrer noopener">
+                Mezitím na Instagramu ↗
+              </a>
+            </>
+          )}
+        </p>
       )}
     </section>
   );

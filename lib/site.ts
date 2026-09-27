@@ -36,22 +36,57 @@ export const ABOUT = {
   body:
     'Jsem Aleš a střih videí mě baví více jak 6 let. Vystudoval jsem marketingovou komunikaci a mám zkušenosti z tvorby obchodních promo videí, marketingových kampaní nebo klasických reels ať už pro Hitrádio nebo FAČR. Baví mě ze surového materiálu vytvořit takové video, které zaujme na první pohled. Ke každému projektu přistupuji s citem jak pro obraz, tak pro to, komu je určen.',
   portrait: '/images/ales-portret.jpg',
+  /** Krátké fakty pod textem — co, pro koho a odkud. */
+  facts: [
+    { label: 'Studium', value: 'Marketingová komunikace' },
+    { label: 'Klienti', value: 'Hitrádio · FAČR · Inside Games' },
+    { label: 'Působím', value: 'Česká republika · remote' },
+  ],
 } as const;
 
 /** The icon is drawn inline in the component; this picks which one. */
 export type ExpertiseIcon = 'reels' | 'youtube' | 'podcast';
 
-export const EXPERTISE: ReadonlyArray<{ icon: ExpertiseIcon; label: string; note: string }> = [
-  { icon: 'reels', label: 'Reels', note: 'Vertikální formáty pro sociální sítě' },
-  { icon: 'youtube', label: 'YouTube', note: 'Dlouhá videa a sestřihy' },
-  { icon: 'podcast', label: 'Podcasty', note: 'Multicam záznam a střih' },
+export type Expertise = {
+  readonly icon: ExpertiseIcon;
+  readonly label: string;
+  readonly note: string;
+  /** Co v té službě konkrétně dostaneš — krátké body, žádné věty. */
+  readonly includes: ReadonlyArray<string>;
+};
+
+// TODO: Aleš ať projde body v `includes` — ať sedí na to, co opravdu dodává.
+export const EXPERTISE: ReadonlyArray<Expertise> = [
+  {
+    icon: 'reels',
+    label: 'Reels',
+    note: 'Vertikální formáty pro sociální sítě',
+    includes: ['Hook na první vteřiny', 'Titulky a motion grafika', 'Color grading', 'Export 9:16'],
+  },
+  {
+    icon: 'youtube',
+    label: 'YouTube',
+    note: 'Dlouhá videa a sestřihy',
+    includes: ['Střih a dramaturgie', 'Sestřihy a highlighty', 'Grafika a titulky', 'Zvuk a barvy'],
+  },
+  {
+    icon: 'podcast',
+    label: 'Podcasty',
+    note: 'Multicam záznam a střih',
+    includes: ['Multicam střih', 'Čištění a mix zvuku', 'Krátké klipy na sítě', 'Titulky'],
+  },
 ];
 
 export type WorkVideo = {
   readonly title: string;
+  /** Klient a rok, např. 'Hitrádio · 2024'. */
   readonly note: string;
   /** Watch link — YouTube, Instagram, Drive, cokoliv. */
   readonly href: string;
+  /** Náhled videa (volitelné), např. '/prace/nazev.jpg' v `public/`. */
+  readonly thumb?: string;
+  /** Co jsem na videu dělal, např. ['Střih', 'Motion', 'Color']. */
+  readonly role?: ReadonlyArray<string>;
 };
 
 export type WorkCategory = {
@@ -62,7 +97,13 @@ export type WorkCategory = {
 
 /**
  * TODO: Aleš dodá výběr videí. Formát jedné položky:
- *   { title: 'Název videa', note: 'Hitrádio · 2024', href: 'https://…' }
+ *   {
+ *     title: 'Název videa',
+ *     note: 'Hitrádio · 2024',
+ *     href: 'https://…',
+ *     thumb: '/prace/nazev.jpg',          // volitelné
+ *     role: ['Střih', 'Motion', 'Color'], // volitelné
+ *   }
  * Dokud je pole prázdné, sekce vykreslí stav „připravujeme“ — nic se nerozbije.
  */
 export const WORK: ReadonlyArray<WorkCategory> = [

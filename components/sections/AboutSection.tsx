@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
-import { ABOUT, EXPERTISE, type ExpertiseIcon } from '@/lib/site';
+import { ABOUT, BRAND, EXPERTISE, type ExpertiseIcon } from '@/lib/site';
 
 /** Line-art marks, drawn inline so they inherit the accent and need no asset. */
 function Icon({ name }: { name: ExpertiseIcon }): React.JSX.Element {
@@ -53,7 +53,23 @@ export default function AboutSection(): React.JSX.Element {
             <p className="section-label mono">{ABOUT.heading}</p>
           </HardCutTransition>
           <HardCutTransition delay={0.06}>
+            <h2 className="section-title">
+              Aleš <em>Javorský</em>
+            </h2>
+            <p className="about__role mono">{BRAND.role}</p>
+          </HardCutTransition>
+          <HardCutTransition delay={0.1}>
             <p className="about__text">{ABOUT.body}</p>
+          </HardCutTransition>
+          <HardCutTransition delay={0.14}>
+            <dl className="facts">
+              {ABOUT.facts.map((fact) => (
+                <div key={fact.label} className="facts__row">
+                  <dt className="facts__label mono">{fact.label}</dt>
+                  <dd className="facts__value">{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
           </HardCutTransition>
         </div>
 
@@ -85,6 +101,11 @@ export default function AboutSection(): React.JSX.Element {
             </span>
             <h3 className="expertise__label">{item.label}</h3>
             <p className="expertise__note">{item.note}</p>
+            <ul className="expertise__includes">
+              {item.includes.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
           </motion.li>
         ))}
       </motion.ul>

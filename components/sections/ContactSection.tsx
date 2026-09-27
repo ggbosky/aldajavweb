@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import HardCutTransition from '@/components/motion/HardCutTransition';
-import { BRAND, CONTACT_ENDPOINT, SOCIALS } from '@/lib/site';
+import { BRAND, CONTACT_ENDPOINT } from '@/lib/site';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
@@ -79,7 +79,7 @@ export default function ContactSection(): React.JSX.Element {
           </label>
 
           <div className="form__foot">
-            <button className="btn btn--primary" type="submit" disabled={status === 'sending'}>
+            <button className="btn btn--primary form__submit" type="submit" disabled={status === 'sending'}>
               {status === 'sending' ? 'Odesílám…' : 'Odeslat zprávu'}
               <span className="btn__glyph" aria-hidden="true">
                 ↗
@@ -95,17 +95,6 @@ export default function ContactSection(): React.JSX.Element {
         </form>
       </HardCutTransition>
 
-      <HardCutTransition delay={0.18}>
-        <ul className="contact__socials mono">
-          {SOCIALS.map((social) => (
-            <li key={social.label}>
-              <a href={social.href} target="_blank" rel="noreferrer noopener">
-                {social.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </HardCutTransition>
     </section>
   );
 }

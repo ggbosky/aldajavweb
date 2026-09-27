@@ -7,13 +7,11 @@ import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
 /**
  * The mark, centred, with the role and the tagline in italics under it and the
- * two buttons. A cyan key light behind the mark is the only other thing here.
+ * two buttons, on the plain black page.
  */
 export default function Hero(): React.JSX.Element {
   return (
     <section className="hero" id="top">
-      <div className="hero__glow" aria-hidden="true" />
-
       <div className="hero__copy">
         <motion.h1
           className="hero__mark"

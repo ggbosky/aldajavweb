@@ -47,25 +47,26 @@ function Icon({ name }: { name: ExpertiseIcon }): React.JSX.Element {
 export default function AboutSection(): React.JSX.Element {
   return (
     <section className="about" id="o-mne">
-      {/* Same panel the old hero portrait used: it bleeds off the right edge and
-          dissolves leftwards under the text. */}
-      <div className="about__portrait" aria-hidden="true">
-        <Image src={ABOUT.portrait} alt="" fill sizes="(max-width: 900px) 100vw, 50vw" />
-      </div>
+      <HardCutTransition>
+        <p className="section-label mono">{ABOUT.heading}</p>
+      </HardCutTransition>
+      <HardCutTransition delay={0.06}>
+        <h2 className="section-title">
+          Za střihem je <em>Aleš</em>.
+        </h2>
+      </HardCutTransition>
 
-      <div className="about__copy">
-        <HardCutTransition>
-          <p className="section-label mono">{ABOUT.heading}</p>
-        </HardCutTransition>
-        <HardCutTransition delay={0.06}>
-          <h2 className="section-title">
-            Za střihem je <em>Aleš</em>.
-          </h2>
-        </HardCutTransition>
-        <HardCutTransition delay={0.12}>
-          <p className="about__text">{ABOUT.body}</p>
-        </HardCutTransition>
-      </div>
+      {/* The photo dissolves into the page on every side — the same shadow
+          falloff as before, now centred under the heading. */}
+      <HardCutTransition delay={0.1} className="about__figure">
+        <div className="about__portrait">
+          <Image src={ABOUT.portrait} alt="" width={747} height={1024} sizes="(max-width: 640px) 80vw, 26rem" />
+        </div>
+      </HardCutTransition>
+
+      <HardCutTransition delay={0.14}>
+        <p className="about__text">{ABOUT.body}</p>
+      </HardCutTransition>
 
       <motion.ul
         className="expertise"

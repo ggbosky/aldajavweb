@@ -292,8 +292,9 @@ button {
 }
 
 .section-title {
-  margin-top: 1.2rem;
+  margin: 1.2rem auto 0;
   max-width: 17ch;
+  text-wrap: balance;
   font-weight: 900;
   font-size: clamp(2.1rem, 5vw, 4.2rem);
   line-height: 0.95;
@@ -307,7 +308,7 @@ button {
 }
 
 .section-lead {
-  margin-top: 1.4rem;
+  margin: 1.4rem auto 0;
   max-width: 52ch;
   color: var(--fg-dim);
   font-size: clamp(0.95rem, 1.3vw, 1.05rem);
@@ -319,23 +320,102 @@ button {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   min-height: 100dvh;
-  padding: clamp(7rem, 14vh, 9rem) var(--shell) clamp(3rem, 7vh, 5rem);
+  padding: clamp(7rem, 14vh, 9rem) var(--shell) clamp(5rem, 10vh, 7rem);
   overflow: hidden;
+  text-align: center;
+}
+
+/* A cyan key light behind the mark, plus a faint grid like a monitor overlay. */
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 46% 38% at 50% 46%, rgba(0, 255, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 120, 140, 0.12), transparent 75%);
+}
+
+.hero__glow::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 100% 33.333%, 33.333% 100%;
+  background-position: 0 -1px, -1px 0;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 80%);
+}
+
+/* Viewfinder: four corner brackets and a read-out in each corner. */
+.viewfinder {
+  position: absolute;
+  inset: clamp(5.5rem, 12vh, 7.5rem) var(--shell) clamp(2rem, 5vh, 3rem);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.viewfinder__corner {
+  position: absolute;
+  width: clamp(1.4rem, 3vw, 2.4rem);
+  height: clamp(1.4rem, 3vw, 2.4rem);
+  border-color: rgba(255, 255, 255, 0.4);
+  border-style: solid;
+  border-width: 0;
+}
+
+.viewfinder__corner--tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+.viewfinder__corner--tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+.viewfinder__corner--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+.viewfinder__corner--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+
+.viewfinder__readout {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.62rem;
+  color: var(--fg-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.viewfinder__readout--tl { top: 1.1rem; left: 1.4rem; color: var(--fg); }
+.viewfinder__readout--tr { top: 1.1rem; right: 1.4rem; color: var(--cyan); }
+.viewfinder__readout--bl { bottom: 1.1rem; left: 1.4rem; }
+.viewfinder__readout--br { bottom: 1.1rem; right: 1.4rem; }
+
+.viewfinder__rec {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #ff3b3b;
+  box-shadow: 0 0 10px rgba(255, 59, 59, 0.8);
+  animation: rec 1.6s steps(1) infinite;
+}
+
+@keyframes rec {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0.15; }
 }
 
 .hero__copy {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   max-width: var(--maxw);
-  margin-inline: auto;
 }
 
-/* The mark takes a third to a half of the frame, on the left where the name ran. */
+/* The mark takes a third to a half of the frame. */
 .hero__mark {
-  width: clamp(16rem, 46vw, 44rem);
+  width: clamp(16rem, 48vw, 46rem);
   margin: 0;
+  filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.18));
 }
 
 .hero__mark img {
@@ -344,21 +424,74 @@ button {
   height: auto;
 }
 
+.hero__role {
+  margin-top: clamp(1.4rem, 3vh, 2rem);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  color: var(--fg-dim);
+}
+
 .hero__tagline {
-  margin-top: clamp(1.6rem, 3.5vh, 2.6rem);
-  max-width: 22ch;
-  font-size: clamp(1.15rem, 2.3vw, 1.9rem);
+  margin-top: 1rem;
+  max-width: 26ch;
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
   font-style: italic;
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.02em;
+  text-wrap: balance;
 }
 
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.8rem;
   margin-top: clamp(1.8rem, 4vh, 2.8rem);
+}
+
+.hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(2.6rem, 6vh, 3.8rem);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.3em;
+  color: var(--fg-faint);
+  transform: translateX(-50%);
+  transition: color 0.2s var(--ease-cut);
+}
+
+.hero__scroll:hover,
+.hero__scroll:focus-visible {
+  color: var(--cyan);
+}
+
+.hero__scroll-line {
+  position: relative;
+  width: 1px;
+  height: 2.4rem;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.hero__scroll-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 1px;
+  height: 40%;
+  background: var(--cyan);
+  animation: scrollcue 1.8s var(--ease-cut) infinite;
+}
+
+@keyframes scrollcue {
+  to { top: 100%; }
 }
 
 /* ---------- Stats ---------- */
@@ -377,6 +510,8 @@ button {
 .stats__item {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 0.25rem;
   padding: 2rem var(--shell);
   background: rgba(0, 0, 0, 0.55);
@@ -404,31 +539,31 @@ button {
 /* ---------- About ---------- */
 
 .about {
-  position: relative;
   max-width: var(--maxw);
   margin-inline: auto;
   padding: clamp(6rem, 12vw, 11rem) var(--shell) 3rem;
+  text-align: center;
+}
+
+.about__figure {
+  width: min(100%, 24rem);
+  margin: clamp(2rem, 4vw, 3rem) auto 0;
 }
 
 /*
- * The panel the hero portrait used to be: straight edges, top and right on the
- * section edges, and the left side dissolving under the copy. The fade is
- * painted over the photo in the page colour so the gradients stack.
+ * The photo's rectangle is painted out in the page colour on all four sides,
+ * so it dissolves into the page instead of sitting in a frame.
  */
 .about__portrait {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 0;
-  width: min(50%, 44rem);
-  height: min(100%, 52rem);
+  position: relative;
   overflow: hidden;
 }
 
 .about__portrait img {
-  object-fit: cover;
-  object-position: 50% 22%;
-  filter: saturate(1.15) contrast(1.04) brightness(0.9);
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: saturate(1.15) contrast(1.04) brightness(0.92);
 }
 
 .about__portrait::after {
@@ -436,43 +571,27 @@ button {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(
-      to right,
-      #050505 0%,
-      rgba(5, 5, 5, 0.72) 22%,
-      rgba(5, 5, 5, 0.22) 46%,
-      rgba(5, 5, 5, 0.06) 70%
-    ),
-    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.4) 22%, transparent 46%),
-    linear-gradient(to bottom, #050505 0%, transparent 16%),
-    linear-gradient(to left, rgba(5, 5, 5, 0.5) 0%, transparent 12%);
-}
-
-.about__copy {
-  position: relative;
-  z-index: 1;
-  max-width: min(56ch, 52%);
-  min-height: clamp(24rem, 40vw, 36rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    linear-gradient(to right, #050505 0%, rgba(5, 5, 5, 0.3) 14%, transparent 32%),
+    linear-gradient(to left, #050505 0%, rgba(5, 5, 5, 0.3) 14%, transparent 32%),
+    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.4) 18%, transparent 40%),
+    linear-gradient(to bottom, #050505 0%, transparent 14%);
 }
 
 .about__text {
-  margin-top: 1.6rem;
+  max-width: 58ch;
+  margin: clamp(1.6rem, 3vw, 2.4rem) auto 0;
   font-size: clamp(1.02rem, 1.45vw, 1.18rem);
-  line-height: 1.66;
+  line-height: 1.7;
   color: rgba(244, 244, 242, 0.86);
 }
 
 /* Three marks on one rule, like steps hung on a line. Icon cyan, text white. */
 .expertise {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1.8rem, 3.5vw, 3rem);
-  margin-top: clamp(3rem, 6vw, 5rem);
+  max-width: 64rem;
+  margin: clamp(3rem, 6vw, 5rem) auto 0;
 }
 
 .expertise__item {
@@ -481,7 +600,8 @@ button {
 }
 
 .expertise__icon {
-  display: block;
+  display: flex;
+  justify-content: center;
   color: var(--cyan);
 }
 
@@ -507,6 +627,7 @@ button {
 .sequence {
   max-width: var(--maxw);
   margin-inline: auto;
+  text-align: center;
   padding: clamp(6rem, 12vw, 11rem) var(--shell) 4rem;
 }
 
@@ -514,6 +635,7 @@ button {
 .switch {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.6rem;
   margin-top: clamp(2rem, 4vw, 3rem);
 }
@@ -545,17 +667,20 @@ button {
  * separation instead, and the frame swaps sides every entry so four of these in
  * a row read as a spread rather than four copies of the same box.
  */
+/* The category as one centred column: the frame, then what and how. */
 .clip {
-  display: grid;
-  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: start;
-  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.6rem, 3vw, 2.4rem);
+  max-width: 50rem;
+  margin: clamp(2.4rem, 5vw, 3.6rem) auto 0;
   padding-top: clamp(1.6rem, 3vw, 2.6rem);
   border-top: 1px solid var(--line);
 }
 
 .clip__figure {
+  width: min(100%, 34rem);
   margin: 0;
 }
 
@@ -636,6 +761,7 @@ button {
 .clip__meta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.3rem 1.2rem;
   margin-top: 0.7rem;
   font-size: 0.58rem;
@@ -650,12 +776,14 @@ button {
 .clip__body {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1rem;
 }
 
 .clip__header {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.45rem;
 }
 
@@ -688,6 +816,7 @@ button {
 .clip__tags {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.4rem 1.2rem;
 }
 
@@ -706,6 +835,7 @@ button {
 .clip__deliverables {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.3rem 1.3rem;
   padding-top: 0.9rem;
   border-top: 1px solid var(--line);
@@ -783,6 +913,7 @@ button {
 .clients {
   max-width: var(--maxw);
   margin-inline: auto;
+  text-align: center;
   padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
 }
 
@@ -794,6 +925,7 @@ button {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: clamp(2.4rem, 7vw, 6rem);
   margin-top: clamp(2.6rem, 5vw, 4rem);
   padding-top: clamp(1.8rem, 3vw, 2.6rem);
@@ -834,6 +966,7 @@ button {
 .reviews {
   max-width: var(--maxw);
   margin-inline: auto;
+  text-align: center;
   padding: clamp(6rem, 12vw, 10rem) var(--shell) 3rem;
 }
 
@@ -855,7 +988,7 @@ button {
   content: '';
   position: absolute;
   top: -4px;
-  left: 0;
+  left: calc(50% - 3.5px);
   width: 7px;
   height: 7px;
   rotate: 45deg;
@@ -872,6 +1005,7 @@ button {
 .review__by {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.25rem;
   margin-top: 1.2rem;
 }
@@ -1042,14 +1176,6 @@ button {
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1100px) {
-  .clip {
-    grid-template-columns: 1fr;
-    gap: 1.4rem;
-  }
-
-  .clip__figure {
-    max-width: 26rem;
-  }
 
   .stats {
     grid-template-columns: repeat(2, 1fr);
@@ -1059,33 +1185,6 @@ button {
 @media (max-width: 900px) {
   .site-header__nav {
     gap: 1rem;
-  }
-
-  /*
-   * Side by side, a panel this narrow crops the photo to a sliver. On a phone
-   * it becomes a banner above the text, fading into the page at the bottom.
-   */
-  .about__portrait {
-    position: relative;
-    width: calc(100% + 2 * var(--shell));
-    height: auto;
-    aspect-ratio: 4 / 4.2;
-    margin: 0 calc(-1 * var(--shell)) -4rem;
-  }
-
-  .about__portrait::after {
-    background-image:
-      linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.45) 26%, transparent 60%),
-      linear-gradient(to bottom, #050505 0%, transparent 14%);
-  }
-
-  .about {
-    padding-top: 4rem;
-  }
-
-  .about__copy {
-    max-width: none;
-    min-height: 0;
   }
 
   .expertise {
@@ -1112,6 +1211,17 @@ button {
     letter-spacing: 0.08em;
   }
 
+  /* On a phone the viewfinder keeps its corners and drops the read-outs. */
+  .viewfinder__readout--bl,
+  .viewfinder__readout--br {
+    display: none;
+  }
+
+  .hero__role {
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+  }
+
   /* Two fields side by side is too tight to type in on a phone. */
   .form__row {
     grid-template-columns: 1fr;
@@ -1135,5 +1245,10 @@ button {
 
   .grain {
     display: none;
+  }
+
+  .viewfinder__rec,
+  .hero__scroll-line::after {
+    animation: none;
   }
 }

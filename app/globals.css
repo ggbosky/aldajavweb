@@ -327,7 +327,7 @@ button {
   text-align: center;
 }
 
-/* A cyan key light behind the mark, plus a faint grid like a monitor overlay. */
+/* A cyan key light behind the mark. */
 .hero__glow {
   position: absolute;
   inset: 0;
@@ -336,69 +336,6 @@ button {
   background:
     radial-gradient(ellipse 46% 38% at 50% 46%, rgba(0, 255, 255, 0.16), transparent 70%),
     radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 120, 140, 0.12), transparent 75%);
-}
-
-.hero__glow::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 100% 33.333%, 33.333% 100%;
-  background-position: 0 -1px, -1px 0;
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 80%);
-}
-
-/* Viewfinder: four corner brackets and a read-out in each corner. */
-.viewfinder {
-  position: absolute;
-  inset: clamp(5.5rem, 12vh, 7.5rem) var(--shell) clamp(2rem, 5vh, 3rem);
-  z-index: 0;
-  pointer-events: none;
-}
-
-.viewfinder__corner {
-  position: absolute;
-  width: clamp(1.4rem, 3vw, 2.4rem);
-  height: clamp(1.4rem, 3vw, 2.4rem);
-  border-color: rgba(255, 255, 255, 0.4);
-  border-style: solid;
-  border-width: 0;
-}
-
-.viewfinder__corner--tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
-.viewfinder__corner--tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
-.viewfinder__corner--bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
-.viewfinder__corner--br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
-
-.viewfinder__readout {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.62rem;
-  color: var(--fg-dim);
-  font-variant-numeric: tabular-nums;
-}
-
-.viewfinder__readout--tl { top: 1.1rem; left: 1.4rem; color: var(--fg); }
-.viewfinder__readout--tr { top: 1.1rem; right: 1.4rem; color: var(--cyan); }
-.viewfinder__readout--bl { bottom: 1.1rem; left: 1.4rem; }
-.viewfinder__readout--br { bottom: 1.1rem; right: 1.4rem; }
-
-.viewfinder__rec {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: #ff3b3b;
-  box-shadow: 0 0 10px rgba(255, 59, 59, 0.8);
-  animation: rec 1.6s steps(1) infinite;
-}
-
-@keyframes rec {
-  0%, 60% { opacity: 1; }
-  61%, 100% { opacity: 0.15; }
 }
 
 .hero__copy {
@@ -448,50 +385,6 @@ button {
   justify-content: center;
   gap: 0.8rem;
   margin-top: clamp(1.8rem, 4vh, 2.8rem);
-}
-
-.hero__scroll {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(2.6rem, 6vh, 3.8rem);
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.56rem;
-  letter-spacing: 0.3em;
-  color: var(--fg-faint);
-  transform: translateX(-50%);
-  transition: color 0.2s var(--ease-cut);
-}
-
-.hero__scroll:hover,
-.hero__scroll:focus-visible {
-  color: var(--cyan);
-}
-
-.hero__scroll-line {
-  position: relative;
-  width: 1px;
-  height: 2.4rem;
-  overflow: hidden;
-  background: var(--line);
-}
-
-.hero__scroll-line::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: -40%;
-  width: 1px;
-  height: 40%;
-  background: var(--cyan);
-  animation: scrollcue 1.8s var(--ease-cut) infinite;
-}
-
-@keyframes scrollcue {
-  to { top: 100%; }
 }
 
 /* ---------- Stats ---------- */
@@ -1211,12 +1104,6 @@ button {
     letter-spacing: 0.08em;
   }
 
-  /* On a phone the viewfinder keeps its corners and drops the read-outs. */
-  .viewfinder__readout--bl,
-  .viewfinder__readout--br {
-    display: none;
-  }
-
   .hero__role {
     font-size: 0.54rem;
     letter-spacing: 0.1em;
@@ -1245,10 +1132,5 @@ button {
 
   .grain {
     display: none;
-  }
-
-  .viewfinder__rec,
-  .hero__scroll-line::after {
-    animation: none;
   }
 }

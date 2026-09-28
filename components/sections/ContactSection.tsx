@@ -6,6 +6,41 @@ import { BRAND, CONTACT_ENDPOINT, SOCIALS } from '@/lib/site';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
+/** The three network marks, drawn inline so they take the page colour. */
+function SocialIcon({ name }: { name: string }): React.JSX.Element | null {
+  const common = {
+    width: 22,
+    height: 22,
+    viewBox: '0 0 24 24',
+    'aria-hidden': true,
+  };
+
+  if (name === 'Instagram') {
+    return (
+      <svg {...common} fill="none" stroke="currentColor" strokeWidth={1.8}>
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4.2" />
+        <circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+  if (name === 'Facebook') {
+    return (
+      <svg {...common} fill="currentColor">
+        <path d="M13.5 21v-7.6h2.6l.4-3h-3V8.5c0-.9.3-1.5 1.5-1.5h1.6V4.3c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1z" />
+      </svg>
+    );
+  }
+  if (name === 'LinkedIn') {
+    return (
+      <svg {...common} fill="currentColor">
+        <path d="M4.98 3.5a2.48 2.48 0 1 1 0 4.96 2.48 2.48 0 0 1 0-4.96zM3 9.75h3.96V21H3V9.75zM9.5 9.75h3.8v1.54h.05c.53-1 1.82-2.05 3.75-2.05 4.01 0 4.75 2.64 4.75 6.07V21h-3.96v-5.03c0-1.2-.02-2.74-1.67-2.74-1.67 0-1.93 1.3-1.93 2.65V21H9.5V9.75z" />
+      </svg>
+    );
+  }
+  return null;
+}
+
 export default function ContactSection(): React.JSX.Element {
   const [status, setStatus] = useState<Status>('idle');
 
@@ -43,23 +78,12 @@ export default function ContactSection(): React.JSX.Element {
   return (
     <section className="contact" id="kontakt">
       <HardCutTransition>
-        <p className="section-label mono">Kontakt</p>
-      </HardCutTransition>
-
-      <HardCutTransition delay={0.06}>
-        <h2 className="contact__title">
-          Pojďme se <em>spojit</em>.
+        <h2 className="section-title">
+          Pojďme se <em>spojit</em>
         </h2>
       </HardCutTransition>
 
-      <HardCutTransition delay={0.12}>
-        <p className="contact__lead">
-          Napiš, co potřebuješ dodat a do kdy. Ozvu se s termínem, cenou a návrhem, jak to
-          natočit tak, aby se to dalo dobře sestříhat.
-        </p>
-      </HardCutTransition>
-
-      <HardCutTransition delay={0.18}>
+      <HardCutTransition delay={0.08}>
         <form className="form" onSubmit={handleSubmit}>
           <div className="form__row">
             <label className="field">
@@ -99,16 +123,20 @@ export default function ContactSection(): React.JSX.Element {
         </form>
       </HardCutTransition>
 
-      <HardCutTransition delay={0.24}>
+      <HardCutTransition delay={0.14}>
         <footer className="footer">
-          <a className="contact__link" href={`mailto:${BRAND.email}`}>
-            {BRAND.email}
-          </a>
-          <ul className="footer__socials mono">
+          <ul className="footer__socials">
             {SOCIALS.map((social) => (
               <li key={social.label}>
-                <a href={social.href} target="_blank" rel="noreferrer noopener">
-                  {social.label}
+                <a
+                  className="footer__social"
+                  href={social.href}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={social.label}
+                  title={social.label}
+                >
+                  <SocialIcon name={social.label} />
                 </a>
               </li>
             ))}

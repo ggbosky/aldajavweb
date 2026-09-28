@@ -146,14 +146,24 @@ button {
 }
 
 .site-header__brand {
-  display: block;
-  width: clamp(2.2rem, 3.2vw, 2.8rem);
+  display: flex;
+  align-items: center;
+  gap: clamp(0.8rem, 1.4vw, 1.1rem);
+  color: #fff;
 }
 
 .site-header__brand img {
   display: block;
-  width: 100%;
+  width: clamp(2.6rem, 3.8vw, 3.3rem);
   height: auto;
+}
+
+.site-header__name {
+  font-size: clamp(0.72rem, 1vw, 0.86rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .site-header__nav {
@@ -285,12 +295,6 @@ button {
 
 /* ---------- Section furniture ---------- */
 
-.section-label {
-  color: var(--fg-faint);
-  letter-spacing: 0.3em;
-  font-size: 0.62rem;
-}
-
 .section-title {
   margin: 1.2rem auto 0;
   max-width: 17ch;
@@ -367,6 +371,16 @@ button {
   text-wrap: balance;
 }
 
+.hero__word {
+  display: inline-block;
+  will-change: transform, filter;
+}
+
+/* Words are inline-blocks, so the gap between them is put back by hand. */
+.hero__word + .hero__word {
+  margin-left: 0.26em;
+}
+
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -377,44 +391,38 @@ button {
 
 /* ---------- Stats ---------- */
 
+/* Three figures on plain black, each hung under a hairline like the expertise row. */
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  max-width: var(--maxw);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.8rem, 3.5vw, 3rem);
+  max-width: 64rem;
   margin: 0 auto;
-  padding: 0;
-  background: var(--line);
-  border-block: 1px solid var(--line);
+  padding: clamp(2rem, 5vw, 3.5rem) var(--shell) 0;
 }
 
 .stats__item {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.4rem;
+  padding-top: 1.7rem;
+  border-top: 1px solid var(--line);
   text-align: center;
-  gap: 0.25rem;
-  padding: 2rem var(--shell);
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px);
 }
 
 .stats__value {
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
   font-weight: 900;
   letter-spacing: -0.05em;
   line-height: 1;
   color: var(--fg);
+  font-variant-numeric: tabular-nums;
 }
 
 .stats__label {
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   color: var(--fg);
-}
-
-.stats__note {
-  color: var(--fg-faint);
-  font-size: 0.6rem;
 }
 
 /* ---------- About ---------- */
@@ -423,27 +431,55 @@ button {
   max-width: var(--maxw);
   margin-inline: auto;
   padding: clamp(6rem, 12vw, 11rem) var(--shell) 3rem;
-  text-align: center;
 }
 
-.about__figure {
-  width: min(100%, 24rem);
-  margin: clamp(2rem, 4vw, 3rem) auto 0;
+/* Text left, photo right; the heading sits with the text it introduces. */
+.about__split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.about__copy {
+  position: relative;
+  z-index: 1;
+}
+
+.about__copy .section-title {
+  margin-left: 0;
+}
+
+.about__text {
+  max-width: 56ch;
+  margin-top: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.02rem, 1.45vw, 1.18rem);
+  line-height: 1.7;
+  text-align: justify;
+  hyphens: auto;
+  color: rgba(244, 244, 242, 0.86);
 }
 
 /*
- * The photo's rectangle is painted out in the page colour on all four sides,
- * so it dissolves into the page instead of sitting in a frame.
+ * The first hero's portrait panel: it runs to the right edge of the window and
+ * its left side dissolves into black under the text. The fade is painted over
+ * the photo in the page colour, so the four gradients stack.
  */
+.about__figure {
+  align-self: stretch;
+  margin-right: calc(-1 * var(--shell));
+}
+
 .about__portrait {
   position: relative;
+  height: 100%;
+  min-height: clamp(26rem, 42vw, 40rem);
   overflow: hidden;
 }
 
 .about__portrait img {
-  display: block;
-  width: 100%;
-  height: auto;
+  object-fit: cover;
+  object-position: 50% 22%;
   filter: saturate(1.15) contrast(1.04) brightness(0.92);
 }
 
@@ -452,22 +488,21 @@ button {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(to right, #050505 0%, rgba(5, 5, 5, 0.3) 14%, transparent 32%),
-    linear-gradient(to left, #050505 0%, rgba(5, 5, 5, 0.3) 14%, transparent 32%),
-    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.4) 18%, transparent 40%),
-    linear-gradient(to bottom, #050505 0%, transparent 14%);
-}
-
-.about__text {
-  max-width: 58ch;
-  margin: clamp(1.6rem, 3vw, 2.4rem) auto 0;
-  font-size: clamp(1.02rem, 1.45vw, 1.18rem);
-  line-height: 1.7;
-  color: rgba(244, 244, 242, 0.86);
+    linear-gradient(
+      to right,
+      #050505 0%,
+      rgba(5, 5, 5, 0.74) 20%,
+      rgba(5, 5, 5, 0.26) 42%,
+      rgba(5, 5, 5, 0.06) 64%,
+      transparent 100%
+    ),
+    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.4) 16%, transparent 36%),
+    linear-gradient(to bottom, #050505 0%, rgba(5, 5, 5, 0.3) 10%, transparent 24%);
 }
 
 /* Three marks on one rule, like steps hung on a line. Icon cyan, text white. */
 .expertise {
+  text-align: center;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1.8rem, 3.5vw, 3rem);
@@ -548,188 +583,21 @@ button {
  * separation instead, and the frame swaps sides every entry so four of these in
  * a row read as a spread rather than four copies of the same box.
  */
-/* The category as one centred column: the frame, then what and how. */
-.clip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(1.6rem, 3vw, 2.4rem);
-  max-width: 50rem;
-  margin: clamp(2.4rem, 5vw, 3.6rem) auto 0;
-  padding-top: clamp(1.6rem, 3vw, 2.6rem);
-  border-top: 1px solid var(--line);
-}
-
-.clip__figure {
-  width: min(100%, 34rem);
-  margin: 0;
-}
-
-.clip__preview {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: linear-gradient(180deg, #0b0f15, #06080c);
-  border: 1px solid var(--line);
-  transition: border-color 0.3s var(--ease-cut);
-}
-
-.clip:hover .clip__preview {
-  border-color: var(--line-strong);
-}
-
-/* Four frames off a strip. Near-neutral: the accent is a hairline, not a wash —
-   tinting the whole frame at low alpha over black just turns it to mud. */
-.clip__frames {
-  position: absolute;
-  inset: 22% 6%;
-  display: flex;
-  align-items: stretch;
-  gap: 6px;
-}
-
-.clip__frames i {
-  position: relative;
-  flex: 1;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.015) 62%, transparent);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-top: 2px solid rgba(0, 255, 255, 0.7);
-  animation: gate 3.2s var(--ease-cut) infinite;
-}
-
-/* The horizon line that makes a flat rectangle read as an exposed frame. */
-.clip__frames i::after {
-  content: '';
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  top: 58%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.34);
-}
-
-@keyframes gate {
-  0%, 100% { opacity: 0.5; }
-  45% { opacity: 1; }
-}
-
-.clip__sprockets {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 14px;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent 0 6px,
-    rgba(255, 255, 255, 0.14) 6px 13px,
-    transparent 13px 19px
-  );
-  background-size: 100% 6px;
-  background-repeat: repeat-x;
-}
-
-.clip__sprockets--top {
-  top: 0;
-  background-position: 0 4px;
-}
-
-.clip__sprockets--bottom {
-  bottom: 0;
-  background-position: 0 4px;
-}
-
-/* The read-out moves out of the frame and under it, where it stops competing. */
-.clip__meta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.3rem 1.2rem;
-  margin-top: 0.7rem;
-  font-size: 0.58rem;
-  color: var(--fg-faint);
-  font-variant-numeric: tabular-nums;
-}
-
-.clip__format {
-  color: var(--fg-dim);
-}
-
-.clip__body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-}
-
-.clip__header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.45rem;
-}
-
-.clip__client {
-  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.045em;
-  text-transform: uppercase;
-}
-
-.clip__sector {
-  color: var(--fg-faint);
-}
-
-.clip__headline {
-  font-size: clamp(1.05rem, 1.7vw, 1.3rem);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--fg);
-}
-
-.clip__text {
-  max-width: 58ch;
-  color: var(--fg-dim);
-  font-size: 0.97rem;
-}
-
-/* Role and deliverables share one quiet line instead of two loud ones. */
-.clip__tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem 1.2rem;
-}
-
-.tag {
-  font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cyan);
-}
-
-.clip__cta {
-  margin-top: 0.4rem;
-}
-
-.clip__deliverables {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.3rem 1.3rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid var(--line);
-  color: var(--fg-faint);
-  font-size: 0.58rem;
-}
-
-/* Videos under the category, once Aleš picks them. */
+/* Frames: Reels upright in a row of three, YouTube on its side. */
 .reel {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
-  gap: clamp(1.4rem, 3vw, 2.2rem);
-  margin-top: clamp(2.4rem, 5vw, 3.6rem);
+  gap: clamp(1rem, 2.4vw, 1.8rem);
+  margin: clamp(2.4rem, 5vw, 3.6rem) auto 0;
+}
+
+.reel--vertical {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 54rem;
+}
+
+.reel--horizontal {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  max-width: var(--maxw);
 }
 
 .reel__frame {
@@ -737,12 +605,32 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+  padding: 0;
   background: linear-gradient(180deg, #0b0f15, #06080c);
   border: 1px solid var(--line);
   border-top: 2px solid rgba(0, 255, 255, 0.7);
+  color: inherit;
   transition: border-color 0.3s var(--ease-cut);
+}
+
+.reel--vertical .reel__frame {
+  aspect-ratio: 9 / 16;
+}
+
+.reel__frame--empty .reel__play {
+  opacity: 0.35;
+}
+
+.reel__thumb,
+.reel__player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .reel__thumb {
@@ -758,35 +646,20 @@ button {
   transition: scale 0.3s var(--ease-cut);
 }
 
-.reel__link:hover .reel__frame {
+.reel__link:hover,
+.reel__link:focus-visible {
   border-color: var(--cyan-dim);
 }
 
-.reel__link:hover .reel__thumb {
+.reel__link:hover .reel__thumb,
+.reel__link:focus-visible .reel__thumb {
   opacity: 1;
   scale: 1.03;
 }
 
-.reel__link:hover .reel__play {
+.reel__link:hover .reel__play,
+.reel__link:focus-visible .reel__play {
   scale: 1.25;
-}
-
-.reel__title {
-  margin: 0.9rem 0 0;
-  font-size: 1.05rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.reel__note,
-.reel__role {
-  margin-top: 0.35rem;
-  font-size: 0.58rem;
-  color: var(--fg-faint);
-}
-
-.reel__role {
-  color: var(--cyan);
 }
 
 /* ---------- Clients ---------- */
@@ -816,13 +689,13 @@ button {
 .clients__item {
   display: flex;
   align-items: center;
-  height: clamp(2.8rem, 5vw, 4rem);
+  height: clamp(4rem, 8vw, 6.5rem);
 }
 
 .clients__logo {
   width: auto;
   height: 100%;
-  max-width: 12rem;
+  max-width: 20rem;
   object-fit: contain;
   filter: brightness(0) invert(1);
   opacity: 0.7;
@@ -830,7 +703,7 @@ button {
 }
 
 .clients__wordmark {
-  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  font-size: clamp(2.4rem, 4.6vw, 3.8rem);
   font-weight: 900;
   letter-spacing: -0.04em;
   opacity: 0.7;
@@ -876,6 +749,33 @@ button {
   background: var(--cyan);
 }
 
+/* Placeholder: a review's shape in grey bars until the real text arrives. */
+.review--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.2rem 1.6rem 2rem;
+  background: rgba(255, 255, 255, 0.035);
+  border-top: 1px solid var(--line);
+}
+
+.review__line {
+  width: 100%;
+  height: 0.7rem;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.review__line--short {
+  width: 62%;
+}
+
+.review__line--name {
+  width: 34%;
+  margin-top: 0.9rem;
+  background: rgba(0, 255, 255, 0.25);
+}
+
 .review__quote {
   margin: 0;
   font-size: 1.05rem;
@@ -909,71 +809,30 @@ button {
   text-align: center;
 }
 
-.contact__title {
-  margin-top: 1.2rem;
-  font-size: clamp(2.6rem, 9vw, 7.5rem);
-  font-weight: 900;
-  line-height: 0.98;
-  letter-spacing: -0.055em;
-  text-transform: uppercase;
-}
-
-.contact__title em {
-  font-style: normal;
-  color: var(--cyan);
-}
-
-.contact__lead {
-  margin: 1.6rem auto 0;
-  max-width: 48ch;
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
-  color: var(--fg-dim);
-}
-
-.contact__link {
-  color: var(--fg);
-  font-size: clamp(1.25rem, 2.6vw, 2.1rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  /* A background stripe, so the rule can grow from nothing on hover. */
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0 1px;
-  transition: background-size 0.35s var(--ease-cut), color 0.25s var(--ease-cut);
-}
-
-.contact__link:hover,
-.contact__link:focus-visible {
-  color: var(--cyan);
-  background-size: 100% 1px;
-}
-
+/* No address under the form any more — just the three network marks. */
 .footer {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  margin-top: clamp(4rem, 8vw, 7rem);
-  padding-top: 1.4rem;
+  justify-content: center;
+  margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  padding-top: 1.8rem;
   border-top: 1px solid var(--line);
-  color: var(--fg-faint);
 }
 
 .footer__socials {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(1.2rem, 3vw, 2.2rem);
+  gap: clamp(1.4rem, 3vw, 2rem);
 }
 
-.footer__socials a {
-  transition: color 0.18s var(--ease-cut);
+.footer__social {
+  display: flex;
+  color: var(--fg-dim);
+  transition: color 0.2s var(--ease-cut), transform 0.2s var(--ease-cut);
 }
 
-.footer__socials a:hover,
-.footer__socials a:focus-visible {
+.footer__social:hover,
+.footer__social:focus-visible {
   color: var(--cyan);
+  transform: translateY(-2px);
 }
 
 /* ---------- Form ---------- */
@@ -1056,13 +915,6 @@ button {
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 1100px) {
-
-  .stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 900px) {
   .site-header__nav {
     gap: 1rem;
@@ -1072,6 +924,32 @@ button {
     grid-template-columns: 1fr;
     gap: 1.6rem;
   }
+
+  /* Photo becomes a banner above the text, fading into black at the bottom. */
+  .about__split {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .about__figure {
+    order: -1;
+    margin: 0 calc(-1 * var(--shell)) -5rem;
+  }
+
+  .about__portrait {
+    min-height: 0;
+    aspect-ratio: 1 / 1;
+  }
+
+  .about__portrait::after {
+    background-image:
+      linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.5) 28%, transparent 62%),
+      linear-gradient(to bottom, #050505 0%, transparent 16%);
+  }
+
+  .about {
+    padding-top: 4rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1079,12 +957,31 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .hero {
-    padding-top: 7rem;
+  /* Name and nav do not fit on one line on a phone: stack them, centred. */
+  .site-header {
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-block: 1.1rem;
+  }
+
+  .site-header__brand img {
+    width: 2.3rem;
   }
 
   .site-header__nav {
-    gap: 0.9rem;
+    gap: 1.1rem;
+  }
+
+  .hero {
+    padding-top: 9rem;
+  }
+
+  .stats {
+    gap: 1.4rem;
+  }
+
+  .reel--vertical {
+    gap: 0.6rem;
   }
 
   .site-header__link {

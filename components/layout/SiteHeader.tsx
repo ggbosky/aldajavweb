@@ -2,14 +2,13 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { BRAND, REVIEWS } from '@/lib/site';
+import { BRAND } from '@/lib/site';
 import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
 const NAV: ReadonlyArray<{ href: string; label: string }> = [
   { href: '#o-mne', label: 'O mně' },
   { href: '#prace', label: 'Práce' },
-  // Hidden with its section until there is a review to show.
-  ...(REVIEWS.length > 0 ? [{ href: '#recenze', label: 'Recenze' }] : []),
+  { href: '#recenze', label: 'Recenze' },
   { href: '#kontakt', label: 'Kontakt' },
 ];
 
@@ -25,14 +24,11 @@ export default function SiteHeader(): React.JSX.Element {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: HARD_CUT_EASE }}
     >
-      <a className="site-header__brand" href="#top" aria-label={BRAND.name}>
-        <Image
-          src="/images/alda-logo.png"
-          alt={BRAND.name}
-          width={1298}
-          height={1067}
-          priority
-        />
+      {/* "Aleš (logo) Javorský" — the mark sits between the two names. */}
+      <a className="site-header__brand" href="#top" aria-label={BRAND.fullName}>
+        <span className="site-header__name">Aleš</span>
+        <Image src="/images/alda-logo.png" alt="" width={1298} height={1067} priority />
+        <span className="site-header__name">Javorský</span>
       </a>
 
       <nav className="site-header__nav" aria-label="Hlavní navigace">

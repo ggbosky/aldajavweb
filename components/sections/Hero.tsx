@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { BRAND } from '@/lib/site';
+import { BRAND, SOCIALS } from '@/lib/site';
 import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
 /*
@@ -14,6 +14,9 @@ const ROLE_AT = 0.85;
 const TAGLINE_AT = 1.3;
 const WORD_STEP = 0.12;
 const WORDS = BRAND.tagline.split(' ');
+/** Until the videos are on the page, the work lives on his Instagram. */
+const WORK_HREF = SOCIALS.find((social) => social.label === 'Instagram')?.href ?? '#kontakt';
+
 const ACTIONS_AT = TAGLINE_AT + WORDS.length * WORD_STEP + 0.2;
 
 /** The mark, the role, the tagline and the two buttons on the plain black page. */
@@ -65,7 +68,12 @@ export default function Hero(): React.JSX.Element {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: ACTIONS_AT, ease: HARD_CUT_EASE }}
         >
-          <a className="btn btn--primary" href="#prace">
+          <a
+            className="btn btn--primary"
+            href={WORK_HREF}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             Ukázka práce
             <span className="btn__glyph" aria-hidden="true">
               ▶

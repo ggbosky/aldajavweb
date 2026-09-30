@@ -52,38 +52,6 @@ export const EXPERTISE: ReadonlyArray<{ icon: ExpertiseIcon; label: string; note
   { icon: 'podcast', label: 'Podcasty', note: 'Multicam záznam a střih' },
 ];
 
-export type WorkVideo = {
-  /** Název — na stránce se nezobrazuje, slouží pro čtečky obrazovky. */
-  readonly title: string;
-  /**
-   * Odkaz na video. YouTube odkaz (youtube.com/watch?v=… nebo youtu.be/…)
-   * se přehraje přímo na stránce; cokoliv jiného (Instagram, Drive…) se
-   * otevře v nové záložce.
-   */
-  readonly href: string;
-  /** Náhled (volitelné), např. '/prace/nazev.jpg' v `public/`. U YouTube se vezme sám. */
-  readonly thumb?: string;
-};
-
-export type WorkCategory = {
-  readonly id: string;
-  /** Text na přepínači. */
-  readonly label: string;
-  /** Poměr stran náhledů: Reels na výšku, YouTube na šířku. */
-  readonly aspect: 'vertical' | 'horizontal';
-  readonly videos: ReadonlyArray<WorkVideo>;
-};
-
-/**
- * TODO: Aleš dodá výběr videí. Formát jedné položky:
- *   { title: 'Název videa', href: 'https://www.youtube.com/watch?v=…' }
- * Dokud je pole prázdné, sekce ukáže prázdné rámečky — nic se nerozbije.
- */
-export const WORK: ReadonlyArray<WorkCategory> = [
-  { id: 'reels', label: 'Reels', aspect: 'vertical', videos: [] },
-  { id: 'youtube', label: 'YouTube', aspect: 'horizontal', videos: [] },
-];
-
 export type Client = {
   readonly name: string;
   /** Chybí-li logo, vykreslí se jméno jako textová značka. */

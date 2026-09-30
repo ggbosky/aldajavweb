@@ -7,7 +7,6 @@ import { HARD_CUT_EASE } from '@/components/motion/HardCutTransition';
 
 const NAV: ReadonlyArray<{ href: string; label: string }> = [
   { href: '#o-mne', label: 'O mně' },
-  { href: '#prace', label: 'Práce' },
   { href: '#recenze', label: 'Recenze' },
   { href: '#kontakt', label: 'Kontakt' },
 ];

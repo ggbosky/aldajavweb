@@ -39,7 +39,7 @@ export const STATS: ReadonlyArray<Stat> = [
 
 export const ABOUT = {
   body:
-    'Jsem Aleš a střih videí mě baví více jak 6 let. Vystudoval jsem marketingovou komunikaci a mám zkušenosti z tvorby obchodních promo videí, marketingových kampaní nebo klasických reels ať už pro Hitrádio nebo FAČR. Baví mě ze surového materiálu vytvořit takové video, které zaujme na první pohled. Ke každému projektu přistupuji s citem jak pro obraz, tak pro to, komu je určen.',
+    'Střih videa mě baví více jak 6 let. Vystudoval jsem marketingovou komunikaci a mám zkušenosti z tvorby obchodních promo videí, marketingových kampaní nebo klasických reels ať už pro Hitrádio nebo FAČR. Baví mě ze surového materiálu vytvořit takové video, které zaujme na první pohled. Ke každému projektu přistupuji s citem jak pro obraz, tak pro to, komu je určen.',
   portrait: '/images/ales-portret.jpg',
 } as const;
 
@@ -52,6 +52,40 @@ export const EXPERTISE: ReadonlyArray<{ icon: ExpertiseIcon; label: string; note
   { icon: 'podcast', label: 'Podcasty', note: 'Multicam záznam a střih' },
 ];
 
+export type WorkVideo = {
+  /** Název — na stránce se nezobrazuje, slouží pro čtečky obrazovky. */
+  readonly title: string;
+  /**
+   * Odkaz na video. YouTube (youtube.com/watch?v=…, youtu.be/…, /shorts/…) i
+   * Google Disk (drive.google.com/file/d/…/view) se přehrají přímo na stránce.
+   * U Disku musí být soubor sdílený „Kdokoli s odkazem“. Cokoliv jiného se
+   * otevře v nové záložce.
+   */
+  readonly href: string;
+  /** Náhled (volitelné), např. '/prace/nazev.jpg' v `public/`. U YouTube i Disku se vezme sám. */
+  readonly thumb?: string;
+};
+
+export type WorkCategory = {
+  readonly id: string;
+  /** Text na přepínači. */
+  readonly label: string;
+  /** Poměr stran náhledů: Reels na výšku, YouTube na šířku. */
+  readonly aspect: 'vertical' | 'horizontal';
+  readonly videos: ReadonlyArray<WorkVideo>;
+};
+
+/**
+ * TODO: Aleš dodá výběr videí. Formát jedné položky:
+ *   { title: 'Název videa', href: 'https://www.youtube.com/watch?v=…' }
+ *   { title: 'Název videa', href: 'https://drive.google.com/file/d/…/view' }
+ * Dokud je pole prázdné, sekce ukáže prázdné rámečky — nic se nerozbije.
+ */
+export const WORK: ReadonlyArray<WorkCategory> = [
+  { id: 'reels', label: 'Reels', aspect: 'vertical', videos: [] },
+  { id: 'youtube', label: 'YouTube', aspect: 'horizontal', videos: [] },
+];
+
 export type Client = {
   readonly name: string;
   /** Chybí-li logo, vykreslí se jméno jako textová značka. */
@@ -59,6 +93,7 @@ export type Client = {
 };
 
 export const CLIENTS: ReadonlyArray<Client> = [
+  { name: 'Inside Games', logo: '/klienti/inside-games.png' },
   { name: 'Hitrádio', logo: '/klienti/hitradio.png' },
   // TODO: logo FAČR ve sdílené složce nebylo — dokud nedorazí, jede textová značka.
   { name: 'FAČR' },

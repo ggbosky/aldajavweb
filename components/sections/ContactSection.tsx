@@ -83,6 +83,10 @@ export default function ContactSection(): React.JSX.Element {
         </h2>
       </HardCutTransition>
 
+      <HardCutTransition delay={0.04}>
+        <p className="contact__lead">Konzultace Vašeho záměru jsou pro mě inspirací</p>
+      </HardCutTransition>
+
       <HardCutTransition delay={0.08}>
         <form className="form" onSubmit={handleSubmit}>
           <div className="form__row">

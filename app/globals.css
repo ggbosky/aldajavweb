@@ -143,8 +143,33 @@ button {
   justify-content: space-between;
   gap: 1.5rem;
   padding: clamp(1.5rem, 3vw, 2rem) var(--shell);
-  /* Legible over the lit portrait and over black, with no backdrop of its own. */
-  mix-blend-mode: difference;
+  isolation: isolate;
+}
+
+/*
+ * A black fade behind the bar, running past its bottom edge: content scrolling
+ * up dissolves into it, like the edges of the O mně photo, instead of passing
+ * straight through the name and the nav.
+ */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -3.5rem;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #050505 0%,
+    #050505 48%,
+    rgba(5, 5, 5, 0.82) 68%,
+    rgba(5, 5, 5, 0.35) 86%,
+    transparent 100%
+  );
+}
+
+/* The menu button only exists on a phone. */
+.site-header__toggle {
+  display: none;
 }
 
 .site-header__brand {
@@ -286,6 +311,7 @@ button {
 
 /* The glyph leans into the direction the button sends you. */
 .btn__glyph {
+  display: inline-flex;
   font-size: 0.72em;
   transition: transform 0.25s var(--ease-cut);
 }
@@ -458,7 +484,6 @@ button {
   font-size: clamp(1.02rem, 1.45vw, 1.18rem);
   line-height: 1.7;
   text-align: justify;
-  hyphens: auto;
   color: rgba(244, 244, 242, 0.86);
 }
 
@@ -538,6 +563,131 @@ button {
   line-height: 1.55;
   color: var(--fg);
   opacity: 0.72;
+}
+
+/* ---------- Sequence / clips ---------- */
+
+.sequence {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  text-align: center;
+  padding: clamp(6rem, 12vw, 11rem) var(--shell) 4rem;
+}
+
+/* The switch: the pressed category fills with the cyan. */
+.switch {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.switch__btn {
+  padding: 0.8rem 1.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--fg);
+  transition: color 0.25s var(--ease-cut), background 0.25s var(--ease-cut),
+    border-color 0.25s var(--ease-cut), box-shadow 0.25s var(--ease-cut);
+}
+
+.switch__btn:hover {
+  border-color: var(--cyan-dim);
+}
+
+.switch__btn.is-active {
+  color: #000;
+  background: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.22);
+}
+
+/*
+ * No card, no panel, no backdrop blur — a hairline and a wide gutter carry the
+ * separation instead, and the frame swaps sides every entry so four of these in
+ * a row read as a spread rather than four copies of the same box.
+ */
+/* Frames: Reels upright in a row of three, YouTube on its side. */
+.reel {
+  display: grid;
+  gap: clamp(1rem, 2.4vw, 1.8rem);
+  margin: clamp(2.4rem, 5vw, 3.6rem) auto 0;
+}
+
+.reel--vertical {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 54rem;
+}
+
+.reel--horizontal {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  max-width: var(--maxw);
+}
+
+.reel__frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  padding: 0;
+  background: linear-gradient(180deg, #0b0f15, #06080c);
+  border: 1px solid var(--line);
+  border-top: 2px solid rgba(0, 255, 255, 0.7);
+  color: inherit;
+  transition: border-color 0.3s var(--ease-cut);
+}
+
+.reel--vertical .reel__frame {
+  aspect-ratio: 9 / 16;
+}
+
+.reel__frame--empty .reel__play {
+  opacity: 0.35;
+}
+
+.reel__thumb,
+.reel__player {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.reel__thumb {
+  object-fit: cover;
+  opacity: 0.72;
+  transition: opacity 0.3s var(--ease-cut), scale 0.4s var(--ease-cut);
+}
+
+.reel__play {
+  position: relative;
+  display: flex;
+  font-size: 1.4rem;
+  color: var(--cyan);
+  transition: scale 0.3s var(--ease-cut);
+}
+
+.reel__link:hover,
+.reel__link:focus-visible {
+  border-color: var(--cyan-dim);
+}
+
+.reel__link:hover .reel__thumb,
+.reel__link:focus-visible .reel__thumb {
+  opacity: 1;
+  scale: 1.03;
+}
+
+.reel__link:hover .reel__play,
+.reel__link:focus-visible .reel__play {
+  scale: 1.25;
 }
 
 /* ---------- Clients ---------- */
@@ -685,6 +835,15 @@ button {
   margin-inline: auto;
   padding: clamp(6rem, 13vw, 11rem) var(--shell) 5rem;
   text-align: center;
+}
+
+/* Same type as the O mně text, centred under the heading. */
+.contact__lead {
+  max-width: 56ch;
+  margin: clamp(1.2rem, 2.4vw, 1.8rem) auto 0;
+  font-size: clamp(1.02rem, 1.45vw, 1.18rem);
+  line-height: 1.7;
+  color: rgba(244, 244, 242, 0.86);
 }
 
 /* No address under the form any more — just the three network marks. */
@@ -835,23 +994,81 @@ button {
     grid-template-columns: 1fr;
   }
 
-  /* Name and nav do not fit on one line on a phone: stack them, centred. */
+  /*
+   * The nav folds into a three-line menu button in the top right corner and
+   * drops down as a panel under the bar when opened.
+   */
   .site-header {
-    flex-direction: column;
-    gap: 0.8rem;
-    padding-block: 1.1rem;
+    padding-block: 1rem;
   }
 
   .site-header__brand img {
     width: 2.3rem;
   }
 
+  .site-header__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-right: -0.5rem;
+    padding: 0.5rem;
+  }
+
+  .site-header__toggle span {
+    display: block;
+    height: 2px;
+    background: #fff;
+    transition: transform 0.3s var(--ease-cut), opacity 0.2s var(--ease-cut);
+  }
+
+  .site-header.is-open .site-header__toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .site-header.is-open .site-header__toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-header.is-open .site-header__toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
   .site-header__nav {
-    gap: 1.1rem;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0;
+    padding: 0.4rem var(--shell) 1.4rem;
+    background: #050505;
+    border-bottom: 1px solid var(--line);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-0.6rem);
+    transition: opacity 0.25s var(--ease-cut), transform 0.25s var(--ease-cut),
+      visibility 0s linear 0.25s;
+  }
+
+  .site-header.is-open .site-header__nav {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.25s var(--ease-cut), transform 0.25s var(--ease-cut);
+  }
+
+  /* With the panel open, the bar itself goes solid so the two read as one. */
+  .site-header.is-open::before {
+    inset: 0;
+    background: #050505;
   }
 
   .hero {
-    padding-top: 9rem;
+    padding-top: 7rem;
   }
 
   .stats {
@@ -859,8 +1076,13 @@ button {
   }
 
   .site-header__link {
-    font-size: 0.66rem;
-    letter-spacing: 0.08em;
+    padding-block: 0.75rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+  }
+
+  .site-header__link::after {
+    bottom: 0.45rem;
   }
 
   .hero__role {

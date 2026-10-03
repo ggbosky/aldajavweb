@@ -154,15 +154,16 @@ button {
 .site-header::before {
   content: '';
   position: absolute;
-  inset: 0 0 -3.5rem;
+  inset: 0 0 -5rem;
   z-index: -1;
   pointer-events: none;
   background: linear-gradient(
     to bottom,
     #050505 0%,
-    #050505 48%,
-    rgba(5, 5, 5, 0.82) 68%,
-    rgba(5, 5, 5, 0.35) 86%,
+    #050505 52%,
+    rgba(5, 5, 5, 0.9) 64%,
+    rgba(5, 5, 5, 0.55) 80%,
+    rgba(5, 5, 5, 0.18) 92%,
     transparent 100%
   );
 }
@@ -611,20 +612,29 @@ button {
  * a row read as a spread rather than four copies of the same box.
  */
 /* Frames: Reels upright in a row of three, YouTube on its side. */
+/*
+ * Five per set. Reels stand upright five abreast; YouTube lies three abreast
+ * with the remainder centred under it. Wrapping is centred so a short last
+ * row never hangs off to one side.
+ */
 .reel {
-  display: grid;
-  gap: clamp(1rem, 2.4vw, 1.8rem);
+  --cols: 3;
+  --gap: clamp(0.8rem, 2vw, 1.6rem);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
   margin: clamp(2.4rem, 5vw, 3.6rem) auto 0;
+  max-width: var(--maxw);
+}
+
+.reel > li {
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
 }
 
 .reel--vertical {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  max-width: 54rem;
-}
-
-.reel--horizontal {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-  max-width: var(--maxw);
+  --cols: 5;
+  max-width: 70rem;
 }
 
 .reel__frame {
@@ -755,37 +765,75 @@ button {
 .reviews__list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: clamp(1.8rem, 3.5vw, 3rem);
-  margin-top: clamp(3rem, 6vw, 4.5rem);
+  gap: clamp(2.8rem, 3.5vw, 3rem) clamp(1.8rem, 3.5vw, 3rem);
+  margin-top: clamp(4.5rem, 8vw, 6rem);
 }
 
-/* Hung on a rule with a cyan marker, the same as the old process steps. */
+/*
+ * A grey card with the client's photo sitting centred on its top edge, where
+ * the cyan marker used to be. Real and placeholder cards share every edge.
+ */
 .review {
   position: relative;
-  padding-top: 1.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 3.4rem 1.8rem 2rem;
+  background: rgba(255, 255, 255, 0.035);
   border-top: 1px solid var(--line);
 }
 
-.review::before {
-  content: '';
+.review__photo {
   position: absolute;
-  top: -4px;
-  left: calc(50% - 3.5px);
-  width: 7px;
-  height: 7px;
-  rotate: 45deg;
-  background: var(--cyan);
+  top: 0;
+  left: 50%;
+  width: 4.6rem;
+  height: 4.6rem;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid var(--cyan);
+  background: #111;
+  transform: translate(-50%, -50%);
+}
+
+.review__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.review__quote {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--fg-dim);
+}
+
+.review__by {
+  margin-top: auto;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--cyan);
+}
+
+.review__sep {
+  margin-inline: 0.55em;
+  font-weight: 400;
+  opacity: 0.7;
 }
 
 /* Placeholder: a review's shape in grey bars until the real text arrives. */
 .review--empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 0.75rem;
-  padding: 2.2rem 1.6rem 2rem;
-  background: rgba(255, 255, 255, 0.035);
-  border-top: 1px solid var(--line);
+}
+
+.review--empty .review__photo {
+  border-color: rgba(0, 255, 255, 0.25);
 }
 
 .review__line {
@@ -799,33 +847,9 @@ button {
 }
 
 .review__line--name {
-  width: 34%;
-  margin-top: 0.9rem;
+  width: 46%;
+  margin-top: auto;
   background: rgba(0, 255, 255, 0.25);
-}
-
-.review__quote {
-  margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.55;
-  color: var(--fg);
-}
-
-.review__by {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  margin-top: 1.2rem;
-}
-
-.review__author {
-  font-weight: 700;
-}
-
-.review__role {
-  font-size: 0.58rem;
-  color: var(--cyan);
 }
 
 /* ---------- Contact ---------- */
@@ -1088,6 +1112,12 @@ button {
   .hero__role {
     font-size: 0.54rem;
     letter-spacing: 0.1em;
+  }
+
+  /* Two per row on a phone, the odd one out centred under them. */
+  .reel,
+  .reel--vertical {
+    --cols: 2;
   }
 
   /* Two fields side by side is too tight to type in on a phone. */

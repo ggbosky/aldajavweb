@@ -76,14 +76,76 @@ export type WorkCategory = {
 };
 
 /**
- * TODO: Aleš dodá výběr videí. Formát jedné položky:
- *   { title: 'Název videa', href: 'https://www.youtube.com/watch?v=…' }
- *   { title: 'Název videa', href: 'https://drive.google.com/file/d/…/view' }
- * Dokud je pole prázdné, sekce ukáže prázdné rámečky — nic se nerozbije.
+ * Vybraná videa — po pěti na kategorii, každé pro jiného klienta. Leží na
+ * Google Disku Aleše (složka VIDEA) a přehrávají se přímo na stránce přes
+ * přehrávač Disku. Náhledy jsou uložené v `public/prace`.
+ * Další video: { title: 'Klient – název', href: 'https://drive.google.com/file/d/…/view', thumb: '/prace/….jpg' }
  */
 export const WORK: ReadonlyArray<WorkCategory> = [
-  { id: 'reels', label: 'Reels', aspect: 'vertical', videos: [] },
-  { id: 'youtube', label: 'YouTube', aspect: 'horizontal', videos: [] },
+  {
+    id: 'reels',
+    label: 'Reels',
+    aspect: 'vertical',
+    videos: [
+      {
+        title: 'Hitrádio – Ranní show 2.0',
+        href: 'https://drive.google.com/file/d/1w1nwDJ_WP96l8Ra4oTKB14HcF0fMCXQ7/view',
+        thumb: '/prace/hitradio-ranni-show.jpg',
+      },
+      {
+        title: 'Jakubeoff – Video 9',
+        href: 'https://drive.google.com/file/d/12MokjOkTJpHGQvEAHLrkyvc-TCMI7uJb/view',
+        thumb: '/prace/jakubeoff-video-9.jpg',
+      },
+      {
+        title: 'Matěj Cihlář – Náhledovky',
+        href: 'https://drive.google.com/file/d/1mDpq9AFOL3W3cUvZAS4VkxTxcm75rJA_/view',
+        thumb: '/prace/matej-cihlar-nahledovky.jpg',
+      },
+      {
+        title: 'Radio House – Radioprojekt 2025',
+        href: 'https://drive.google.com/file/d/1YWo3N3wg_t99YEzzpAVDxF8Al9b9YDHD/view',
+        thumb: '/prace/radio-house-radioprojekt.jpg',
+      },
+      {
+        title: 'Repre – Fotbal+ FAQ: Kolik',
+        href: 'https://drive.google.com/file/d/1dmCss8U9s1l2DpDQ8VDgee_UBeyU77tD/view',
+        thumb: '/prace/repre-fotbal-faq.jpg',
+      },
+    ],
+  },
+  {
+    id: 'youtube',
+    label: 'YouTube',
+    aspect: 'horizontal',
+    videos: [
+      {
+        title: 'AMBIS – Mediální gramotnost a dezinformace',
+        href: 'https://drive.google.com/file/d/1RtBNneHmgoo_yCIZb-867whT_x2VLrt5/view',
+        thumb: '/prace/ambis-medialni-gramotnost.jpg',
+      },
+      {
+        title: 'Hitrádio – Obchodní promo',
+        href: 'https://drive.google.com/file/d/1h8DhEUNwGjw0wXSmp63rVA8GLVAFMybh/view',
+        thumb: '/prace/hitradio-obchodni-promo.jpg',
+      },
+      {
+        title: 'Matěj Cihlář – 7 úrovní monetizace',
+        href: 'https://drive.google.com/file/d/1xEdIzE30UadHYczMRe7IUQ3dugTKUn8F/view',
+        thumb: '/prace/matej-cihlar-7-urovni.jpg',
+      },
+      {
+        title: 'MOL Cup – Teaser 2025/26',
+        href: 'https://drive.google.com/file/d/1_3FXMgheOIGpazAuvYZ-VrlPeDJBpzyk/view',
+        thumb: '/prace/mol-cup-teaser.jpg',
+      },
+      {
+        title: 'Radio House – Chytrý jak rádio',
+        href: 'https://drive.google.com/file/d/1hDmSv7scMOguXlFvxuDh5bsJ49Z29grz/view',
+        thumb: '/prace/radio-house-chytry-jak-radio.jpg',
+      },
+    ],
+  },
 ];
 
 export type Client = {
@@ -103,14 +165,26 @@ export type Review = {
   readonly quote: string;
   readonly author: string;
   readonly role: string;
+  /** Čtvercová fotka v `public/recenze`, vykreslí se jako kolečko. */
+  readonly photo?: string;
 };
 
+/** Kolik míst sekce drží, dokud recenze nedorazí — prázdná se doplní šedými rámečky. */
+export const REVIEW_SLOTS = 3;
+
 /**
- * TODO: Aleš dodá recenze od klientů. Formát:
- *   { quote: 'Text recenze.', author: 'Jméno', role: 'Pozice, firma' }
- * Dokud je pole prázdné, sekce ukáže tři prázdné rámečky.
+ * TODO: další dvě recenze pošle Aleš. Formát:
+ *   { quote: 'Text.', author: 'Jméno', role: 'Pozice', photo: '/recenze/jmeno.jpg' }
  */
-export const REVIEWS: ReadonlyArray<Review> = [];
+export const REVIEWS: ReadonlyArray<Review> = [
+  {
+    quote:
+      'Alda vždy všechno zvládl na jedničku, neustále se učil nové techniky střihu a má cit pro detail. Nebál bych se mu kdykoliv svěřit další projekty, doporučuju.',
+    author: 'Matěj „Straty“ Cihlář',
+    role: 'Content creator a komentátor',
+    photo: '/recenze/matej-cihlar.jpg',
+  },
+];
 
 /**
  * Kam se odesílá kontaktní formulář.

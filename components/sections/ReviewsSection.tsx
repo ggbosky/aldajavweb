@@ -1,13 +1,18 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
-import { REVIEWS } from '@/lib/site';
+import { REVIEWS, REVIEW_SLOTS } from '@/lib/site';
 
-/** Empty frames hold the section's shape until the first reviews arrive. */
-const PLACEHOLDERS = 3;
-
+/**
+ * Cards in a row: the client's photo sits centred on the top edge, the review
+ * in grey italics under it, then "Name | role" in bold cyan. Slots the reviews
+ * do not fill yet keep the same shape in grey placeholder bars.
+ */
 export default function ReviewsSection(): React.JSX.Element {
+  const empty = Math.max(0, REVIEW_SLOTS - REVIEWS.length);
+
   return (
     <section className="reviews" id="recenze">
       <HardCutTransition>
@@ -23,29 +28,38 @@ export default function ReviewsSection(): React.JSX.Element {
         whileInView="visible"
         viewport={{ once: true, margin: '-80px' }}
       >
-        {REVIEWS.length > 0
-          ? REVIEWS.map((review) => (
-              <motion.li key={review.author} className="review" variants={cutChild}>
-                <blockquote className="review__quote">{review.quote}</blockquote>
-                <footer className="review__by">
-                  <span className="review__author">{review.author}</span>
-                  <span className="review__role mono">{review.role}</span>
-                </footer>
-              </motion.li>
-            ))
-          : Array.from({ length: PLACEHOLDERS }, (_, index) => (
-              <motion.li
-                key={index}
-                className="review review--empty"
-                variants={cutChild}
-                aria-hidden="true"
-              >
-                <span className="review__line" />
-                <span className="review__line" />
-                <span className="review__line review__line--short" />
-                <span className="review__line review__line--name" />
-              </motion.li>
-            ))}
+        {REVIEWS.map((review) => (
+          <motion.li key={review.author} className="review" variants={cutChild}>
+            <span className="review__photo">
+              {review.photo && (
+                <Image src={review.photo} alt={review.author} width={160} height={160} />
+              )}
+            </span>
+            <blockquote className="review__quote">{review.quote}</blockquote>
+            <p className="review__by">
+              {review.author}
+              <span className="review__sep" aria-hidden="true">
+                |
+              </span>
+              {review.role}
+            </p>
+          </motion.li>
+        ))}
+
+        {Array.from({ length: empty }, (_, index) => (
+          <motion.li
+            key={`empty-${index}`}
+            className="review review--empty"
+            variants={cutChild}
+            aria-hidden="true"
+          >
+            <span className="review__photo" />
+            <span className="review__line" />
+            <span className="review__line" />
+            <span className="review__line review__line--short" />
+            <span className="review__line review__line--name" />
+          </motion.li>
+        ))}
       </motion.ul>
     </section>
   );

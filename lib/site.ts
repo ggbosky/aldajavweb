@@ -40,7 +40,11 @@ export const STATS: ReadonlyArray<Stat> = [
 export const ABOUT = {
   body:
     'Střih videa mě baví více jak 6 let. Vystudoval jsem marketingovou komunikaci a mám zkušenosti z tvorby obchodních promo videí, marketingových kampaní nebo klasických reels ať už pro Hitrádio nebo FAČR. Baví mě ze surového materiálu vytvořit takové video, které zaujme na první pohled. Ke každému projektu přistupuji s citem jak pro obraz, tak pro to, komu je určen.',
-  portrait: '/images/ales-portret.jpg',
+  /** Fotka ve dvou vrstvách: azurové pozadí a pod ním vyříznutý Aleš (747 × 1024). */
+  portrait: {
+    background: '/images/ales-pozadi.jpg',
+    person: '/images/ales-osoba.webp',
+  },
 } as const;
 
 /** The icon is drawn inline in the component; this picks which one. */

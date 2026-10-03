@@ -489,43 +489,36 @@ button {
 }
 
 /*
- * The first hero's portrait panel: it runs to the right edge of the window and
- * its left side dissolves into black under the text. The fade is painted over
- * the photo in the page colour, so the four gradients stack.
+ * Two stacked layers of the same 747 × 1024 frame, so they line up exactly.
+ * The cyan backdrop is masked into an ellipse that runs out to transparent on
+ * every side — no edge, no hard line where it meets the black page. The
+ * cut-out sits on top untouched, fading only along the bottom so the hoodie
+ * does not end in a straight cut.
  */
 .about__figure {
-  align-self: stretch;
-  margin-right: calc(-1 * var(--shell));
+  justify-self: center;
+  width: min(100%, 30rem);
 }
 
 .about__portrait {
   position: relative;
-  height: 100%;
-  min-height: clamp(26rem, 42vw, 40rem);
-  overflow: hidden;
+  aspect-ratio: 747 / 1024;
 }
 
 .about__portrait img {
   object-fit: cover;
-  object-position: 50% 22%;
-  filter: saturate(1.15) contrast(1.04) brightness(0.92);
 }
 
-.about__portrait::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(
-      to right,
-      #050505 0%,
-      rgba(5, 5, 5, 0.74) 20%,
-      rgba(5, 5, 5, 0.26) 42%,
-      rgba(5, 5, 5, 0.06) 64%,
-      transparent 100%
-    ),
-    linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.4) 16%, transparent 36%),
-    linear-gradient(to bottom, #050505 0%, rgba(5, 5, 5, 0.3) 10%, transparent 24%);
+.about__backdrop {
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 34%, rgba(0, 0, 0, 0.72) 54%, rgba(0, 0, 0, 0.36) 74%, rgba(0, 0, 0, 0.1) 90%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 34%, rgba(0, 0, 0, 0.72) 54%, rgba(0, 0, 0, 0.36) 74%, rgba(0, 0, 0, 0.1) 90%, transparent 100%);
+}
+
+/* Centred high on the head: the face stays untouched, the shoulders and the
+   bottom corners — where the cut-out meets the frame edge — melt away. */
+.about__person {
+  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 30%, #000 62%, transparent 96%);
+  mask-image: radial-gradient(ellipse 72% 72% at 50% 30%, #000 62%, transparent 96%);
 }
 
 /* Three marks on one rule, like steps hung on a line. Icon cyan, text white. */
@@ -634,7 +627,6 @@ button {
 
 .reel--vertical {
   --cols: 5;
-  max-width: 70rem;
 }
 
 .reel__frame {
@@ -968,20 +960,11 @@ button {
     gap: 0;
   }
 
+  /* Photo above the text; its faded bottom tucks under the heading. */
   .about__figure {
     order: -1;
-    margin: 0 calc(-1 * var(--shell)) -5rem;
-  }
-
-  .about__portrait {
-    min-height: 0;
-    aspect-ratio: 1 / 1;
-  }
-
-  .about__portrait::after {
-    background-image:
-      linear-gradient(to top, #050505 0%, rgba(5, 5, 5, 0.5) 28%, transparent 62%),
-      linear-gradient(to bottom, #050505 0%, transparent 16%);
+    width: min(100%, 24rem);
+    margin-bottom: -3.5rem;
   }
 
   .about {
@@ -1106,7 +1089,11 @@ button {
   }
 
   /* Two per row on a phone, the odd one out centred under them. */
-  .reel,
+  /* YouTube one per row so each is big enough to watch; Reels stay two abreast. */
+  .reel {
+    --cols: 1;
+  }
+
   .reel--vertical {
     --cols: 2;
   }

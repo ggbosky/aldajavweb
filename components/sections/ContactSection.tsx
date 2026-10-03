@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import HardCutTransition from '@/components/motion/HardCutTransition';
+import PlayIcon from '@/components/ui/PlayIcon';
 import { BRAND, CONTACT_ENDPOINT, SOCIALS } from '@/lib/site';
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
@@ -84,7 +85,7 @@ export default function ContactSection(): React.JSX.Element {
       </HardCutTransition>
 
       <HardCutTransition delay={0.04}>
-        <p className="contact__lead">Konzultace Vašeho záměru jsou pro mě inspirací</p>
+        <p className="contact__lead">Konzultace Vašeho záměru jsou pro mě inspirací.</p>
       </HardCutTransition>
 
       <HardCutTransition delay={0.08}>
@@ -114,7 +115,7 @@ export default function ContactSection(): React.JSX.Element {
             <button className="btn btn--primary" type="submit" disabled={status === 'sending'}>
               {status === 'sending' ? 'Odesílám…' : 'Odeslat zprávu'}
               <span className="btn__glyph" aria-hidden="true">
-                ↗
+                <PlayIcon />
               </span>
             </button>
 

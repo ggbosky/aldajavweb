@@ -764,7 +764,8 @@ button {
 
 .reviews__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 24rem));
+  justify-content: center;
   gap: clamp(2.8rem, 3.5vw, 3rem) clamp(1.8rem, 3.5vw, 3rem);
   margin-top: clamp(4.5rem, 8vw, 6rem);
 }
@@ -825,31 +826,6 @@ button {
   margin-inline: 0.55em;
   font-weight: 400;
   opacity: 0.7;
-}
-
-/* Placeholder: a review's shape in grey bars until the real text arrives. */
-.review--empty {
-  gap: 0.75rem;
-}
-
-.review--empty .review__photo {
-  border-color: rgba(0, 255, 255, 0.25);
-}
-
-.review__line {
-  width: 100%;
-  height: 0.7rem;
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.review__line--short {
-  width: 62%;
-}
-
-.review__line--name {
-  width: 46%;
-  margin-top: auto;
-  background: rgba(0, 255, 255, 0.25);
 }
 
 /* ---------- Contact ---------- */
@@ -1022,8 +998,23 @@ button {
    * The nav folds into a three-line menu button in the top right corner and
    * drops down as a panel under the bar when opened.
    */
+  /*
+   * A solid bar with no see-through tail, so nothing reads through behind the
+   * name; it slides away while scrolling down and returns on the way up.
+   */
   .site-header {
     padding-block: 1rem;
+    transition: transform 0.35s var(--ease-cut);
+  }
+
+  .site-header::before {
+    inset: 0;
+    background: #050505;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-header.is-hidden {
+    transform: translateY(-100%);
   }
 
   .site-header__brand img {

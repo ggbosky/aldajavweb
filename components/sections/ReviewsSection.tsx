@@ -3,16 +3,14 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import HardCutTransition, { cutChild, cutParent } from '@/components/motion/HardCutTransition';
-import { REVIEWS, REVIEW_SLOTS } from '@/lib/site';
+import { REVIEWS } from '@/lib/site';
 
 /**
  * Cards in a row: the client's photo sits centred on the top edge, the review
- * in grey italics under it, then "Name | role" in bold cyan. Slots the reviews
- * do not fill yet keep the same shape in grey placeholder bars.
+ * in grey italics under it, then "Name | role" in bold cyan. Only reviews
+ * that exist are shown; the row stays centred however many there are.
  */
 export default function ReviewsSection(): React.JSX.Element {
-  const empty = Math.max(0, REVIEW_SLOTS - REVIEWS.length);
-
   return (
     <section className="reviews" id="recenze">
       <HardCutTransition>
@@ -46,20 +44,6 @@ export default function ReviewsSection(): React.JSX.Element {
           </motion.li>
         ))}
 
-        {Array.from({ length: empty }, (_, index) => (
-          <motion.li
-            key={`empty-${index}`}
-            className="review review--empty"
-            variants={cutChild}
-            aria-hidden="true"
-          >
-            <span className="review__photo" />
-            <span className="review__line" />
-            <span className="review__line" />
-            <span className="review__line review__line--short" />
-            <span className="review__line review__line--name" />
-          </motion.li>
-        ))}
       </motion.ul>
     </section>
   );

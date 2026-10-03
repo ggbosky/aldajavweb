@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import HardCutTransition, {
   HARD_CUT_EASE,
@@ -13,101 +13,98 @@ import { WORK, type WorkVideo } from '@/lib/site';
 /** How many empty frames hold the place of each set until the videos arrive. */
 const PLACEHOLDERS = 3;
 
-type Embed = { src: string; thumb: string };
+/** The playlist ffmpeg wrote for this video: `public/video/<slug>/index.m3u8`. */
+const streamFor = (slug: string): string => `/video/${slug}/index.m3u8`;
 
 /**
- * Where a link can play on the page: YouTube (watch, youtu.be, shorts) and
- * Google Drive files shared to anyone with the link. Null for anything else.
+ * Plays an HLS stream in a plain <video>. Safari (and every iPhone) plays HLS
+ * natively; everywhere else hls.js is loaded on first play, so it costs
+ * nothing for someone who never presses play.
  */
-function embedFor(href: string): Embed | null {
-  let url: URL;
-  try {
-    url = new URL(href);
-  } catch {
-    return null;
-  }
+function Player({ video }: { video: WorkVideo }): React.JSX.Element {
+  const ref = useRef<HTMLVideoElement>(null);
 
-  let youtube: string | null = null;
-  if (url.hostname === 'youtu.be') youtube = url.pathname.slice(1) || null;
-  else if (url.hostname.endsWith('youtube.com')) {
-    youtube = url.pathname.startsWith('/shorts/')
-      ? (url.pathname.split('/')[2] ?? null)
-      : url.searchParams.get('v');
-  }
-  if (youtube) {
-    return {
-      src: `https://www.youtube-nocookie.com/embed/${youtube}?autoplay=1&rel=0`,
-      thumb: `https://i.ytimg.com/vi/${youtube}/hqdefault.jpg`,
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const src = streamFor(video.slug);
+    let destroy: (() => void) | undefined;
+    let cancelled = false;
+
+    // Only one video plays at a time: starting this one pauses the rest.
+    const pauseOthers = (): void => {
+      document.querySelectorAll<HTMLVideoElement>('video.reel__player').forEach((other) => {
+        if (other !== element) other.pause();
+      });
     };
-  }
+    element.addEventListener('play', pauseOthers);
 
-  const drive = url.hostname === 'drive.google.com' && url.pathname.match(/\/file\/d\/([^/]+)/);
-  if (drive && drive[1]) {
-    return {
-      src: `https://drive.google.com/file/d/${drive[1]}/preview`,
-      thumb: `https://drive.google.com/thumbnail?id=${drive[1]}&sz=w1000`,
+    // Native HLS only for a real .m3u8: a host that serves the playlist under
+    // another name (and so another MIME type) goes through hls.js instead.
+    if (src.endsWith('.m3u8') && element.canPlayType('application/vnd.apple.mpegurl')) {
+      element.src = src;
+      void element.play().catch(() => undefined);
+    } else {
+      void import('hls.js').then(({ default: Hls }) => {
+        if (cancelled) return;
+        if (!Hls.isSupported()) {
+          element.src = src;
+          return;
+        }
+        const hls = new Hls({ capLevelToPlayerSize: true });
+        hls.loadSource(src);
+        hls.attachMedia(element);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          void element.play().catch(() => undefined);
+        });
+        destroy = () => hls.destroy();
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      element.removeEventListener('play', pauseOthers);
+      destroy?.();
     };
-  }
+  }, [video.slug]);
 
-  return null;
+  return (
+    <div className="reel__frame">
+      <video
+        ref={ref}
+        className="reel__player"
+        poster={video.thumb}
+        controls
+        playsInline
+        preload="none"
+        aria-label={video.title}
+      />
+    </div>
+  );
 }
 
 /**
- * YouTube and Drive videos play in their own frame on the page — the
- * thumbnail swaps for the player only on click, so nothing heavy loads until
- * someone asks. Any other link opens in a new tab.
+ * The thumbnail with a play mark; a click swaps it for the player in place,
+ * so the stream only starts loading once someone asks for it.
  */
 function VideoFrame({ video }: { video: WorkVideo }): React.JSX.Element {
   const [playing, setPlaying] = useState(false);
-  const embed = embedFor(video.href);
-  const thumb = video.thumb ?? embed?.thumb;
 
-  if (embed && playing) {
-    return (
-      <div className="reel__frame">
-        <iframe
-          className="reel__player"
-          src={embed.src}
-          title={video.title}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowFullScreen
-        />
-      </div>
-    );
-  }
+  if (playing) return <Player video={video} />;
 
-  const inner = (
-    <>
-      {thumb && (
-        // A plain <img>: the thumbnails come from YouTube / Google, not from /public.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="reel__thumb" src={thumb} alt="" loading="lazy" />
-      )}
-      <span className="reel__play" aria-hidden="true">
-        <PlayIcon size={22} />
-      </span>
-    </>
-  );
-
-  return embed ? (
+  return (
     <button
       type="button"
       className="reel__frame reel__link"
       onClick={() => setPlaying(true)}
       aria-label={`Přehrát: ${video.title}`}
     >
-      {inner}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className="reel__thumb" src={video.thumb} alt="" loading="lazy" />
+      <span className="reel__play" aria-hidden="true">
+        <PlayIcon size={22} />
+      </span>
     </button>
-  ) : (
-    <a
-      className="reel__frame reel__link"
-      href={video.href}
-      target="_blank"
-      rel="noreferrer noopener"
-      aria-label={`${video.title} (otevře se v nové záložce)`}
-    >
-      {inner}
-    </a>
   );
 }
 
@@ -156,7 +153,7 @@ export default function WorkSection(): React.JSX.Element {
           >
             {active.videos.length > 0
               ? active.videos.map((video) => (
-                  <motion.li key={video.href} variants={cutChild}>
+                  <motion.li key={video.slug} variants={cutChild}>
                     <VideoFrame video={video} />
                   </motion.li>
                 ))

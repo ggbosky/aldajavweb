@@ -11,7 +11,7 @@ npm run typecheck  # tsc --noEmit, strict
 
 ## Stack
 
-`next` (App Router) · `framer-motion` · ručně psané CSS (žádný UI framework).
+`next` (App Router) · `framer-motion` · `hls.js` (jen pro přehrávání videí, načte se až po kliknutí) · ručně psané CSS (žádný UI framework).
 TypeScript strict včetně `noUncheckedIndexedAccess`.
 
 ## Struktura
@@ -28,7 +28,34 @@ components/
 lib/site.ts           veškerý text a data — edituje se jen tady
 public/images/        alda-logo.png (značka), alda-napis.png (nápis), ales-portret.jpg
 public/klienti/       loga klientů
+public/prace/         náhledy videí
+public/video/<slug>/  videa jako HLS: index.m3u8 + init.mp4 + úseky 000.mp4, 001.mp4, …
+public/recenze/       fotky lidí z recenzí
 ```
+
+## Videa
+
+Videa se přehrávají přímo na stránce v obyčejném `<video>` — žádný Disk ani
+YouTube. Originály z Alešova Disku mají stovky MB až 2,8 GB, proto jdou na web
+zmenšené na 720p a rozdělené na šestivteřinové úseky (HLS s úseky v MP4). Prohlížeč stáhne jen
+to, co se zrovna přehrává, a celých deset videí má dohromady ~180 MB. Safari a
+iPhone umí HLS samy, ostatním prohlížečům ho přehraje `hls.js`.
+
+Nové video (reels na výšku `720:1280`, YouTube na šířku `1280:720`):
+
+```bash
+ffmpeg -nostdin -i original.mp4 \
+  -vf "scale=1280:720:force_original_aspect_ratio=decrease,pad=ceil(iw/2)*2:ceil(ih/2)*2" \
+  -c:v libx264 -preset veryfast -crf 25 -maxrate 1800k -bufsize 3600k -pix_fmt yuv420p \
+  -g 48 -keyint_min 48 -sc_threshold 0 -c:a aac -b:a 96k -ac 2 \
+  -f hls -hls_time 6 -hls_playlist_type vod \
+  -hls_segment_type fmp4 -hls_fmp4_init_filename init.mp4 \
+  -hls_segment_filename "public/video/<slug>/%03d.mp4" public/video/<slug>/index.m3u8
+```
+
+Pak náhled do `public/prace/<slug>.jpg` a položka `{ title, slug, thumb }` do `WORK`
+v `lib/site.ts`. (`-nostdin` je nutné, když se to pouští ve smyčce — jinak ffmpeg
+sežere vstup smyčky.)
 
 ## Barva
 
@@ -56,9 +83,8 @@ výplně, čtečka podle atributu — barva sama o sobě informaci nenese.
   neumí. Dokud je konstanta prázdná, odeslání formuláře otevře předvyplněný e-mail
   v poštovním klientovi. Po vložení endpointu z Formspree nebo Web3Forms (registrace
   zdarma) začne formulář odesílat na pozadí, včetně stavové hlášky.
-- **`WORK` má prázdné seznamy videí.** Aleš dodá výběr. Formát jedné položky je
-  v komentáři u konstanty; do té doby sekce vykreslí „Výběr videí připravujeme."
-- **`REVIEWS` je prázdné pole.** Stejný princip.
+- **Recenze jsou zatím jedna**, další dvě pošle Aleš. Na stránce se ukazují jen ty,
+  které v `REVIEWS` opravdu jsou — žádná prázdná místa.
 - **Logo FAČR** ve sdílené složce nebylo. Místo něj jede textová značka; až logo
   dorazí, stačí doplnit `logo` do položky v `CLIENTS`.
 - **Čísla ve `STATS` jsou odhady**, ne měřená data. Před spuštěním ověřit.

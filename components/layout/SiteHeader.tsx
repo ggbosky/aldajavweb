@@ -16,10 +16,29 @@ const NAV: ReadonlyArray<{ href: string; label: string }> = [
 /**
  * "Aleš (logo) Javorský" on the left, the nav on the right. A black fade sits
  * behind the bar so the page dissolves under it as it scrolls past instead of
- * colliding with the name. On a phone the nav folds into a menu button.
+ * colliding with the name. On a phone the nav folds into a menu button and
+ * the bar is solid, tucking away while scrolling down.
  */
 export default function SiteHeader(): React.JSX.Element {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  /*
+   * Scrolling down tucks the bar away, scrolling up brings it back. The CSS
+   * only applies the tuck on a phone, where a fixed bar over the content is
+   * what got in the way; near the top it always shows.
+   */
+  useEffect(() => {
+    let last = window.scrollY;
+    const onScroll = (): void => {
+      const y = window.scrollY;
+      if (Math.abs(y - last) < 6) return;
+      setHidden(y > last && y > 120);
+      last = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   // Escape closes the menu, the way any overlay should.
   useEffect(() => {
@@ -33,9 +52,9 @@ export default function SiteHeader(): React.JSX.Element {
 
   return (
     <motion.header
-      className={`site-header${open ? ' is-open' : ''}`}
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      className={`site-header${open ? ' is-open' : ''}${hidden && !open ? ' is-hidden' : ''}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.8, ease: HARD_CUT_EASE }}
     >
       <a className="site-header__brand" href="#top" aria-label={BRAND.fullName}>

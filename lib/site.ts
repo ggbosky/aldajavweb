@@ -56,14 +56,13 @@ export type WorkVideo = {
   /** Název — na stránce se nezobrazuje, slouží pro čtečky obrazovky. */
   readonly title: string;
   /**
-   * Odkaz na video. YouTube (youtube.com/watch?v=…, youtu.be/…, /shorts/…) i
-   * Google Disk (drive.google.com/file/d/…/view) se přehrají přímo na stránce.
-   * U Disku musí být soubor sdílený „Kdokoli s odkazem“. Cokoliv jiného se
-   * otevře v nové záložce.
+   * Složka videa v `public/video` — v ní leží `index.m3u8`, `init.mp4` a krátké
+   * úseky `.mp4`, které z originálu vyrobí ffmpeg (viz README). Video se přehraje
+   * přímo na stránce, bez Disku a bez YouTube.
    */
-  readonly href: string;
-  /** Náhled (volitelné), např. '/prace/nazev.jpg' v `public/`. U YouTube i Disku se vezme sám. */
-  readonly thumb?: string;
+  readonly slug: string;
+  /** Náhled v `public/prace`. */
+  readonly thumb: string;
 };
 
 export type WorkCategory = {
@@ -76,10 +75,9 @@ export type WorkCategory = {
 };
 
 /**
- * Vybraná videa — po pěti na kategorii, každé pro jiného klienta. Leží na
- * Google Disku Aleše (složka VIDEA) a přehrávají se přímo na stránce přes
- * přehrávač Disku. Náhledy jsou uložené v `public/prace`.
- * Další video: { title: 'Klient – název', href: 'https://drive.google.com/file/d/…/view', thumb: '/prace/….jpg' }
+ * Vybraná videa — po pěti na kategorii, každé pro jiného klienta. Originály
+ * leží na Alešově Disku (složka VIDEA); na web jdou zmenšené na 720p a
+ * rozdělené na krátké úseky (HLS), takže se přehrají přímo na stránce.
  */
 export const WORK: ReadonlyArray<WorkCategory> = [
   {
@@ -89,27 +87,27 @@ export const WORK: ReadonlyArray<WorkCategory> = [
     videos: [
       {
         title: 'Hitrádio – Ranní show 2.0',
-        href: 'https://drive.google.com/file/d/1w1nwDJ_WP96l8Ra4oTKB14HcF0fMCXQ7/view',
+        slug: 'hitradio-ranni-show',
         thumb: '/prace/hitradio-ranni-show.jpg',
       },
       {
         title: 'Jakubeoff – Video 9',
-        href: 'https://drive.google.com/file/d/12MokjOkTJpHGQvEAHLrkyvc-TCMI7uJb/view',
+        slug: 'jakubeoff-video-9',
         thumb: '/prace/jakubeoff-video-9.jpg',
       },
       {
         title: 'Matěj Cihlář – Náhledovky',
-        href: 'https://drive.google.com/file/d/1mDpq9AFOL3W3cUvZAS4VkxTxcm75rJA_/view',
+        slug: 'matej-cihlar-nahledovky',
         thumb: '/prace/matej-cihlar-nahledovky.jpg',
       },
       {
         title: 'Radio House – Radioprojekt 2025',
-        href: 'https://drive.google.com/file/d/1YWo3N3wg_t99YEzzpAVDxF8Al9b9YDHD/view',
+        slug: 'radio-house-radioprojekt',
         thumb: '/prace/radio-house-radioprojekt.jpg',
       },
       {
         title: 'Repre – Fotbal+ FAQ: Kolik',
-        href: 'https://drive.google.com/file/d/1dmCss8U9s1l2DpDQ8VDgee_UBeyU77tD/view',
+        slug: 'repre-fotbal-faq',
         thumb: '/prace/repre-fotbal-faq.jpg',
       },
     ],
@@ -121,27 +119,27 @@ export const WORK: ReadonlyArray<WorkCategory> = [
     videos: [
       {
         title: 'AMBIS – Mediální gramotnost a dezinformace',
-        href: 'https://drive.google.com/file/d/1RtBNneHmgoo_yCIZb-867whT_x2VLrt5/view',
+        slug: 'ambis-medialni-gramotnost',
         thumb: '/prace/ambis-medialni-gramotnost.jpg',
       },
       {
         title: 'Hitrádio – Obchodní promo',
-        href: 'https://drive.google.com/file/d/1h8DhEUNwGjw0wXSmp63rVA8GLVAFMybh/view',
+        slug: 'hitradio-obchodni-promo',
         thumb: '/prace/hitradio-obchodni-promo.jpg',
       },
       {
         title: 'Matěj Cihlář – 7 úrovní monetizace',
-        href: 'https://drive.google.com/file/d/1xEdIzE30UadHYczMRe7IUQ3dugTKUn8F/view',
+        slug: 'matej-cihlar-7-urovni',
         thumb: '/prace/matej-cihlar-7-urovni.jpg',
       },
       {
         title: 'MOL Cup – Teaser 2025/26',
-        href: 'https://drive.google.com/file/d/1_3FXMgheOIGpazAuvYZ-VrlPeDJBpzyk/view',
+        slug: 'mol-cup-teaser',
         thumb: '/prace/mol-cup-teaser.jpg',
       },
       {
         title: 'Radio House – Chytrý jak rádio',
-        href: 'https://drive.google.com/file/d/1hDmSv7scMOguXlFvxuDh5bsJ49Z29grz/view',
+        slug: 'radio-house-chytry-jak-radio',
         thumb: '/prace/radio-house-chytry-jak-radio.jpg',
       },
     ],
@@ -169,11 +167,10 @@ export type Review = {
   readonly photo?: string;
 };
 
-/** Kolik míst sekce drží, dokud recenze nedorazí — prázdná se doplní šedými rámečky. */
-export const REVIEW_SLOTS = 3;
 
 /**
- * TODO: další dvě recenze pošle Aleš. Formát:
+ * Na stránce jsou jen recenze, které tu opravdu jsou — žádná prázdná místa.
+ * TODO: další dvě pošle Aleš. Formát:
  *   { quote: 'Text.', author: 'Jméno', role: 'Pozice', photo: '/recenze/jmeno.jpg' }
  */
 export const REVIEWS: ReadonlyArray<Review> = [

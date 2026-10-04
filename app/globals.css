@@ -489,11 +489,10 @@ button {
 }
 
 /*
- * Two stacked layers of the same 747 × 1024 frame, so they line up exactly.
- * The cyan backdrop is masked into an ellipse that runs out to transparent on
- * every side — no edge, no hard line where it meets the black page. The
- * cut-out sits on top untouched, fading only along the bottom so the hoodie
- * does not end in a straight cut.
+ * The photo is shot on near-black, so it needs no backdrop of its own: one
+ * elliptical mask fades it out on every side and it melts into the page.
+ * The ellipse sits a little high, keeping the face fully opaque while the
+ * shoulders and the bottom of the hoodie run out softly.
  */
 .about__figure {
   justify-self: center;
@@ -502,23 +501,13 @@ button {
 
 .about__portrait {
   position: relative;
-  aspect-ratio: 747 / 1024;
+  aspect-ratio: 4 / 5;
 }
 
 .about__portrait img {
   object-fit: cover;
-}
-
-.about__backdrop {
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 34%, rgba(0, 0, 0, 0.72) 54%, rgba(0, 0, 0, 0.36) 74%, rgba(0, 0, 0, 0.1) 90%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 50% at 50% 46%, #000 34%, rgba(0, 0, 0, 0.72) 54%, rgba(0, 0, 0, 0.36) 74%, rgba(0, 0, 0, 0.1) 90%, transparent 100%);
-}
-
-/* Centred high on the head: the face stays untouched, the shoulders and the
-   bottom corners — where the cut-out meets the frame edge — melt away. */
-.about__person {
-  -webkit-mask-image: radial-gradient(ellipse 72% 72% at 50% 30%, #000 62%, transparent 96%);
-  mask-image: radial-gradient(ellipse 72% 72% at 50% 30%, #000 62%, transparent 96%);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 44%, #000 52%, rgba(0, 0, 0, 0.6) 72%, rgba(0, 0, 0, 0.18) 88%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 44%, #000 52%, rgba(0, 0, 0, 0.6) 72%, rgba(0, 0, 0, 0.18) 88%, transparent 100%);
 }
 
 /* Three marks on one rule, like steps hung on a line. Icon cyan, text white. */

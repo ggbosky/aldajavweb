@@ -59,21 +59,12 @@ export default function AboutSection(): React.JSX.Element {
           </HardCutTransition>
         </div>
 
-        {/* Two layers: the cyan backdrop dissolves into black on every side,
-            and the cut-out sits on top at full strength, fading only at the
-            bottom where the hoodie runs out of frame. */}
+        {/* The photo is shot on black, so a fade on every side dissolves it
+            into the page with no edge at all. */}
         <HardCutTransition delay={0.12} className="about__figure">
           <div className="about__portrait">
             <Image
-              className="about__backdrop"
-              src={ABOUT.portrait.background}
-              alt=""
-              fill
-              sizes="(max-width: 900px) 100vw, 40vw"
-            />
-            <Image
-              className="about__person"
-              src={ABOUT.portrait.person}
+              src={ABOUT.portrait}
               alt="Aleš Javorský"
               fill
               sizes="(max-width: 900px) 100vw, 40vw"

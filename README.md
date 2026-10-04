@@ -36,6 +36,16 @@ public/recenze/       fotky lidí z recenzí
 
 ## Nasazení — aldastrih.cz
 
+**GitHub Pages:** `.github/workflows/pages.yml` při každém pushi do `main`
+sestaví web (`npm run build` → `out/`) a vystaví ho. V repozitáři je potřeba
+jednou nastavit *Settings → Pages → Source: GitHub Actions* a *Custom domain:
+aldastrih.cz*. DNS u Active24: `A` záznamy domény na 185.199.108.153,
+185.199.109.153, 185.199.110.153, 185.199.111.153 a `CNAME` pro `www` na
+`ggbosky.github.io`. GitHub Pages neumí vlastní hlavičky, `public/_headers`
+platí jen pro Cloudflare.
+
+Alternativa — **Cloudflare Pages:**
+
 Web je statický (`output: 'export'` v `next.config.mjs`): `npm run build` vyrobí
 do `out/` hotové soubory a ty servíruje **Cloudflare Pages** (zdarma, komerční
 použití povolené, bez limitu přenosu dat — důležité kvůli videím).

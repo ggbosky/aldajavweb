@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "next dev -p 3210",
     "build": "next build",
-    "start": "next start -p 3210",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "preview": "python3 -m http.server 3210 --directory out"
   },
   "dependencies": {
     "framer-motion": "^12.23.12",

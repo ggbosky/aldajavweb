@@ -5,7 +5,8 @@ Jednostránkový web střihače a videomakera, který vystupuje pod značkou **A
 ```bash
 npm install
 npm run dev        # http://localhost:3210
-npm run build      # produkční build
+npm run build      # hotový statický web do out/
+npm run preview    # out/ na http://localhost:3210
 npm run typecheck  # tsc --noEmit, strict
 ```
 
@@ -32,6 +33,26 @@ public/prace/         náhledy videí
 public/video/<slug>/  videa jako HLS: index.m3u8 + init.mp4 + úseky 000.mp4, 001.mp4, …
 public/recenze/       fotky lidí z recenzí
 ```
+
+## Nasazení — aldastrih.cz
+
+Web je statický (`output: 'export'` v `next.config.mjs`): `npm run build` vyrobí
+do `out/` hotové soubory a ty servíruje **Cloudflare Pages** (zdarma, komerční
+použití povolené, bez limitu přenosu dat — důležité kvůli videím).
+
+Nastavení projektu v Cloudflare Pages:
+
+| | |
+|---|---|
+| Production branch | `main` |
+| Framework preset | Next.js (Static HTML Export) |
+| Build command | `npm run build` |
+| Build output directory | `out` |
+| Node | 22 (z `.nvmrc`) |
+
+`public/_headers` nastaví správný typ pro HLS playlisty (bez něj by je Safari
+nepřehrálo nativně) a dlouhou cache pro videa a balíčky. Adresa webu pro
+metadata, `robots.txt` a `sitemap.xml` je `BRAND.url` v `lib/site.ts`.
 
 ## Videa
 

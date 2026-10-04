@@ -10,6 +10,8 @@ export const BRAND = {
   role: 'Video Editor · Videomaker · Motion Designer',
   tagline: 'Prvních pár vteřin rozhoduje o všem ostatním.',
   email: 'alda.jav@seznam.cz',
+  /** Adresa webu — náhledy odkazů, vyhledávače a sitemap ji berou odsud. */
+  url: 'https://aldastrih.cz',
   location: 'Česká republika · remote',
 } as const;
 

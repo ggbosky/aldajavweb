@@ -19,6 +19,8 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(BRAND.url),
+  alternates: { canonical: '/' },
   title: `${BRAND.name} — ${BRAND.fullName} · Video Editor`,
   description:
     'Freelance střihač a videomaker. Reels pro sociální sítě, dlouhá videa na YouTube a záznamy podcastů.',
@@ -28,6 +30,8 @@ export const metadata: Metadata = {
     description: 'Střih a produkce videa. Prvních pár vteřin rozhoduje o všem ostatním.',
     type: 'website',
     locale: 'cs_CZ',
+    url: '/',
+    siteName: BRAND.name,
   },
 };
 

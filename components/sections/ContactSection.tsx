@@ -63,12 +63,23 @@ export default function ContactSection(): React.JSX.Element {
 
     setStatus('sending');
     try {
+      // FormSubmit turns these fields into the e-mail: `_subject` becomes its
+      // subject, `email` its reply-to, so Aleš can answer straight from Seznam.
       const response = await fetch(CONTACT_ENDPOINT, {
         method: 'POST',
-        headers: { Accept: 'application/json' },
-        body: data,
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `Web: ${get('predmet')}`,
+          _template: 'table',
+          Jméno: get('jmeno'),
+          email: get('email'),
+          Předmět: get('predmet'),
+          Zpráva: get('zprava'),
+        }),
       });
-      if (!response.ok) throw new Error(String(response.status));
+      const result = (await response.json().catch(() => ({}))) as { success?: string | boolean };
+      // FormSubmit answers 200 with success "false" for a form not activated yet.
+      if (!response.ok || String(result.success) !== 'true') throw new Error(String(response.status));
       form.reset();
       setStatus('sent');
     } catch {

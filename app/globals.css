@@ -496,7 +496,7 @@ button {
  */
 .about__figure {
   justify-self: center;
-  width: min(100%, 30rem);
+  width: min(100%, 36rem);
 }
 
 .about__portrait {
@@ -950,10 +950,12 @@ button {
   }
 
   /* Photo above the text; its faded bottom tucks under the heading. */
+  /* Edge to edge on a phone: the photo's sides fade to black anyway. */
   .about__figure {
     order: -1;
-    width: min(100%, 24rem);
-    margin-bottom: -3.5rem;
+    width: min(calc(100% + 2 * var(--shell)), 30rem);
+    margin-inline: calc(-1 * var(--shell));
+    margin-bottom: -4rem;
   }
 
   .about {

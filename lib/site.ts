@@ -185,11 +185,14 @@ export const REVIEWS: ReadonlyArray<Review> = [
 ];
 
 /**
- * Kam se odesílá kontaktní formulář.
+ * Kam se odesílá kontaktní formulář: FormSubmit (formsubmit.co) přepošle každou
+ * zprávu jako e-mail na BRAND.email. Bez registrace a bez klíče.
  *
- * Statický web sám e-mail odeslat neumí. Vlož sem endpoint z Formspree nebo
- * Web3Forms (registrace je zdarma a na dvě minuty) a formulář začne odesílat
- * na pozadí. Dokud je prázdný, odeslání otevře předvyplněný e-mail v poštovním
- * klientovi — funguje to hned, jen to projde přes jeho aplikaci.
+ * Jednorázově: první odeslaná zpráva nedorazí, místo ní přijde na
+ * alda.jav@seznam.cz e-mail od FormSubmit s tlačítkem „Activate Form“. Po
+ * kliknutí chodí všechny další zprávy normálně.
+ *
+ * Když je konstanta prázdná, odeslání místo toho otevře předvyplněný e-mail
+ * v poštovním klientovi návštěvníka.
  */
-export const CONTACT_ENDPOINT = '';
+export const CONTACT_ENDPOINT = `https://formsubmit.co/ajax/${BRAND.email}`;

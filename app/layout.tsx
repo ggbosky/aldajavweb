@@ -21,6 +21,16 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(BRAND.url),
   alternates: { canonical: '/' },
+  // The mark is black on transparent, which would vanish on a dark browser tab,
+  // so dark mode gets a white copy. favicon.ico covers anything older.
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+      { url: '/icon-light.png', type: 'image/png', sizes: '192x192', media: '(prefers-color-scheme: light)' },
+      { url: '/icon-dark.png', type: 'image/png', sizes: '192x192', media: '(prefers-color-scheme: dark)' },
+    ],
+    apple: { url: '/apple-touch-icon.png', sizes: '180x180' },
+  },
   title: `${BRAND.name} — ${BRAND.fullName} · Video Editor`,
   description:
     'Freelance střihač a videomaker. Reels pro sociální sítě, dlouhá videa na YouTube a záznamy podcastů.',

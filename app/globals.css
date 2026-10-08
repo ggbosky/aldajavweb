@@ -747,22 +747,22 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 24rem));
   justify-content: center;
+  align-items: start;
   gap: clamp(2.8rem, 3.5vw, 3rem) clamp(1.8rem, 3.5vw, 3rem);
   margin-top: clamp(4.5rem, 8vw, 6rem);
 }
 
 /*
  * A grey card with the client's photo sitting centred on its top edge, where
- * the cyan marker used to be. Real and placeholder cards share every edge.
+ * the cyan marker used to be. Each card is only as tall as its own review.
  */
 .review {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 1.1rem;
-  padding: 3.4rem 1.8rem 2.4rem;
+  padding: 3.4rem 1.8rem 1.8rem;
   background: rgba(255, 255, 255, 0.035);
   border-top: 1px solid var(--line);
 }
@@ -803,8 +803,9 @@ button {
   margin: 0.4rem 0 0;
 }
 
+/* Same size as the Reels / YouTube / Podcasty labels in O mně. */
 .review__author {
-  font-size: 0.92rem;
+  font-size: 1.15rem;
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--cyan);
@@ -812,8 +813,8 @@ button {
 
 /* The same white hairline as the stats strip, just short. */
 .review__role {
-  margin-top: 0.7rem;
-  padding-top: 0.7rem;
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
   min-width: 4.5rem;
   border-top: 1px solid var(--line-white);
   font-size: 0.92rem;

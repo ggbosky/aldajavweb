@@ -7,7 +7,8 @@ import { REVIEWS } from '@/lib/site';
 
 /**
  * Cards in a row: the client's photo sits centred on the top edge, the review
- * in grey italics under it, then "Name | role" in bold cyan. Only reviews
+ * in grey italics under it, then the name in bold cyan over a thin white
+ * rule (like the stats strip) and the role in the quote's style. Only reviews
  * that exist are shown; the row stays centred however many there are.
  */
 export default function ReviewsSection(): React.JSX.Element {
@@ -35,11 +36,8 @@ export default function ReviewsSection(): React.JSX.Element {
             </span>
             <blockquote className="review__quote">{review.quote}</blockquote>
             <p className="review__by">
-              {review.author}
-              <span className="review__sep" aria-hidden="true">
-                |
-              </span>
-              {review.role}
+              <span className="review__author">{review.author}</span>
+              <span className="review__role">{review.role}</span>
             </p>
           </motion.li>
         ))}

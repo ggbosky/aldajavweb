@@ -173,8 +173,7 @@ export type Review = {
 
 /**
  * Na stránce jsou jen recenze, které tu opravdu jsou — žádná prázdná místa.
- * TODO: další dvě pošle Aleš. Formát:
- *   { quote: 'Text.', author: 'Jméno', role: 'Pozice', photo: '/recenze/jmeno.jpg' }
+ * Formát: { quote: 'Text.', author: 'Jméno', role: 'Pozice', photo: '/recenze/jmeno.jpg' }
  */
 export const REVIEWS: ReadonlyArray<Review> = [
   {
@@ -183,6 +182,20 @@ export const REVIEWS: ReadonlyArray<Review> = [
     author: 'Matěj „Straty“ Cihlář',
     role: 'Content creator a komentátor',
     photo: '/recenze/matej-cihlar.jpg',
+  },
+  {
+    quote:
+      'Mám kolem sebe ráda lidi, na které se můžu spolehnout. Aleš k nám do týmu přišel ještě během jeho studia vysoké školy a i ve svém mladém věku byl od začátku zodpovědný a pokorný. U videa přemýšlí nejen nad vizuální, ale i nad obsahovou stránkou a dokáže si poradit i s trochu zmateným zadáním (promiň, Aleši :D). Nikdy se nestalo, že by projekt nedodal včas a vždycky mě zachrání, když něco hoří.',
+    author: 'Alena Pavlousková',
+    role: 'Head of Social media Hitrádií',
+    photo: '/recenze/alena-pavlouskova.jpg',
+  },
+  {
+    quote:
+      'S Alešem spolupracuji od začátku jeho pracovní kariéry a vždy jsem si ho vybíral jako editora pro své projekty. Velmi si u něj cením jeho nasazení, rychlé komunikace při feedbacku a hlavně, že vždy přidá do projektu kus svého nápadu.',
+    author: 'Vojtěch Klapuch',
+    role: 'Head of Social media FAČR',
+    photo: '/recenze/vojtech-klapuch.jpg',
   },
 ];
 
